@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ImgFromTempelate {
+  
   // Loads an Image from assets and conver it into a darts Image encoding
   static Future<ui.Image> loadUiImage(String imageAssetPath) async {
     final ByteData data = await rootBundle.load(imageAssetPath);
