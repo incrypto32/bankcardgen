@@ -22,11 +22,10 @@ class ImgFromTempelate {
 
   // Prints a paragraph onto the canvas
   static ui.Paragraph createParagraph(
-      {String text, bool fromMap, Map<String, String> map}) {
-    print(map);
+      {String text, bool fromMap=false, Map<String, String> map,Color color=Colors.white}) {
     final textStyle = ui.TextStyle(
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: color,
       fontSize: 38,
     );
     final paragraphStyle = ui.ParagraphStyle(
@@ -34,21 +33,17 @@ class ImgFromTempelate {
     );
     final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle)
       ..pushStyle(textStyle);
-try {
-  if (fromMap) {
-      map.forEach((key, value) {
-        
-       
+    try {
+      if (fromMap) {
+        map.forEach((key, value) {
           paragraphBuilder.addText('\n$key : $value');
-       
-      });
-    } else {
-      paragraphBuilder.addText(text);
+        });
+      } else {
+        paragraphBuilder.addText(text);
+      }
+    } catch (e) {
+      print('Cannot addText');
     }
-} catch (e) {
-   print('Cannot addText');
-}
-    
 
     final paragraph = paragraphBuilder.build();
 
@@ -58,11 +53,11 @@ try {
   }
 
   static double printParagraph(
-      {Canvas canvas,
+      {@required Canvas canvas,
       String text,
-      double widthConstraint,
-      Offset offset,
-      bool fromMap,
+      @required double widthConstraint,
+      @required Offset offset,
+      bool fromMap = false,
       Map<String, String> map}) {
     ui.Paragraph paragraph;
     try {
@@ -77,13 +72,24 @@ try {
     return paragraph.height;
   }
 
-  static void printGpay(
-      {Canvas canvas, Offset offset, String no, ui.Image img}) async {
+  static void printGpay({
+    @required Canvas canvas,
+    @required Offset offset,
+    @required String no,
+    @required ui.Image img,
+  }) async {
     Paint paint = Paint();
     paint.color = Colors.white;
     paint.style = PaintingStyle.fill;
-
-    // final paragraph = createParagraph(fromMap: false,text: 'Pay : 7034320115');
+    ui.Paragraph paragraph;
+try {
+   paragraph= createParagraph(fromMap: false,text: 'Pay : 7034320115',color: Colors.black);
+   paragraph.layout(ui.ParagraphConstraints(width: 830));
+  
+} catch (e) {
+  print(e);
+}
+    
 
     // Draws a rounded rectangle
     print("hello");
@@ -108,7 +114,8 @@ try {
     );
 
     // Prints Number
-
+    
+    canvas.drawParagraph(paragraph, offset.translate(90, 10));
   }
 
 // The core funtion which puts all the drawings together
