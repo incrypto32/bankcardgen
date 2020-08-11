@@ -22,11 +22,15 @@ class ImgFromTempelate {
 
   // Prints a paragraph onto the canvas
   static ui.Paragraph createParagraph(
-      {String text, bool fromMap=false, Map<String, String> map,Color color=Colors.white}) {
+      {String text,
+      bool fromMap = false,
+      Map<String, String> map,
+      Color color = Colors.white,
+      double fontSize = 35}) {
     final textStyle = ui.TextStyle(
-      fontWeight: FontWeight.bold,
+     
       color: color,
-      fontSize: 38,
+      fontSize: fontSize,
     );
     final paragraphStyle = ui.ParagraphStyle(
       textDirection: TextDirection.ltr,
@@ -62,6 +66,7 @@ class ImgFromTempelate {
     ui.Paragraph paragraph;
     try {
       print(map);
+
       paragraph = createParagraph(fromMap: fromMap, text: text, map: map);
     } catch (e) {
       print('Error in printParagraph');
@@ -81,21 +86,20 @@ class ImgFromTempelate {
     Paint paint = Paint();
     paint.color = Colors.white;
     paint.style = PaintingStyle.fill;
-    ui.Paragraph paragraph;
-try {
-   paragraph= createParagraph(fromMap: false,text: 'Pay : 7034320115',color: Colors.black);
-   paragraph.layout(ui.ParagraphConstraints(width: 830));
-  
-} catch (e) {
-  print(e);
-}
-    
+   
+    try {
+      //  paragraph= createParagraph(fromMap: false,text: 'Pay : 7034320115',color: Colors.black);
+      //  paragraph.layout(ui.ParagraphConstraints(width: 830));
+
+    } catch (e) {
+      print(e);
+    }
 
     // Draws a rounded rectangle
     print("hello");
     print(canvas);
     canvas.drawRRect(
-      RRect.fromRectAndRadius(offset & Size(700, 100), Radius.circular(20)),
+      RRect.fromRectAndRadius(offset & Size(450, 80), Radius.circular(10)),
       paint,
     );
     // Offset(75, 150 + pH + 20)
@@ -104,18 +108,28 @@ try {
     paintImage(
       canvas: canvas,
       scale: 1,
-      fit: BoxFit.cover,
-      rect: Rect.fromCenter(
-        center: Offset(130, offset.dy + 50),
-        height: 80,
-        width: 80,
-      ),
+      fit: BoxFit.contain,
+      // rect: Rect.fromCenter(
+      //   center: Offset(130, offset.dy + 10),
+      //   height: 60,
+      //   width: 60,
+      // ),
+      rect:Rect.fromLTRB(100, offset.dy+10, 150, offset.dy+70),
       image: img,
     );
 
     // Prints Number
-    
-    canvas.drawParagraph(paragraph, offset.translate(90, 10));
+    TextSpan span = TextSpan(
+        style: TextStyle(
+            color: Colors.blueGrey, fontSize: 35, fontWeight: FontWeight.bold),
+        text: 'Pay : 7034320115');
+    TextPainter tp = TextPainter(
+        text: span,
+        textAlign: TextAlign.left,
+        textDirection: TextDirection.ltr);
+    tp.layout();
+    tp.paint(canvas, offset.translate(100, 20));
+    // canvas.drawParagraph(paragraph, offset.translate(90, 10));
   }
 
 // The core funtion which puts all the drawings together
