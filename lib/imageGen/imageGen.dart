@@ -7,14 +7,30 @@ import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ImgFromTempelate {
   // Loads an Image from assets and conver it into a darts Image encoding
-  static Future<ui.Image> loadUiImage(String imageAssetPath) async {
+  static Future<ui.Image> loadImageAsset(String imageAssetPath) async {
     final ByteData data = await rootBundle.load(imageAssetPath);
     final Completer<ui.Image> completer = Completer();
     ui.decodeImageFromList(Uint8List.view(data.buffer), (ui.Image img) {
+      return completer.complete(img);
+    });
+    return completer.future;
+  }
+
+  // Loads an image from external directory
+ static Future<ui.Image> loadUiImageFromExteranalDirectory(String filename) async {
+      Directory appDocDir = await getApplicationSupportDirectory();
+      String path = appDocDir.path + '/banktamlets'+'/'+filename;
+print(path);
+ final file = File(path);
+    final bytes = await file.readAsBytes();
+    
+    final Completer<ui.Image> completer = Completer();
+    ui.decodeImageFromList(bytes, (ui.Image img) {
       return completer.complete(img);
     });
     return completer.future;
@@ -28,7 +44,6 @@ class ImgFromTempelate {
       Color color = Colors.white,
       double fontSize = 35}) {
     final textStyle = ui.TextStyle(
-     
       color: color,
       fontSize: fontSize,
     );
@@ -74,6 +89,7 @@ class ImgFromTempelate {
 
     paragraph.layout(ui.ParagraphConstraints(width: widthConstraint));
     canvas.drawParagraph(paragraph, offset);
+
     return paragraph.height;
   }
 
@@ -86,7 +102,7 @@ class ImgFromTempelate {
     Paint paint = Paint();
     paint.color = Colors.white;
     paint.style = PaintingStyle.fill;
-   
+
     try {
       //  paragraph= createParagraph(fromMap: false,text: 'Pay : 7034320115',color: Colors.black);
       //  paragraph.layout(ui.ParagraphConstraints(width: 830));
@@ -114,7 +130,7 @@ class ImgFromTempelate {
       //   height: 60,
       //   width: 60,
       // ),
-      rect:Rect.fromLTRB(100, offset.dy+10, 150, offset.dy+70),
+      rect: Rect.fromLTRB(100, offset.dy + 10, 150, offset.dy + 70),
       image: img,
     );
 
@@ -132,17 +148,55 @@ class ImgFromTempelate {
     // canvas.drawParagraph(paragraph, offset.translate(90, 10));
   }
 
+// Function to paint text
+  static double printPara(
+      {@required Canvas canvas,
+      bool fromMap,
+      Map<String, String> map,
+      String text,
+      @required double widthConstraint,
+      @required Offset offset}) {
+    if (fromMap) {
+      text = "";
+      map.forEach((key, value) {
+        // print(text);
+        if (key == 'Name') {
+          text += '\n$value';
+        } else if (key != 'Gpay' && key != 'bank') {
+          text += '\n$key : $value';
+        }
+      });
+    }
+    print(text);
+    TextSpan span = TextSpan(
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 35,
+      ),
+      text: text,
+    );
+    TextPainter tp = TextPainter(
+        text: span,
+        textAlign: TextAlign.left,
+        textDirection: TextDirection.ltr);
+    tp.layout(maxWidth: widthConstraint);
+
+    tp.paint(canvas, offset);
+    return tp.height;
+  }
+
 // The core funtion which puts all the drawings together
   static Future<ui.Image> _bankCardWorker(details) async {
-    final gpayImg = await loadUiImage('assets/images/gpay.png');
-    final imge = await loadUiImage('assets/images/axis.png');
+    final gpayImg = await loadImageAsset('assets/images/gpay.png');
+    // final imge = await loadImageAsset('assets/images/axis.png');
+    final imge = await loadUiImageFromExteranalDirectory(details['bank']+'.png');
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(
         recorder, Rect.fromPoints(Offset(0.0, 0.0), Offset(30.0, 600.0)));
     final stroke = Paint();
 
     canvas.drawImage(imge, Offset(0, 0), stroke);
-    var pH = printParagraph(
+    var pH = printPara(
         canvas: canvas,
         offset: Offset(
           75,
@@ -155,14 +209,11 @@ class ImgFromTempelate {
     stroke.color = Colors.white;
     stroke.style = PaintingStyle.fill;
     printGpay(
-        canvas: canvas,
-        no: details['Gpay'],
-        offset: Offset(75, 150 + pH + 20),
-        img: gpayImg);
-    // canvas.drawRRect(
-    //     RRect.fromRectAndRadius(
-    //         Offset(75, 150 + pH + 20) & Size(700, 100), Radius.circular(20)),
-    //     stroke);
+      canvas: canvas,
+      no: details['Gpay'],
+      offset: Offset(75, 150 + pH + 20),
+      img: gpayImg,
+    );
 
     final picture = recorder.endRecording();
     final img = await picture.toImage(930, 600);
@@ -173,6 +224,7 @@ class ImgFromTempelate {
   static Future<ByteData> pngBytes(ui.Image img) async {
     var pngBytes;
     var buffer;
+    
     try {
       pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
       buffer = pngBytes.buffer;
@@ -196,11 +248,12 @@ class ImgFromTempelate {
   static Future<ByteData> generateBankCard(Map<String, String> details) async {
     var img;
     try {
-      img = await _bankCardWorker(details);
+          img = await _bankCardWorker(details);
     } catch (e) {
       print('generateBankCard : Error Occured');
       throw Future.error(e);
     }
     return pngBytes(img);
   }
+
 }

@@ -35,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Center(
       child: FutureBuilder<ByteData>(
           future: ImgFromTempelate.generateBankCard({
+            "bank":"federal",
             "Ac No":"784598656889635",
             "Name" : "Rajesh Perigodath Manuman",
             "IFSC" :"FDL54865",
