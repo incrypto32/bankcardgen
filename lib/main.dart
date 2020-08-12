@@ -37,10 +37,11 @@ class _MyHomePageState extends State<MyHomePage> {
           future: ImgFromTempelate.generateBankCard({
             "bank":"yes",
             "Ac No":"784598656889635",
-            "Name" : "Rajesh Perigodath Manuman",
+            "Name" : "John Doe",
             "IFSC" :"FDL54865",
             "Branch":"Thrissur",
             "Ph No":"7032415896",
+            "Email" : "johndoe@gmail.com",
             "Gpay":"45786455685"
           }),
           builder: (context, snapshot) {

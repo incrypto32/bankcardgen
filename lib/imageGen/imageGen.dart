@@ -157,14 +157,22 @@ class ImgFromTempelate {
       String text,
       @required double widthConstraint,
       @required Offset offset}) {
+    String text2 = "";
+    String text3 = "";
     if (fromMap) {
       text = "";
+
       map.forEach((key, value) {
         // print(text);
-        if (key == 'Name') {
-          text += '\n$value';
-        } else if (key != 'Gpay' && key != 'bank') {
-          text += '\n$key : $value';
+        if (key != 'Gpay' && key != 'bank') {
+          if (key =='Ac No') {
+            text += '\n$key : $value';
+          } else if(['Name','IFSC','Branch'].contains(key)){
+            text2 += '\n$key : $value';
+          }else{
+            text3+= '\n$key : $value';
+
+          }
         }
       });
     }
@@ -172,8 +180,17 @@ class ImgFromTempelate {
     TextSpan span = TextSpan(
       style: TextStyle(
         color: Colors.white,
-        fontSize: 35,
+        fontSize: 45,
+        fontWeight: FontWeight.bold,
       ),
+      children: [
+        TextSpan(
+            style: TextStyle(color: Colors.white, fontSize: 46,fontWeight: FontWeight.normal), text: text2,),
+ TextSpan(
+            style: TextStyle(color: Colors.white, fontSize: 46,fontWeight: FontWeight.normal), text: 
+            text3,),
+
+      ],
       text: text,
     );
     TextPainter bankTextPainter = TextPainter(
@@ -181,18 +198,24 @@ class ImgFromTempelate {
         textAlign: TextAlign.left,
         textDirection: TextDirection.ltr);
     bankTextPainter.layout(maxWidth: widthConstraint);
-    // TextPainter detailsPrinter = TextPainter(text: TextSpan(style: TextStyle(color:Colors.white,fontsi)),);
+    // TextPainter detailsPrinter = TextPainter(
+    //   text: TextSpan(
+    //     style: TextStyle(color: Colors.white, fontSize: 35),
+
+    //   ),
+    // );
     bankTextPainter.paint(canvas, offset);
     return bankTextPainter.height;
   }
 
 // The core funtion which puts all the drawings together
   static Future<ui.Image> _bankCardWorker(details,
-      {bool fromAsset = false}) async {
+      {bool fromAsset = false,@required double yInitial}) async {
     final gpayImg = await loadImageAsset('assets/images/gpay.png');
     ui.Image imge;
     fromAsset
-        ? imge = await loadImageAsset('assets/images/banktamlets/'+details['bank'] + '.png')
+        ? imge = await loadImageAsset(
+            'assets/images/banktamlets/' + details['bank'] + '.png')
         : imge =
             await loadUiImageFromExteranalDirectory(details['bank'] + '.png');
 
@@ -206,7 +229,7 @@ class ImgFromTempelate {
         canvas: canvas,
         offset: Offset(
           75,
-          150,
+          yInitial,
         ),
         fromMap: true,
         widthConstraint: 830,
@@ -214,13 +237,15 @@ class ImgFromTempelate {
 
     stroke.color = Colors.white;
     stroke.style = PaintingStyle.fill;
+    if( details['Gpay'] != null ){
+  
     printGpay(
       canvas: canvas,
       no: details['Gpay'],
-      offset: Offset(75, 150 + pH + 20),
+      offset: Offset(75, yInitial + pH + 20),
       img: gpayImg,
     );
-
+ }
     final picture = recorder.endRecording();
     final img = await picture.toImage(930, 600);
     return img;
@@ -254,7 +279,10 @@ class ImgFromTempelate {
   static Future<ByteData> generateBankCard(Map<String, String> details) async {
     var img;
     try {
-      img = await _bankCardWorker(details,fromAsset: true);
+      img = await _bankCardWorker(
+        details,
+        yInitial: 100,
+      );
     } catch (e) {
       print('generateBankCard : Error Occured');
       throw Future.error(e);
