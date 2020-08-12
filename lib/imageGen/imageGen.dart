@@ -22,13 +22,14 @@ class ImgFromTempelate {
   }
 
   // Loads an image from external directory
- static Future<ui.Image> loadUiImageFromExteranalDirectory(String filename) async {
-      Directory appDocDir = await getApplicationSupportDirectory();
-      String path = appDocDir.path + '/banktamlets'+'/'+filename;
-print(path);
- final file = File(path);
+  static Future<ui.Image> loadUiImageFromExteranalDirectory(
+      String filename) async {
+    Directory appDocDir = await getApplicationSupportDirectory();
+    String path = appDocDir.path + '/banktamlets' + '/' + filename;
+    print(path);
+    final file = File(path);
     final bytes = await file.readAsBytes();
-    
+
     final Completer<ui.Image> completer = Completer();
     ui.decodeImageFromList(bytes, (ui.Image img) {
       return completer.complete(img);
@@ -175,21 +176,26 @@ print(path);
       ),
       text: text,
     );
-    TextPainter tp = TextPainter(
+    TextPainter bankTextPainter = TextPainter(
         text: span,
         textAlign: TextAlign.left,
         textDirection: TextDirection.ltr);
-    tp.layout(maxWidth: widthConstraint);
-
-    tp.paint(canvas, offset);
-    return tp.height;
+    bankTextPainter.layout(maxWidth: widthConstraint);
+    // TextPainter detailsPrinter = TextPainter(text: TextSpan(style: TextStyle(color:Colors.white,fontsi)),);
+    bankTextPainter.paint(canvas, offset);
+    return bankTextPainter.height;
   }
 
 // The core funtion which puts all the drawings together
-  static Future<ui.Image> _bankCardWorker(details) async {
+  static Future<ui.Image> _bankCardWorker(details,
+      {bool fromAsset = false}) async {
     final gpayImg = await loadImageAsset('assets/images/gpay.png');
-    // final imge = await loadImageAsset('assets/images/axis.png');
-    final imge = await loadUiImageFromExteranalDirectory(details['bank']+'.png');
+    ui.Image imge;
+    fromAsset
+        ? imge = await loadImageAsset('assets/images/banktamlets/'+details['bank'] + '.png')
+        : imge =
+            await loadUiImageFromExteranalDirectory(details['bank'] + '.png');
+
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(
         recorder, Rect.fromPoints(Offset(0.0, 0.0), Offset(30.0, 600.0)));
@@ -224,7 +230,7 @@ print(path);
   static Future<ByteData> pngBytes(ui.Image img) async {
     var pngBytes;
     var buffer;
-    
+
     try {
       pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
       buffer = pngBytes.buffer;
@@ -248,12 +254,11 @@ print(path);
   static Future<ByteData> generateBankCard(Map<String, String> details) async {
     var img;
     try {
-          img = await _bankCardWorker(details);
+      img = await _bankCardWorker(details,fromAsset: true);
     } catch (e) {
       print('generateBankCard : Error Occured');
       throw Future.error(e);
     }
     return pngBytes(img);
   }
-
 }
