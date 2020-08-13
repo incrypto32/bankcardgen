@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Image.memory(Uint8List.view(buf)),
                 // child: Container(),
               );
-            }
+            } 
             return Container();
           }),
     ));
