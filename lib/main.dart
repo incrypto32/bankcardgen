@@ -41,8 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
             "IFSC" :"FDL54865",
             "Branch":"Thrissur",
             "Ph No":"7032415896",
-            "Email" : "johndoe@gmail.com",
-            "Gpay":"45786455685"
+            // "Email" : "johndoe@gmail.com",
+            // "Gpay":"45786455685"
           }),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
