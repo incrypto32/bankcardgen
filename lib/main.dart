@@ -39,75 +39,118 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    //     return Scaffold(
-    //     body: Center(
-    //   child: FutureBuilder<ByteData>(
-    //       future: ImgFromTempelate.generateBankCard({
-    //         "bank":"yes",
-    //         "Ac No":"784598656889635",
-    //         "Name" : "John Doe",
-    //         "IFSC" :"FDL54865",
-    //         "Branch":"Thrissur",
-    //         "Ph No":"7032415896",
-    //         // "Email" : "johndoe@gmail.com",
-    //         // "Gpay":"45786455685"
-    //       }),
-    //       builder: (context, snapshot) {
-    //         if (snapshot.hasData) {
-    //           var buf = snapshot.data.buffer;
-    //           return Container(
-    //             child: Image.memory(Uint8List.view(buf)),
-    //             // child: Container(),
-    //           );
-    //         }
-    //         return Container();
-    //       }),
+    // return Scaffold(
+    // body: Center(
+    // child: FutureBuilder<ByteData>(
+    // future: ImgFromTempelate.generateBankCard({
+    // "bank":"yes",
+    // "Ac No":"784598656889635",
+    // "Name" : "John Doe",
+    // "IFSC" :"FDL54865",
+    // "Branch":"Thrissur",
+    // "Ph No":"7032415896",
+    // "Email" : "johndoe@gmail.com",
+    // "Gpay":"45786455685"
+    // }),
+    // builder: (context, snapshot) {
+    // if (snapshot.hasData) {
+    // var buf = snapshot.data.buffer;
+    // return Container(
+    // child: Image.memory(Uint8List.view(buf)),
+    // child: Container(),
+    // );
+    // }
+    // return Container();
+    // }),
     // ));
     return Scaffold(
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(
-            fit: FlexFit.tight,
-            flex: 1,
-            child: Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              color: widget.parseColor("#F8B195"),
+      body: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
               child: Container(
-                
-                alignment: Alignment.center,
-                color: Colors.white,
-                width: 50,
-                child: Text(
-                  'heeellloo',
-                  style: TextStyle(fontSize: 20),
+                margin: EdgeInsets.all(20),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(
+                      "Card Maker",
+                      style: Theme.of(context).textTheme.headline5.apply(
+                            fontWeightDelta: 5,
+                          ),
+                    ),
+                    Spacer(),
+                    IconButton(
+                      icon: Icon(Icons.notification_important),
+                      onPressed: null,
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-          Flexible(
-            child: Container(
-              color: widget.parseColor("#F67280"),
+            Flexible(
+              flex: 2,
+              fit: FlexFit.tight,
+              child: Container(
+                // width: double.infinity,
+                
+                child: Container(
+                  
+                  
+                  margin: EdgeInsets.all(0),
+                  child: Image.asset(
+                    'assets/images/banktamlets/yes.png',
+                  ),
+                ),
+              ),
             ),
-          ),
-          Flexible(
-            child: Container(
-              color: widget.parseColor("#C06C84"),
+            Flexible(
+              flex: 2,
+              fit: FlexFit.tight,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Container(
+                      color: Colors.blueGrey,
+                      margin: EdgeInsets.all(20),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: Colors.blueGrey,
+                      margin: EdgeInsets.all(20),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Flexible(
-            child: Container(
-              color: widget.parseColor("#6C5B7B"),
+            Flexible(
+              fit: FlexFit.tight,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      color: Colors.blueGrey,
+                      margin: EdgeInsets.all(20),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: Colors.blueGrey,
+                      margin: EdgeInsets.all(20),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Flexible(
-            child: Container(
-              color: widget.parseColor("#355C7D"),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
