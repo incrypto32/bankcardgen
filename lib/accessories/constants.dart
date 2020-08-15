@@ -11,7 +11,7 @@ final kHintTextStyle = TextStyle(
 final kBoxDecorationStyle = BoxDecoration(
   color: Colors.white,
   border: Border.all(
-    color: Colors.grey[100]
+    color: Colors.white
   )
 
   ,

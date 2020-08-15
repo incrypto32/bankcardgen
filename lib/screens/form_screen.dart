@@ -2,6 +2,7 @@ import 'package:bankcardmaker/models/card_item.dart';
 import 'package:flutter/material.dart';
 import '../accessories/constants.dart';
 import 'package:flutter/services.dart';
+import '../animations/faded_animation.dart';
 
 class FormScreen extends StatefulWidget {
   static const routeName = "/form_screen";
@@ -31,7 +32,7 @@ class _FormScreenState extends State<FormScreen> {
   var _gPay=false;
 
   Widget _buildTF(String title, String hint, IconData icon,TextInputType input) {
-    return Column(
+    return FadeAnimation(1.8,Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         // Text(
@@ -68,10 +69,10 @@ class _FormScreenState extends State<FormScreen> {
           ),
         ),
       ],
-    );
+    ));
   }
    Widget _buildGpaybox() {
-      return Container(
+      return FadeAnimation(1.8,Container(
         height: 20.0,
         child: Row(
           children: <Widget>[
@@ -94,11 +95,12 @@ class _FormScreenState extends State<FormScreen> {
             ),
           ],
         ),
-      );
+      ));
     }
 
   Widget _buildBtn() {
-    return Container(
+    // return FadeAnimation(1,
+   return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: MediaQuery.of(context).size.width*0.4,
       child: RaisedButton(
@@ -184,7 +186,7 @@ class _FormScreenState extends State<FormScreen> {
                         SizedBox(
                           height: 5,
                         ),
-                        Column(
+                        FadeAnimation(1.8,Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             // Text(
@@ -239,9 +241,9 @@ class _FormScreenState extends State<FormScreen> {
                               
                             ),
                           ],
-                        ),
+                        )),
                         SizedBox(height: 5,),
-                         Column(
+                         FadeAnimation(1.8,Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             // Text(
@@ -296,7 +298,7 @@ class _FormScreenState extends State<FormScreen> {
                               
                             ),
                           ],
-                        ),
+                        )),
                         SizedBox(
                           height: 5,
                         ),
