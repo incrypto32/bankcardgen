@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(),
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).accentColor,
       appBar: MainAppBar(),
       body: SafeArea(
         child: Column(
@@ -24,8 +24,8 @@ class HomeScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(40),
-                  ),
+                      // top: Radius.circular(40),
+                      ),
                 ),
                 child: MainColumn(),
               ),

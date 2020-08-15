@@ -14,7 +14,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
       iconTheme: IconThemeData(color: Colors.white),
       title: Text("Card Generater"),
       centerTitle: true,
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.transparent,
       elevation: 0,
     );
   }
