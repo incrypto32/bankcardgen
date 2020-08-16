@@ -32,7 +32,8 @@ class _FormScreenState extends State<FormScreen> {
   var _gPay=false;
 
   Widget _buildTF(String title, String hint, IconData icon,TextInputType input) {
-    return FadeAnimation(1.8,Column(
+    // return FadeAnimation(1.8,
+     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         // Text(
@@ -69,10 +70,11 @@ class _FormScreenState extends State<FormScreen> {
           ),
         ),
       ],
-    ));
+    );
   }
    Widget _buildGpaybox() {
-      return FadeAnimation(1.8,Container(
+      // return FadeAnimation(1.8,
+      return Container(
         height: 20.0,
         child: Row(
           children: <Widget>[
@@ -95,7 +97,7 @@ class _FormScreenState extends State<FormScreen> {
             ),
           ],
         ),
-      ));
+      );
     }
 
   Widget _buildBtn() {
@@ -135,202 +137,206 @@ class _FormScreenState extends State<FormScreen> {
           value: SystemUiOverlayStyle.light,
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color:Colors.grey[100]
-                    // gradient: LinearGradient(
-                    //   begin: Alignment.topCenter,
-                    //   end: Alignment.bottomCenter,
-                    //   colors: [Colors.white38,Colors.white60,Colors.white70,],
-                    //   stops: [0.1, 0.5, 0.7],
-                    // ),
-                  ),
-                ),
-                Container(
-                  height: double.infinity,
-                  child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 40.0,
-                      vertical: 50.0,
+            child: FadeAnimation(4,
+                           Stack(
+                children: <Widget>[
+                  Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color:Colors.grey[100]
+                      // gradient: LinearGradient(
+                      //   begin: Alignment.topCenter,
+                      //   end: Alignment.bottomCenter,
+                      //   colors: [Colors.white38,Colors.white60,Colors.white70,],
+                      //   stops: [0.1, 0.5, 0.7],
+                      // ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Enter Your Details',
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'OpenSans',
-                            fontSize: 21.0,
+                  ),
+                  Container(
+                    height: double.infinity,
+                    child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 40.0,
+                        vertical: 50.0,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Enter Your Details',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'OpenSans',
+                              fontSize: 21.0,
+                            ),
                           ),
-                        ),
-                      //  Divider(),
-                        SizedBox(height: 20.0),
-                        _buildTF(
-                            "Name", "Enter your Name", Icons.account_circle,TextInputType.name),
-                        SizedBox(
-                          height: 5.0,
-                        ),
-                        _buildTF("Account Number", "Enter your Account Number",
-                            Icons.account_balance_wallet,TextInputType.number),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        _buildTF("IFSC", "Enter your IFSC Code", Icons.payment,TextInputType.text),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        FadeAnimation(1.8,Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            // Text(
-                            //   title,
-                            //   style: kLabelStyle,
-                            // ),
-                            SizedBox(height: 10.0),
-                            Container(padding: EdgeInsets.symmetric(horizontal: 10),
-                              alignment: Alignment.centerLeft,
-                              decoration: kBoxDecorationStyle,
-                              height: 50.0,
-                              child: Row(
+                        //  Divider(),
+                          SizedBox(height: 20.0),
+                          _buildTF(
+                              "Name", "Enter your Name", Icons.account_circle,TextInputType.name),
+                          SizedBox(
+                            height: 5.0,
+                          ),
+                          _buildTF("Account Number", "Enter your Account Number",
+                              Icons.account_balance_wallet,TextInputType.number),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          _buildTF("IFSC", "Enter your IFSC Code", Icons.payment,TextInputType.text),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          // FadeAnimation(1.8,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Text(
+                              //   title,
+                              //   style: kLabelStyle,
+                              // ),
+                              SizedBox(height: 10.0),
+                              Container(padding: EdgeInsets.symmetric(horizontal: 10),
+                                alignment: Alignment.centerLeft,
+                                decoration: kBoxDecorationStyle,
+                                height: 50.0,
+                                child: Row(
+                                  
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SizedBox(width:10),
+                                    Icon(Icons.account_balance,
+                                    color: Colors.grey,),
+                                    SizedBox(width: 10,),
+
+                                Expanded(
+                                                                child: DropdownButton(
+                                                           underline: Text(""),       
+                                    items: _banks
+                                        .map((value) => DropdownMenuItem(
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color: Colors.black87),
+                                              ),
+                                              value: value,
+                                            ))
+                                        .toList(),
+                                    onChanged: (selectedBranchName) {
+                                      print('$selectedBranchName');
+                                      setState(() {
+                                        selectedBank = selectedBranchName;
+                                      });
+                                    },
+                                    value: selectedBank,
+                                    isExpanded: false,
+                                    hint: Text(
+                                      'Choose Your Bank',
+                                      style: kHintTextStyle,
+                                    ),
+                                  ),
+                                ),
+
+                                  ],
+                                ),
                                 
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  SizedBox(width:10),
-                                  Icon(Icons.account_balance,
-                                  color: Colors.grey,),
-                                  SizedBox(width: 10,),
+                                
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
+                          //  FadeAnimation(1.8,
+                            Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Text(
+                              //   title,
+                              //   style: kLabelStyle,
+                              // ),
+                              SizedBox(height: 10.0),
+                              Container(padding: EdgeInsets.symmetric(horizontal: 10),
+                                alignment: Alignment.centerLeft,
+                                decoration: kBoxDecorationStyle,
+                                height: 50.0,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SizedBox(width:10),
+                                    Icon(Icons.public,
+                                    color: Colors.grey,),
+                                    SizedBox(width: 10,),
 
-                              Expanded(
-                                                              child: DropdownButton(
-                                                         underline: Text(""),       
-                                  items: _banks
-                                      .map((value) => DropdownMenuItem(
-                                            child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: Colors.black87),
-                                            ),
-                                            value: value,
-                                          ))
-                                      .toList(),
-                                  onChanged: (selectedBranchName) {
-                                    print('$selectedBranchName');
-                                    setState(() {
-                                      selectedBank = selectedBranchName;
-                                    });
-                                  },
-                                  value: selectedBank,
-                                  isExpanded: false,
-                                  hint: Text(
-                                    'Choose Your Bank',
-                                    style: kHintTextStyle,
+                                Expanded(
+                                                                child: DropdownButton(
+                                                                  underline: Text(""),
+
+                                    items: _countries
+                                        .map((value) => DropdownMenuItem(
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color: Colors.black87),
+                                              ),
+                                              value: value,
+                                            ))
+                                        .toList(),
+                                    onChanged: (selectedCountryName) {
+                                      print('$selectedCountry');
+                                      setState(() {
+                                        selectedCountry = selectedCountryName;
+                                      });
+                                    },
+                                    value: selectedCountry,
+                                    isExpanded: false,
+                                    hint: Text(
+                                      'Choose Your Country',
+                                      style: kHintTextStyle,
+                                    ),
                                   ),
                                 ),
-                              ),
 
-                                ],
-                              ),
-                              
-                              
-                            ),
-                          ],
-                        )),
-                        SizedBox(height: 5,),
-                         FadeAnimation(1.8,Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            // Text(
-                            //   title,
-                            //   style: kLabelStyle,
-                            // ),
-                            SizedBox(height: 10.0),
-                            Container(padding: EdgeInsets.symmetric(horizontal: 10),
-                              alignment: Alignment.centerLeft,
-                              decoration: kBoxDecorationStyle,
-                              height: 50.0,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  SizedBox(width:10),
-                                  Icon(Icons.public,
-                                  color: Colors.grey,),
-                                  SizedBox(width: 10,),
-
-                              Expanded(
-                                                              child: DropdownButton(
-                                                                underline: Text(""),
-
-                                  items: _countries
-                                      .map((value) => DropdownMenuItem(
-                                            child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: Colors.black87),
-                                            ),
-                                            value: value,
-                                          ))
-                                      .toList(),
-                                  onChanged: (selectedCountryName) {
-                                    print('$selectedCountry');
-                                    setState(() {
-                                      selectedCountry = selectedCountryName;
-                                    });
-                                  },
-                                  value: selectedCountry,
-                                  isExpanded: false,
-                                  hint: Text(
-                                    'Choose Your Country',
-                                    style: kHintTextStyle,
-                                  ),
+                                  ],
                                 ),
+                                
+                                
                               ),
-
-                                ],
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          _buildTF("Branch", "Enter your Branch", Icons.business,TextInputType.text),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          // _buildTF("Phone", "Enter your Phone", Icons.phone),
+                          // SizedBox(
+                          //   height: 5,
+                          // ),
+                          _buildTF("GPay", "Enter your Phone Number",
+                              Icons.phone_android,TextInputType.phone),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: _buildGpaybox(),
                               ),
-                              
-                              
-                            ),
-                          ],
-                        )),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        _buildTF("Branch", "Enter your Branch", Icons.business,TextInputType.text),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        // _buildTF("Phone", "Enter your Phone", Icons.phone),
-                        // SizedBox(
-                        //   height: 5,
-                        // ),
-                        _buildTF("GPay", "Enter your Phone Number",
-                            Icons.phone_android,TextInputType.phone),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: _buildGpaybox(),
-                            ),
-                          ],
-                        ),
-                        
-                        _buildBtn(),
-                      ],
+                            ],
+                          ),
+                          
+                          _buildBtn(),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
