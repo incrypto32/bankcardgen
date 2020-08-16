@@ -13,12 +13,12 @@ class FadeAnimation extends StatelessWidget {
       Track("opacity")
           .add(Duration(milliseconds: 500), Tween(begin: 0.0, end: 1.0)),
       Track("translateY").add(
-          Duration(milliseconds: 500), Tween(begin: -30.0, end: 0.0),
+          Duration(milliseconds: 500), Tween(begin: 30.0, end: 0.0),
           curve: Curves.easeOut)
     ]);
 
     return ControlledAnimation(
-      delay: Duration(milliseconds: (500 * delay).round()),
+      delay: Duration(milliseconds: (100 * delay).round()),
       duration: tween.duration,
       tween: tween,
       child: child,
