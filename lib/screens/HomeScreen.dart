@@ -12,7 +12,10 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       drawer: Drawer(),
       backgroundColor: Theme.of(context).accentColor,
-      appBar: MainAppBar(),
+      appBar: MainAppBar(
+        title: "Card Generater",
+        color: Colors.transparent,
+      ),
       body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,
