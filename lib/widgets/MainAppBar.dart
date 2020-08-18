@@ -5,14 +5,18 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(100);
   final Color color;
   final String title;
-  MainAppBar({Key key, this.color, this.title});
+  final Color textColor;
+  MainAppBar({Key key, this.color, this.title, this.textColor});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       toolbarHeight: 90,
       iconTheme: IconThemeData(color: Colors.white),
-      title: Text(title),
+      title: Text(
+        title,
+        style: TextStyle(color: textColor),
+      ),
       centerTitle: true,
       backgroundColor: color,
       elevation: 0,

@@ -40,6 +40,10 @@ class CardItem {
     this.branch = value;
   }
 
+  get getGpay => this.gPay;
+
+  get getBank => this.bank;
+  get getCountry => this.country;
   Map<String, dynamic> get toMap => {
         "Ac/No": accountNumber,
         "Name": name,

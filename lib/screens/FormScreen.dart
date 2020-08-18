@@ -12,6 +12,7 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
+  final _formKey = GlobalKey<FormState>();
   CardItem _cardItem = CardItem();
   var selectedBank;
   var selectedCountry;
@@ -38,98 +39,100 @@ class _FormScreenState extends State<FormScreen> {
     return MaterialApp(
       home: Scaffold(
         appBar: MainAppBar(
-          color: Colors.indigo,
+          color: Colors.transparent,
+          textColor: Colors.white,
           title: 'Enter Your Details',
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.indigo,
         body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light,
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: double.infinity,
-                  child: SingleChildScrollView(
-                    // physics: AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 40.0,
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                // physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 40.0,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    //  Divider(),
+
+                    _buildTF(
+                      title: "Name",
+                      hint: "Enter your Name",
+                      icon: Icons.account_circle,
+                      input: TextInputType.name,
+                      setter: (v) => _cardItem.setName = v,
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        //  Divider(),
 
-                        _buildTF(
-                          title: "Name",
-                          hint: "Enter your Name",
-                          icon: Icons.account_circle,
-                          input: TextInputType.name,
-                          setter: (v) => _cardItem.setPhone = v,
-                        ),
+                    buildDropdown(
+                      displayText: 'Choose Your Country',
+                      icon: (Icons.public),
+                      list: _countries,
+                      getter: () {
+                        print("Getterreeey");
+                        print(_cardItem.getCountry);
+                        return _cardItem.getCountry;
+                      },
+                      setter: (v) => _cardItem.setCountry = v,
+                    ),
+                    buildDropdown(
+                      displayText: 'Choose Your Bank',
+                      icon: (Icons.account_balance),
+                      list: _banks,
+                      getter: () => _cardItem.getBank,
+                      setter: (v) => _cardItem.setBank = v,
+                    ),
 
-                        _buildTF(
-                          title: "Account Number",
-                          hint: "Enter your Account Number",
-                          icon: Icons.account_balance_wallet,
-                          input: TextInputType.number,
-                          setter: (v) => _cardItem.setPhone = v,
-                        ),
+                    _buildTF(
+                      title: "Account Number",
+                      hint: "Enter your Account Number",
+                      icon: Icons.account_balance_wallet,
+                      input: TextInputType.number,
+                      setter: (v) => _cardItem.setAccountNo = v,
+                    ),
 
-                        _buildTF(
-                          title: "IFSC",
-                          hint: "Enter your IFSC Code",
-                          icon: Icons.payment,
-                          input: TextInputType.text,
-                          setter: (v) => _cardItem.setPhone = v,
-                        ),
+                    _buildTF(
+                      title: "IFSC",
+                      hint: "Enter your IFSC Code",
+                      icon: Icons.payment,
+                      input: TextInputType.text,
+                      setter: (v) => _cardItem.setIfsc = v,
+                    ),
 
-                        buildDropdown(
-                          displayText: 'Choose Your Bank',
-                          icon: (Icons.account_balance),
-                          value: selectedBank,
-                          list: _banks,
-                        ),
-                        buildDropdown(
-                          displayText: 'Choose Your Country',
-                          icon: (Icons.public),
-                          value: selectedCountry,
-                          list: _countries,
-                        ),
+                    _buildTF(
+                      title: "Branch",
+                      hint: "Enter your Branch",
+                      icon: Icons.business,
+                      input: TextInputType.text,
+                      setter: (v) => _cardItem.setBranch = v,
+                    ),
 
-                        _buildTF(
-                          title: "Branch",
-                          hint: "Enter your Branch",
-                          icon: Icons.business,
-                          input: TextInputType.text,
-                          setter: (v) => _cardItem.setPhone = v,
-                        ),
+                    _buildTF(
+                      title: "Phone",
+                      hint: "Enter your Phone Number",
+                      icon: Icons.phone_android,
+                      input: TextInputType.phone,
+                      setter: (v) => _cardItem.setPhone = v,
+                    ),
 
-                        _buildTF(
-                          title: "Phone",
-                          hint: "Enter your Phone Number",
-                          icon: Icons.phone_android,
-                          input: TextInputType.phone,
-                          setter: (v) => _cardItem.setPhone = v,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: _buildGpaybox(),
                         ),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: _buildGpaybox(),
-                            ),
-                          ],
-                        ),
-
-                        _buildBtn(),
                       ],
                     ),
-                  ),
-                )
-              ],
+
+                    _buildBtn(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -150,7 +153,8 @@ class _FormScreenState extends State<FormScreen> {
       alignment: Alignment.centerLeft,
       decoration: kBoxDecorationStyle,
       height: 50.0,
-      child: TextField(
+      child: TextFormField(
+        onSaved: setter,
         keyboardType: input,
         style: TextStyle(
           color: Colors.black,
@@ -189,7 +193,7 @@ class _FormScreenState extends State<FormScreen> {
             ),
           ),
           Text(
-            'Use For Gpay',
+            'Gpay',
             // style: kLabelStyle,
           ),
         ],
@@ -199,13 +203,15 @@ class _FormScreenState extends State<FormScreen> {
 
   Widget _buildBtn() {
     // return FadeAnimation(1,
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: MediaQuery.of(context).size.width * 0.4,
       child: RaisedButton(
         elevation: 10.0,
         onPressed: () {
-          //_savedCards.add(CardItem())
+          _formKey.currentState.save();
+          print(_cardItem.toMap);
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -218,7 +224,6 @@ class _FormScreenState extends State<FormScreen> {
             color: Colors.white,
             letterSpacing: 1.5,
             fontSize: 15.0,
-            // fontWeight: FontWeight.bold,
             fontFamily: 'OpenSans',
           ),
         ),
@@ -226,8 +231,13 @@ class _FormScreenState extends State<FormScreen> {
     );
   }
 
-  Container buildDropdown(
-      {IconData icon, String value, String displayText, List list}) {
+  Container buildDropdown({
+    IconData icon,
+    String displayText,
+    List list,
+    Function getter,
+    Function setter,
+  }) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       margin: EdgeInsets.symmetric(vertical: 5),
@@ -247,22 +257,22 @@ class _FormScreenState extends State<FormScreen> {
             child: DropdownButton(
               underline: Text(""),
               items: list
-                  .map((value) => DropdownMenuItem(
-                        child: Text(
-                          value,
-                          style: TextStyle(color: Colors.black87),
-                        ),
-                        value: value,
-                      ))
+                  .map(
+                    (value) => DropdownMenuItem(
+                      child: Text(
+                        value,
+                        style: TextStyle(color: Colors.black87),
+                      ),
+                      value: value,
+                    ),
+                  )
                   .toList(),
               onChanged: (selectedValue) {
-                print('$selectedValue');
                 setState(() {
-                  // selectedBank = selectedBranchName;
-                  value = selectedValue;
+                  setter(selectedValue);
                 });
               },
-              value: value,
+              value: getter(),
               isExpanded: false,
               hint: Text(
                 displayText,
