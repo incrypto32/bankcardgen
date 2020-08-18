@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bankcardmaker/widgets/MainAppBar.dart';
-import 'package:bankcardmaker/widgets/MainColumn.dart';
+import 'package:bankcardmaker/widgets/main_appbar.dart';
+import 'package:bankcardmaker/widgets/main_column.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({

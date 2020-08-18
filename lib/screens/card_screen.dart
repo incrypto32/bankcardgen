@@ -1,23 +1,22 @@
 import 'dart:typed_data';
 
-import 'package:bankcardmaker/imageGen/imageGen.dart';
+import 'package:bankcardmaker/imageGen/image_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 
 class CardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-        return Scaffold(
+    return Scaffold(
         body: Center(
       child: FutureBuilder<ByteData>(
           future: ImgFromTempelate.generateBankCard({
-            "bank":"yes",
-            "Ac No":"784598656889635",
-            "Name" : "John Doe",
-            "IFSC" :"FDL54865",
-            "Branch":"Thrissur",
-            "Ph No":"7032415896",
+            "bank": "yes",
+            "Ac No": "784598656889635",
+            "Name": "John Doe",
+            "IFSC": "FDL54865",
+            "Branch": "Thrissur",
+            "Ph No": "7032415896",
             // "Email" : "johndoe@gmail.com",
             // "Gpay":"45786455685"
           }),
@@ -32,6 +31,5 @@ class CardScreen extends StatelessWidget {
             return Container();
           }),
     ));
-
   }
 }

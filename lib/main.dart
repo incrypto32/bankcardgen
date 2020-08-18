@@ -1,5 +1,5 @@
-import 'package:bankcardmaker/screens/FormScreen.dart';
-import 'package:bankcardmaker/screens/HomeScreen.dart';
+import 'package:bankcardmaker/screens/form_screen.dart';
+import 'package:bankcardmaker/screens/home_screen.dart';
 import 'package:bankcardmaker/screens/saved_cards_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +21,10 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(),
-      routes: {FormScreen.routeName: (context) => FormScreen(),
-      SavedCardsScreen.routeName:(context)=>SavedCardsScreen()},
+      routes: {
+        FormScreen.routeName: (context) => FormScreen(),
+        SavedCardsScreen.routeName: (context) => SavedCardsScreen()
+      },
     );
   }
 }
