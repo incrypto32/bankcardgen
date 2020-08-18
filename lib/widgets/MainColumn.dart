@@ -28,7 +28,7 @@ class MainColumn extends StatelessWidget {
             child: Text(
               "Primary Card",
               style: Theme.of(context).textTheme.headline6.copyWith(
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
             ),
