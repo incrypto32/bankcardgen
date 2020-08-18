@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../screens/saved_cards_screen.dart';
+
 class MainColumn extends StatelessWidget {
   const MainColumn({
     Key key,
@@ -109,6 +111,9 @@ class MainColumn extends StatelessWidget {
                     ),
                     title: Text("Saved Cards"),
                     trailing: Icon(Icons.chevron_right),
+                    onTap: (){
+                      Navigator.of(context).pushNamed(SavedCardsScreen.routeName);
+                    },
                   ),
                   ListTile(
                     contentPadding: listTileContentPadding,
