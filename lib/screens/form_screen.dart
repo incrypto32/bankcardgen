@@ -124,7 +124,9 @@ class _FormScreenState extends State<FormScreen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: _buildGpaybox(),
+                          child: _buildGpaybox(
+                              getter: () => _cardItem.getGpay,
+                              setter: (v) => _cardItem.setGpay = v),
                         ),
                       ],
                     ),
@@ -174,7 +176,7 @@ class _FormScreenState extends State<FormScreen> {
     );
   }
 
-  Widget _buildGpaybox() {
+  Widget _buildGpaybox({Function getter, Function setter}) {
     return Container(
       height: 20.0,
       child: Row(
@@ -182,12 +184,12 @@ class _FormScreenState extends State<FormScreen> {
           Theme(
             data: ThemeData(unselectedWidgetColor: Colors.grey),
             child: Checkbox(
-              value: _gPay,
+              value: getter() ?? false,
               checkColor: Colors.green,
               activeColor: Colors.white,
               onChanged: (value) {
                 setState(() {
-                  _gPay = value;
+                  setter(value);
                 });
               },
             ),

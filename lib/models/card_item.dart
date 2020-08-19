@@ -44,16 +44,19 @@ class CardItem {
 
   get getBank => this.bank;
   get getCountry => this.country;
-  Map<String, dynamic> get toMap => {
-        "Ac/No": accountNumber,
-        "Name": name,
-        "Country": country,
-        "Bank": bank,
-        "Branch": branch,
-        "IFSC": ifsc,
-        "Phone No": phone,
-        "Gpay": gPay,
-      };
+  Map<String, dynamic> get toMap {
+    String code;
+    country == 'India' ? code = "IFSC" : code = "IBAN";
+    return {
+      "Ac/No": accountNumber,
+      "Name": name,
+      "Bank": bank,
+      "Branch": branch,
+      code: ifsc,
+      "Phone No": phone,
+      "Gpay": gPay,
+    };
+  }
 
   CardItem({
     this.phone,
