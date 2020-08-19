@@ -1,6 +1,7 @@
 import 'package:bankcardmaker/models/card_item.dart';
 import 'package:bankcardmaker/widgets/main_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../accessories/constants.dart';
 import 'package:flutter/services.dart';
 // import '../animations/faded_animation.dart';
@@ -292,24 +293,67 @@ void _showDialog(context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: new Image.asset('assets/images/banktamlets/yes.png'),
+        title: Container(
+          height: 220,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                "Your Card is Successfully Generated !",
+                style: TextStyle(color: Colors.green, fontSize: 15),
+              ),
+              Image.asset('assets/images/banktamlets/yes.png'),
+            ],
+          ),
+        ),
         content: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FlatButton(
-              onPressed: null,
-              color: Colors.blue[900],
-              child: new Text(
-                'DISCARD',
-                style: TextStyle(color: Colors.blue[900]),
+            Expanded(
+              child: RaisedButton(
+                onPressed: () {},
+                child: Row(
+                  children: [
+                    FaIcon(
+                      Icons.delete,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      "DISCARD",
+                      style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+                color: Colors.blue[900],
               ),
             ),
-            FlatButton(
-              onPressed: null,
-              color: Colors.blue[900],
-              child: new Text(
-                'SAVE',
-                style: TextStyle(color: Colors.blue[900]),
+            SizedBox(width: 20),
+            Expanded(
+              child: RaisedButton(
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FaIcon(
+                      FontAwesomeIcons.solidSave,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      "SAVE",
+                      style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+                color: Colors.blue[900],
               ),
             ),
           ],
