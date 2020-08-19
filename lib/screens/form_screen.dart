@@ -3,7 +3,7 @@ import 'package:bankcardmaker/widgets/main_appbar.dart';
 import 'package:flutter/material.dart';
 import '../accessories/constants.dart';
 import 'package:flutter/services.dart';
-import '../animations/faded_animation.dart';
+// import '../animations/faded_animation.dart';
 
 class FormScreen extends StatefulWidget {
   static const routeName = "/form_screen";
@@ -212,6 +212,7 @@ class _FormScreenState extends State<FormScreen> {
         onPressed: () {
           _formKey.currentState.save();
           print(_cardItem.toMap);
+          _showDialog(context);
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -284,4 +285,36 @@ class _FormScreenState extends State<FormScreen> {
       ),
     );
   }
+}
+
+void _showDialog(context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: new Image.asset('assets/images/banktamlets/yes.png'),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FlatButton(
+              onPressed: null,
+              color: Colors.blue[900],
+              child: new Text(
+                'DISCARD',
+                style: TextStyle(color: Colors.blue[900]),
+              ),
+            ),
+            FlatButton(
+              onPressed: null,
+              color: Colors.blue[900],
+              child: new Text(
+                'SAVE',
+                style: TextStyle(color: Colors.blue[900]),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
