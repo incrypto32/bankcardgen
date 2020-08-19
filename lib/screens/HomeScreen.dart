@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bankcardmaker/widgets/MainAppBar.dart';
 import 'package:bankcardmaker/widgets/MainColumn.dart';
+import 'package:bankcardmaker/widgets/MainDrawer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -10,7 +11,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: MainDrawer(),
+      ),
       backgroundColor: Theme.of(context).accentColor,
       appBar: MainAppBar(
         title: "Card Generater",
