@@ -49,11 +49,11 @@ class formState extends State<bankRequestForm> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-        //         Icon(
-        //              Icons.account_balance,
-        //              color: Colors.indigo[200],
-        //             size: 150,
-        //            ),
+                 Icon(
+                      Icons.account_balance,
+                      color: Colors.indigo[200],
+                     size: 150,
+                    ),
                 Container(
                   height: 15,
                 ),
