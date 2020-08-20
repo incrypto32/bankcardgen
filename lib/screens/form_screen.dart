@@ -1,9 +1,10 @@
 import 'package:bankcardmaker/models/card_item.dart';
 import 'package:bankcardmaker/widgets/main_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../accessories/constants.dart';
 import 'package:flutter/services.dart';
-import '../animations/faded_animation.dart';
+// import '../animations/faded_animation.dart';
 
 class FormScreen extends StatefulWidget {
   static const routeName = "/form_screen";
@@ -214,6 +215,7 @@ class _FormScreenState extends State<FormScreen> {
         onPressed: () {
           _formKey.currentState.save();
           print(_cardItem.toMap);
+          _showDialog(context);
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -286,4 +288,79 @@ class _FormScreenState extends State<FormScreen> {
       ),
     );
   }
+}
+
+void _showDialog(context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Container(
+          height: 220,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                "Your Card is Successfully Generated !",
+                style: TextStyle(color: Colors.green, fontSize: 15),
+              ),
+              Image.asset('assets/images/banktamlets/yes.png'),
+            ],
+          ),
+        ),
+        content: Row(
+          children: [
+            Expanded(
+              child: RaisedButton(
+                onPressed: () {},
+                child: Row(
+                  children: [
+                    FaIcon(
+                      Icons.delete,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      "DISCARD",
+                      style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+                color: Colors.blue[900],
+              ),
+            ),
+            SizedBox(width: 20),
+            Expanded(
+              child: RaisedButton(
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FaIcon(
+                      FontAwesomeIcons.solidSave,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      "SAVE",
+                      style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+                color: Colors.blue[900],
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
