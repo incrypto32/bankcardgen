@@ -157,16 +157,19 @@ class ImgFromTempelate {
   }
 
 // Function to paint text
-  static double printPara(
-      {@required Canvas canvas,
-      bool fromMap,
-      Map<String, dynamic> map,
-      String text,
-      @required double widthConstraint,
-      @required Offset offset}) {
+  static double printPara({
+    @required Canvas canvas,
+    bool fromMap,
+    Map<String, dynamic> map,
+    String text,
+    @required double widthConstraint,
+    @required Offset offset,
+  }) {
     String text2 = "";
     String text3 = "";
-    if (fromMap) {
+
+    //
+    if (fromMap && map != null) {
       text = "";
 
       map.forEach((key, value) {
@@ -182,7 +185,7 @@ class ImgFromTempelate {
         }
       });
     }
-    print(text);
+
     TextSpan span = TextSpan(
       style: TextStyle(
         color: Colors.white,
@@ -203,6 +206,7 @@ class ImgFromTempelate {
       ],
       text: text,
     );
+
     TextPainter bankTextPainter = TextPainter(
         text: span,
         textAlign: TextAlign.left,
@@ -249,28 +253,32 @@ class ImgFromTempelate {
         : canvas.drawImage(img, Offset(0, 0), stroke);
 
     // Start printig text on to canvas
-    var pH = printPara(
-      canvas: canvas,
-      offset: Offset(
-        75,
-        yInitial,
-      ),
-      fromMap: true,
-      widthConstraint: 830,
-      map: details,
-    );
-    print('PrintPara complete');
-
-    // Printing the Gpay number box
-    stroke.color = Colors.white;
-    stroke.style = PaintingStyle.fill;
-    if (details['Gpay'] == true) {
-      printGpay(
+    if (details != null) {
+      var pH = printPara(
         canvas: canvas,
-        no: details['Phone'],
-        offset: Offset(75, yInitial + pH + 20),
-        img: gpayImg,
+        offset: Offset(
+          75,
+          yInitial,
+        ),
+        fromMap: true,
+        widthConstraint: 830,
+        map: details,
       );
+      print('PrintPara complete');
+
+      // Printing the Gpay number box
+      stroke.color = Colors.white;
+      stroke.style = PaintingStyle.fill;
+      if (details['Gpay'] == true) {
+        printGpay(
+          canvas: canvas,
+          no: details['Phone'],
+          offset: Offset(75, yInitial + pH + 20),
+          img: gpayImg,
+        );
+      }
+    } else {
+      throw ("Error : details map is null");
     }
     final picture = recorder.endRecording();
     final finalimg = await picture.toImage(930, 600);
@@ -305,10 +313,12 @@ class ImgFromTempelate {
   static Future<ByteData> generateBankCard(Map<String, dynamic> details) async {
     var img;
     try {
-      img = await _bankCardWorker(
-        details,
-        yInitial: 100,
-      );
+      details != null
+          ? img = await _bankCardWorker(
+              details,
+              yInitial: 100,
+            )
+          : throw ("Error : Details Map is null");
     } catch (e) {
       print('Error occured while generating card');
       throw Future.error(e);
