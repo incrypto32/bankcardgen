@@ -1,3 +1,4 @@
+import 'package:bankcardmaker/imageGen/image_generator.dart';
 import 'package:bankcardmaker/models/card_item.dart';
 import 'package:bankcardmaker/widgets/main_appbar.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,8 @@ class _FormScreenState extends State<FormScreen> {
     "Canara Bank",
     "Federal Bank",
     "Axis bank",
-    "PNB"
+    "PNB",
+    "yes"
   ];
 
   var _gPay = false;
@@ -73,11 +75,7 @@ class _FormScreenState extends State<FormScreen> {
                       displayText: 'Choose Your Country',
                       icon: (Icons.public),
                       list: _countries,
-                      getter: () {
-                        print("Getterreeey");
-                        print(_cardItem.getCountry);
-                        return _cardItem.getCountry;
-                      },
+                      getter: () => _cardItem.getCountry,
                       setter: (v) => _cardItem.setCountry = v,
                     ),
                     buildDropdown(
@@ -123,15 +121,11 @@ class _FormScreenState extends State<FormScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: _buildGpaybox(
-                              getter: () => _cardItem.getGpay,
-                              setter: (v) => _cardItem.setGpay = v),
-                        ),
+                        _buildGpaybox(
+                            getter: () => _cardItem.getGpay,
+                            setter: (v) => _cardItem.setGpay = v),
                       ],
                     ),
-
                     _buildBtn(),
                   ],
                 ),
@@ -179,11 +173,14 @@ class _FormScreenState extends State<FormScreen> {
 
   Widget _buildGpaybox({Function getter, Function setter}) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       height: 20.0,
       child: Row(
         children: <Widget>[
           Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.grey),
+            data: ThemeData(
+              unselectedWidgetColor: Colors.grey,
+            ),
             child: Checkbox(
               value: getter() ?? false,
               checkColor: Colors.green,
@@ -197,7 +194,7 @@ class _FormScreenState extends State<FormScreen> {
           ),
           Text(
             'Gpay',
-            // style: kLabelStyle,
+            style: TextStyle(color: Colors.white),
           ),
         ],
       ),
@@ -205,17 +202,17 @@ class _FormScreenState extends State<FormScreen> {
   }
 
   Widget _buildBtn() {
-    // return FadeAnimation(1,
-
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: MediaQuery.of(context).size.width * 0.4,
       child: RaisedButton(
         elevation: 10.0,
-        onPressed: () {
+        onPressed: () async {
           _formKey.currentState.save();
           print(_cardItem.toMap);
-          _showDialog(context);
+          final imgBytes =
+              await ImgFromTempelate.generateBankCard(_cardItem.toMap);
+          _showDialog(context, imgBytes);
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -290,77 +287,64 @@ class _FormScreenState extends State<FormScreen> {
   }
 }
 
-void _showDialog(context) {
+void _showDialog(context, ByteData imgBytes) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Container(
-          height: 220,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                "Your Card is Successfully Generated !",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              Image.asset('assets/images/banktamlets/yes.png'),
-            ],
+          title: Container(
+            child: Text(
+              "Your Card is Successfully Generated !",
+              style: TextStyle(color: Colors.green, fontSize: 15),
+            ),
           ),
-        ),
-        content: Row(
-          children: [
-            Expanded(
-              child: RaisedButton(
-                onPressed: () {},
-                child: Row(
-                  children: [
-                    FaIcon(
-                      Icons.delete,
+          // content: Image.asset('assets/images/banktamlets/yes.png'),
+          content: Image.memory(imgBytes.buffer.asUint8List()),
+          actions: [
+            FlatButton(
+              onPressed: () {},
+              child: Row(
+                children: [
+                  FaIcon(
+                    Icons.delete,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    "DISCARD",
+                    style: TextStyle(
                       color: Colors.white,
-                      size: 20,
+                      letterSpacing: 1.2,
                     ),
-                    SizedBox(width: 10),
-                    Text(
-                      "DISCARD",
-                      style: TextStyle(
-                        color: Colors.white,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ],
-                ),
-                color: Colors.blue[900],
+                  ),
+                ],
               ),
+              color: Colors.red[700],
             ),
-            SizedBox(width: 20),
-            Expanded(
-              child: RaisedButton(
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FaIcon(
-                      FontAwesomeIcons.solidSave,
+            FlatButton(
+              onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FaIcon(
+                    FontAwesomeIcons.solidSave,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    "SAVE",
+                    style: TextStyle(
                       color: Colors.white,
-                      size: 18,
+                      letterSpacing: 1.2,
                     ),
-                    SizedBox(width: 10),
-                    Text(
-                      "SAVE",
-                      style: TextStyle(
-                        color: Colors.white,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ],
-                ),
-                color: Colors.blue[900],
+                  ),
+                ],
               ),
+              color: Colors.green[700],
             ),
-          ],
-        ),
-      );
+          ]);
     },
   );
 }
