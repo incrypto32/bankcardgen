@@ -1,14 +1,20 @@
+import 'dart:io';
+
 import 'package:bankcardmaker/imageGen/image_generator.dart';
 import 'package:bankcardmaker/models/card_item.dart';
 import 'package:bankcardmaker/widgets/main_appbar.dart';
+import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../accessories/constants.dart';
 import 'package:flutter/services.dart';
 // import '../animations/faded_animation.dart';
 
 class FormScreen extends StatefulWidget {
   static const routeName = "/form_screen";
+
   @override
   _FormScreenState createState() => _FormScreenState();
 }
@@ -47,130 +53,99 @@ class _FormScreenState extends State<FormScreen> {
           title: 'Enter Your Details',
         ),
         backgroundColor: Colors.indigo,
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                // physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 40.0,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    //  Divider(),
+        body: Builder(builder: (ctx) {
+          return AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.light,
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  // physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 40.0,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      //  Divider(),
 
-                    _buildTF(
-                      title: "Name",
-                      hint: "Enter your Name",
-                      icon: Icons.account_circle,
-                      input: TextInputType.name,
-                      setter: (v) => _cardItem.setName = v,
-                    ),
+                      MyTextBox(
+                        title: "Name",
+                        hint: "Enter your Name",
+                        icon: Icons.account_circle,
+                        input: TextInputType.name,
+                        setter: (v) => _cardItem.setName = v,
+                      ),
 
-                    buildDropdown(
-                      displayText: 'Choose Your Country',
-                      icon: (Icons.public),
-                      list: _countries,
-                      getter: () => _cardItem.getCountry,
-                      setter: (v) => _cardItem.setCountry = v,
-                    ),
-                    buildDropdown(
-                      displayText: 'Choose Your Bank',
-                      icon: (Icons.account_balance),
-                      list: _banks,
-                      getter: () => _cardItem.getBank,
-                      setter: (v) => _cardItem.setBank = v,
-                    ),
+                      buildDropdown(
+                        displayText: 'Choose Your Country',
+                        icon: (Icons.public),
+                        list: _countries,
+                        getter: () => _cardItem.getCountry,
+                        setter: (v) => _cardItem.setCountry = v,
+                      ),
+                      buildDropdown(
+                        displayText: 'Choose Your Bank',
+                        icon: (Icons.account_balance),
+                        list: _banks,
+                        getter: () => _cardItem.getBank,
+                        setter: (v) => _cardItem.setBank = v,
+                      ),
 
-                    _buildTF(
-                      title: "Account Number",
-                      hint: "Enter your Account Number",
-                      icon: Icons.account_balance_wallet,
-                      input: TextInputType.number,
-                      setter: (v) => _cardItem.setAccountNo = v,
-                    ),
+                      MyTextBox(
+                        title: "Account Number",
+                        hint: "Enter your Account Number",
+                        icon: Icons.account_balance_wallet,
+                        input: TextInputType.number,
+                        setter: (v) => _cardItem.setAccountNo = v,
+                      ),
 
-                    _buildTF(
-                      title: "IFSC",
-                      hint: "Enter your IFSC Code",
-                      icon: Icons.payment,
-                      input: TextInputType.text,
-                      setter: (v) => _cardItem.setIfsc = v,
-                    ),
+                      MyTextBox(
+                        title: "IFSC",
+                        hint: "Enter your IFSC Code",
+                        icon: Icons.payment,
+                        input: TextInputType.text,
+                        setter: (v) => _cardItem.setIfsc = v,
+                      ),
 
-                    _buildTF(
-                      title: "Branch",
-                      hint: "Enter your Branch",
-                      icon: Icons.business,
-                      input: TextInputType.text,
-                      setter: (v) => _cardItem.setBranch = v,
-                    ),
+                      MyTextBox(
+                        title: "Branch",
+                        hint: "Enter your Branch",
+                        icon: Icons.business,
+                        input: TextInputType.text,
+                        setter: (v) => _cardItem.setBranch = v,
+                      ),
 
-                    _buildTF(
-                      title: "Phone",
-                      hint: "Enter your Phone Number",
-                      icon: Icons.phone_android,
-                      input: TextInputType.phone,
-                      setter: (v) => _cardItem.setPhone = v,
-                    ),
+                      MyTextBox(
+                        title: "Phone",
+                        hint: "Enter your Phone Number",
+                        icon: Icons.phone_android,
+                        input: TextInputType.phone,
+                        setter: (v) => _cardItem.setPhone = v,
+                      ),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        _buildGpaybox(
-                            getter: () => _cardItem.getGpay,
-                            setter: (v) => _cardItem.setGpay = v),
-                      ],
-                    ),
-                    _buildBtn(),
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          _buildGpaybox(
+                              getter: () => _cardItem.getGpay,
+                              setter: (v) => _cardItem.setGpay = v),
+                        ],
+                      ),
+                      _buildBtn(ctx),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }
 
-  Widget _buildTF({
-    String title,
-    String hint,
-    IconData icon,
-    TextInputType input,
-    Function setter,
-  }) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      margin: EdgeInsets.symmetric(vertical: 5),
-      alignment: Alignment.centerLeft,
-      decoration: kBoxDecorationStyle,
-      height: 50.0,
-      child: TextFormField(
-        onSaved: setter,
-        keyboardType: input,
-        style: TextStyle(
-          color: Colors.black,
-          fontFamily: "OpenSans",
-        ),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.only(top: 14.0),
-          prefixIcon: Icon(
-            icon,
-            color: Colors.grey,
-          ),
-          hintText: hint,
-          hintStyle: kHintTextStyle,
-        ),
-      ),
-    );
-  }
-
+// Build Gpay checkbox
   Widget _buildGpaybox({Function getter, Function setter}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -201,7 +176,8 @@ class _FormScreenState extends State<FormScreen> {
     );
   }
 
-  Widget _buildBtn() {
+// Submit Button
+  Widget _buildBtn(BuildContext ctx) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: MediaQuery.of(context).size.width * 0.4,
@@ -209,10 +185,26 @@ class _FormScreenState extends State<FormScreen> {
         elevation: 10.0,
         onPressed: () async {
           _formKey.currentState.save();
-          print(_cardItem.toMap);
+          print(_cardItem.toMap.toString());
           final imgBytes =
               await ImgFromTempelate.generateBankCard(_cardItem.toMap);
-          _showDialog(context, imgBytes);
+          imgBytes == null
+              ? Scaffold.of(ctx).showSnackBar(
+                  SnackBar(
+                    content: Container(
+                      height: 20,
+                      alignment: Alignment.center,
+                      child: FittedBox(
+                        child: Text(
+                          'Image generation failed. Please fill all the fields',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Colors.white,
+                  ),
+                )
+              : _showDialog(ctx, imgBytes);
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -232,6 +224,7 @@ class _FormScreenState extends State<FormScreen> {
     );
   }
 
+// Dropdown Builder
   Container buildDropdown({
     IconData icon,
     String displayText,
@@ -290,10 +283,50 @@ class _FormScreenState extends State<FormScreen> {
   }
 }
 
-void _showDialog(context, ByteData imgBytes) {
+class MyTextBox extends StatelessWidget {
+  final String title;
+  final String hint;
+  final IconData icon;
+  final TextInputType input;
+  final Function setter;
+
+  MyTextBox({this.title, this.hint, this.icon, this.input, this.setter});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      margin: EdgeInsets.symmetric(vertical: 5),
+      alignment: Alignment.centerLeft,
+      decoration: kBoxDecorationStyle,
+      height: 50.0,
+      child: TextFormField(
+        onSaved: setter,
+        keyboardType: input,
+        style: TextStyle(
+          color: Colors.black,
+          fontFamily: "OpenSans",
+        ),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.only(top: 14.0),
+          prefixIcon: Icon(
+            icon,
+            color: Colors.grey,
+          ),
+          hintText: hint,
+          hintStyle: kHintTextStyle,
+        ),
+      ),
+    );
+  }
+}
+
+// Card Popup
+void _showDialog(ctx, ByteData imgBytes) {
   showDialog(
-    context: context,
-    builder: (BuildContext context) {
+    context: ctx,
+    builder: (BuildContext ctx) {
       return AlertDialog(
           title: Container(
             child: Text(
@@ -305,7 +338,9 @@ void _showDialog(context, ByteData imgBytes) {
           content: Image.memory(imgBytes.buffer.asUint8List()),
           actions: [
             FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
               child: Row(
                 children: [
                   FaIcon(
@@ -326,7 +361,23 @@ void _showDialog(context, ByteData imgBytes) {
               color: Colors.red[700],
             ),
             FlatButton(
-              onPressed: () {},
+              onPressed: () async {
+                if (await Permission.storage.request().isGranted) {
+                  var directory = await getApplicationDocumentsDirectory();
+                  print(directory.path);
+                  // print(DateTime.now().toIso8601String());
+                  File(directory.path +
+                          '/saved_cards' +
+                          DateTime.now().toString())
+                      .create(recursive: true)
+                      .then((value) {
+                    value.writeAsBytes(imgBytes.buffer.asUint8List());
+                  });
+                  Navigator.of(ctx).pop();
+                  Scaffold.of(ctx).showSnackBar(
+                      SnackBar(content: Text('Saved Succefully')));
+                }
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

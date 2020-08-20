@@ -174,13 +174,13 @@ class ImgFromTempelate {
 
       map.forEach((key, value) {
         // print(text);
-        if (key != 'Gpay' && key != 'Bank') {
+        if (key != 'Gpay' && key != 'Bank' && key != 'Phone') {
           if (key == 'Ac/No') {
             text += '\n$key : $value';
           } else if (['Name', 'IFSC', 'IBAN', 'Branch'].contains(key)) {
             text2 += '\n$key : $value';
           } else {
-            text3 += '\n$key : $value';
+            // text3 += '\n$key : $value';
           }
         }
       });
@@ -200,7 +200,7 @@ class ImgFromTempelate {
         ),
         TextSpan(
           style: TextStyle(
-              color: Colors.white, fontSize: 46, fontWeight: FontWeight.normal),
+              color: Colors.white, fontSize: 40, fontWeight: FontWeight.normal),
           text: text3,
         ),
       ],
@@ -249,7 +249,7 @@ class ImgFromTempelate {
 
     // Draw the tamlet to canvas
     img == null
-        ? print('Tempelate image is null')
+        ? throw ('Tempelate image is null')
         : canvas.drawImage(img, Offset(0, 0), stroke);
 
     // Start printig text on to canvas
@@ -295,11 +295,14 @@ class ImgFromTempelate {
       buffer = pngBytes.buffer;
       if (await Permission.storage.request().isGranted) {
         var directory = await ExtStorage.getExternalStorageDirectory();
-        await File(directory +
+        File(directory +
                 '/' +
                 ExtStorage.DIRECTORY_DOWNLOADS +
-                '/cardeyyy.png')
-            .writeAsBytes(buffer.asUint8List());
+                '/blah/cardeyyy.png')
+            .create(recursive: true)
+            .then((value) {
+          value.writeAsBytes(buffer.asUint8List());
+        });
       }
     } catch (err) {
       print('pngBytes : An error occured');
@@ -312,16 +315,17 @@ class ImgFromTempelate {
   // generate BankCard
   static Future<ByteData> generateBankCard(Map<String, dynamic> details) async {
     var img;
-    try {
-      details != null
-          ? img = await _bankCardWorker(
-              details,
-              yInitial: 100,
-            )
-          : throw ("Error : Details Map is null");
-    } catch (e) {
-      print('Error occured while generating card');
-      throw Future.error(e);
+    if (details != null) {
+      try {
+        img = await _bankCardWorker(
+          details,
+          yInitial: 100,
+        );
+      } catch (e) {
+        print('Error occured while generating card');
+        print(e);
+        return null;
+      }
     }
     return _pngBytes(img);
   }
