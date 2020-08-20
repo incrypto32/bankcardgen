@@ -24,16 +24,23 @@ class ImgFromTempelate {
   // Loads an image from external directory
   static Future<ui.Image> loadUiImageFromExteranalDirectory(
       String filename) async {
-    Directory appDocDir = await getApplicationSupportDirectory();
-    String path = appDocDir.path + '/banktamlets' + '/' + filename;
-    print(path);
-    final file = File(path);
-    final bytes = await file.readAsBytes();
-
+    Directory appDocDir;
+    String path;
     final Completer<ui.Image> completer = Completer();
-    ui.decodeImageFromList(bytes, (ui.Image img) {
-      return completer.complete(img);
-    });
+    try {
+      appDocDir = await getApplicationSupportDirectory();
+      path = appDocDir.path + '/banktamlets' + '/' + filename;
+      print(path);
+      final file = File(path);
+      final bytes = await file.readAsBytes();
+      ui.decodeImageFromList(bytes, (ui.Image img) {
+        return completer.complete(img);
+      });
+    } catch (e) {
+      print("An error occured while loading image from external directory");
+      print(e);
+      return null;
+    }
     return completer.future;
   }
 
@@ -238,9 +245,8 @@ class ImgFromTempelate {
 
     // Draw the tamlet to canvas
     img == null
-        ? print('tempelate image is null')
+        ? print('Tempelate image is null')
         : canvas.drawImage(img, Offset(0, 0), stroke);
-    print("Image Drawn Successfully");
 
     // Start printig text on to canvas
     var pH = printPara(
