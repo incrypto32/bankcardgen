@@ -53,7 +53,7 @@ class CardItem {
       "Bank": bank,
       "Branch": branch,
       code: ifsc,
-      "Phone No": phone,
+      "Phone": phone,
       "Gpay": gPay,
     };
   }

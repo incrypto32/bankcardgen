@@ -138,7 +138,8 @@ class ImgFromTempelate {
       //   height: 60,
       //   width: 60,
       // ),
-      rect: Rect.fromLTRB(100, offset.dy + 10, 150, offset.dy + 70),
+      rect: Rect.fromLTRB(
+          offset.dx + 20, offset.dy + 15, offset.dx + 20 + 50, offset.dy + 65),
       image: img,
     );
 
@@ -146,13 +147,13 @@ class ImgFromTempelate {
     TextSpan span = TextSpan(
         style: TextStyle(
             color: Colors.blueGrey, fontSize: 35, fontWeight: FontWeight.bold),
-        text: 'Pay : 7034320115');
+        text: 'Pay : $no');
     TextPainter tp = TextPainter(
         text: span,
         textAlign: TextAlign.left,
         textDirection: TextDirection.ltr);
     tp.layout();
-    tp.paint(canvas, offset.translate(100, 20));
+    tp.paint(canvas, offset.translate(80, 20));
     // canvas.drawParagraph(paragraph, offset.translate(90, 10));
   }
 
@@ -174,13 +175,15 @@ class ImgFromTempelate {
 
       map.forEach((key, value) {
         // print(text);
-        if (key != 'Gpay' && key != 'Bank' && key != 'Phone') {
+        if (key != 'Gpay' && key != 'Bank') {
           if (key == 'Ac/No') {
             text += '\n$key : $value';
           } else if (['Name', 'IFSC', 'IBAN', 'Branch'].contains(key)) {
             text2 += '\n$key : $value';
-          } else {
-            // text3 += '\n$key : $value';
+          } else if (key != 'Phone') {
+            text3 += '\n$key : $value';
+          } else if (key != 'Phone' && map['Gpay'] == false) {
+            text3 += '\n$key : $value';
           }
         }
       });
@@ -189,13 +192,13 @@ class ImgFromTempelate {
     TextSpan span = TextSpan(
       style: TextStyle(
         color: Colors.white,
-        fontSize: 45,
+        fontSize: 50,
         fontWeight: FontWeight.bold,
       ),
       children: [
         TextSpan(
           style: TextStyle(
-              color: Colors.white, fontSize: 46, fontWeight: FontWeight.normal),
+              color: Colors.white, fontSize: 48, fontWeight: FontWeight.normal),
           text: text2,
         ),
         TextSpan(
@@ -217,11 +220,10 @@ class ImgFromTempelate {
   }
 
 // The core funtion which puts all the drawings together
-  static Future<ui.Image> _bankCardWorker(
-    details, {
-    bool fromAsset = false,
-    @required double yInitial,
-  }) async {
+  static Future<ui.Image> _bankCardWorker(details,
+      {bool fromAsset = false,
+      @required double yInitial,
+      @required double xInitial}) async {
     ui.Image img;
 
     // Load Gpay logo
@@ -257,7 +259,7 @@ class ImgFromTempelate {
       var pH = printPara(
         canvas: canvas,
         offset: Offset(
-          75,
+          xInitial,
           yInitial,
         ),
         fromMap: true,
@@ -273,7 +275,7 @@ class ImgFromTempelate {
         printGpay(
           canvas: canvas,
           no: details['Phone'],
-          offset: Offset(75, yInitial + pH + 20),
+          offset: Offset(xInitial, yInitial + pH + 20),
           img: gpayImg,
         );
       }
@@ -320,6 +322,7 @@ class ImgFromTempelate {
         img = await _bankCardWorker(
           details,
           yInitial: 100,
+          xInitial: 100,
         );
       } catch (e) {
         print('Error occured while generating card');

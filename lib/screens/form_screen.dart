@@ -78,19 +78,29 @@ class _FormScreenState extends State<FormScreen> {
                         setter: (v) => _cardItem.setName = v,
                       ),
 
-                      buildDropdown(
+                      MyDropDown(
                         displayText: 'Choose Your Country',
                         icon: (Icons.public),
                         list: _countries,
                         getter: () => _cardItem.getCountry,
                         setter: (v) => _cardItem.setCountry = v,
+                        setState: (Function func) {
+                          setState(() {
+                            func();
+                          });
+                        },
                       ),
-                      buildDropdown(
+                      MyDropDown(
                         displayText: 'Choose Your Bank',
                         icon: (Icons.account_balance),
                         list: _banks,
                         getter: () => _cardItem.getBank,
                         setter: (v) => _cardItem.setBank = v,
+                        setState: (Function func) {
+                          setState(() {
+                            func();
+                          });
+                        },
                       ),
 
                       MyTextBox(
@@ -133,7 +143,8 @@ class _FormScreenState extends State<FormScreen> {
                               setter: (v) => _cardItem.setGpay = v),
                         ],
                       ),
-                      _buildBtn(ctx),
+                      // _buildBtn(ctx),
+                      CreateButton(formKey: _formKey, cardItem: _cardItem),
                     ],
                   ),
                 ),
@@ -225,13 +236,36 @@ class _FormScreenState extends State<FormScreen> {
   }
 
 // Dropdown Builder
-  Container buildDropdown({
-    IconData icon,
-    String displayText,
-    List list,
-    Function getter,
-    Function setter,
-  }) {
+  // Container buildDropdown({
+  //   IconData icon,
+  //   String displayText,
+  //   List list,
+  //   Function getter,
+  //   Function setter,
+  // }) {
+  //   return MyDropDown();
+  // }
+}
+
+class MyDropDown extends StatelessWidget {
+  final IconData icon;
+  final String displayText;
+  final List list;
+  final Function getter;
+  final Function setter;
+  final Function setState;
+  const MyDropDown({
+    Key key,
+    this.icon,
+    this.displayText,
+    this.list,
+    this.getter,
+    this.setter,
+    this.setState,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       margin: EdgeInsets.symmetric(vertical: 5),
@@ -278,6 +312,67 @@ class _FormScreenState extends State<FormScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CreateButton extends StatelessWidget {
+  const CreateButton({
+    Key key,
+    @required GlobalKey<FormState> formKey,
+    @required CardItem cardItem,
+  })  : _formKey = formKey,
+        _cardItem = cardItem,
+        super(key: key);
+
+  final GlobalKey<FormState> _formKey;
+  final CardItem _cardItem;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: MediaQuery.of(context).size.width * 0.4,
+      child: RaisedButton(
+        elevation: 10.0,
+        onPressed: () async {
+          _formKey.currentState.save();
+          print(_cardItem.toMap.toString());
+          final imgBytes =
+              await ImgFromTempelate.generateBankCard(_cardItem.toMap);
+          imgBytes == null
+              ? Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Container(
+                      height: 20,
+                      alignment: Alignment.center,
+                      child: FittedBox(
+                        child: Text(
+                          'Image generation failed. Please fill all the fields',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Colors.white,
+                  ),
+                )
+              : _showDialog(context, imgBytes);
+        },
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        color: Colors.blue[900],
+        child: Text(
+          'CREATE',
+          style: TextStyle(
+            color: Colors.white,
+            letterSpacing: 1.5,
+            fontSize: 15.0,
+            fontFamily: 'OpenSans',
+          ),
+        ),
       ),
     );
   }
