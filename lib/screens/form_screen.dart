@@ -255,29 +255,32 @@ class _FormScreenState extends State<FormScreen> {
             ),
           ),
           Expanded(
-            child: DropdownButton(
-              underline: Text(""),
-              items: list
-                  .map(
-                    (value) => DropdownMenuItem(
-                      child: Text(
-                        value,
-                        style: TextStyle(color: Colors.black87),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: DropdownButton(
+                underline: Text(""),
+                items: list
+                    .map(
+                      (value) => DropdownMenuItem(
+                        child: Text(
+                          value,
+                          style: TextStyle(color: Colors.black87),
+                        ),
+                        value: value,
                       ),
-                      value: value,
-                    ),
-                  )
-                  .toList(),
-              onChanged: (selectedValue) {
-                setState(() {
-                  setter(selectedValue);
-                });
-              },
-              value: getter(),
-              isExpanded: false,
-              hint: Text(
-                displayText,
-                style: kHintTextStyle,
+                    )
+                    .toList(),
+                onChanged: (selectedValue) {
+                  setState(() {
+                    setter(selectedValue);
+                  });
+                },
+                value: getter(),
+                isExpanded: true,
+                hint: Text(
+                  displayText,
+                  style: kHintTextStyle,
+                ),
               ),
             ),
           ),
