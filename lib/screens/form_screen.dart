@@ -53,105 +53,103 @@ class _FormScreenState extends State<FormScreen> {
           title: 'Enter Your Details',
         ),
         backgroundColor: Colors.indigo,
-        body: Builder(builder: (ctx) {
-          return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle.light,
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Form(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  // physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      //  Divider(),
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light,
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                // physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 40.0,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    //  Divider(),
 
-                      MyTextBox(
-                        title: "Name",
-                        hint: "Enter your Name",
-                        icon: Icons.account_circle,
-                        input: TextInputType.name,
-                        setter: (v) => _cardItem.setName = v,
-                      ),
+                    MyTextBox(
+                      title: "Name",
+                      hint: "Enter your Name",
+                      icon: Icons.account_circle,
+                      input: TextInputType.name,
+                      setter: (v) => _cardItem.setName = v,
+                    ),
 
-                      MyDropDown(
-                        displayText: 'Choose Your Country',
-                        icon: (Icons.public),
-                        list: _countries,
-                        getter: () => _cardItem.getCountry,
-                        setter: (v) => _cardItem.setCountry = v,
-                        setState: (Function func) {
-                          setState(() {
-                            func();
-                          });
-                        },
-                      ),
-                      MyDropDown(
-                        displayText: 'Choose Your Bank',
-                        icon: (Icons.account_balance),
-                        list: _banks,
-                        getter: () => _cardItem.getBank,
-                        setter: (v) => _cardItem.setBank = v,
-                        setState: (Function func) {
-                          setState(() {
-                            func();
-                          });
-                        },
-                      ),
+                    MyDropDown(
+                      displayText: 'Choose Your Country',
+                      icon: (Icons.public),
+                      list: _countries,
+                      getter: () => _cardItem.getCountry,
+                      setter: (v) => _cardItem.setCountry = v,
+                      setState: (Function func) {
+                        setState(() {
+                          func();
+                        });
+                      },
+                    ),
+                    MyDropDown(
+                      displayText: 'Choose Your Bank',
+                      icon: (Icons.account_balance),
+                      list: _banks,
+                      getter: () => _cardItem.getBank,
+                      setter: (v) => _cardItem.setBank = v,
+                      setState: (Function func) {
+                        setState(() {
+                          func();
+                        });
+                      },
+                    ),
 
-                      MyTextBox(
-                        title: "Account Number",
-                        hint: "Enter your Account Number",
-                        icon: Icons.account_balance_wallet,
-                        input: TextInputType.number,
-                        setter: (v) => _cardItem.setAccountNo = v,
-                      ),
+                    MyTextBox(
+                      title: "Account Number",
+                      hint: "Enter your Account Number",
+                      icon: Icons.account_balance_wallet,
+                      input: TextInputType.number,
+                      setter: (v) => _cardItem.setAccountNo = v,
+                    ),
 
-                      MyTextBox(
-                        title: "IFSC",
-                        hint: "Enter your IFSC Code",
-                        icon: Icons.payment,
-                        input: TextInputType.text,
-                        setter: (v) => _cardItem.setIfsc = v,
-                      ),
+                    MyTextBox(
+                      title: "IFSC",
+                      hint: "Enter your IFSC Code",
+                      icon: Icons.payment,
+                      input: TextInputType.text,
+                      setter: (v) => _cardItem.setIfsc = v,
+                    ),
 
-                      MyTextBox(
-                        title: "Branch",
-                        hint: "Enter your Branch",
-                        icon: Icons.business,
-                        input: TextInputType.text,
-                        setter: (v) => _cardItem.setBranch = v,
-                      ),
+                    MyTextBox(
+                      title: "Branch",
+                      hint: "Enter your Branch",
+                      icon: Icons.business,
+                      input: TextInputType.text,
+                      setter: (v) => _cardItem.setBranch = v,
+                    ),
 
-                      MyTextBox(
-                        title: "Phone",
-                        hint: "Enter your Phone Number",
-                        icon: Icons.phone_android,
-                        input: TextInputType.phone,
-                        setter: (v) => _cardItem.setPhone = v,
-                      ),
+                    MyTextBox(
+                      title: "Phone",
+                      hint: "Enter your Phone Number",
+                      icon: Icons.phone_android,
+                      input: TextInputType.phone,
+                      setter: (v) => _cardItem.setPhone = v,
+                    ),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          _buildGpaybox(
-                              getter: () => _cardItem.getGpay,
-                              setter: (v) => _cardItem.setGpay = v),
-                        ],
-                      ),
-                      // _buildBtn(ctx),
-                      CreateButton(formKey: _formKey, cardItem: _cardItem),
-                    ],
-                  ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        _buildGpaybox(
+                            getter: () => _cardItem.getGpay,
+                            setter: (v) => _cardItem.setGpay = v),
+                      ],
+                    ),
+                    // _buildBtn(ctx),
+                    CreateButton(formKey: _formKey, cardItem: _cardItem),
+                  ],
                 ),
               ),
             ),
-          );
-        }),
+          ),
+        ),
       ),
     );
   }
@@ -186,65 +184,6 @@ class _FormScreenState extends State<FormScreen> {
       ),
     );
   }
-
-// Submit Button
-  Widget _buildBtn(BuildContext ctx) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: MediaQuery.of(context).size.width * 0.4,
-      child: RaisedButton(
-        elevation: 10.0,
-        onPressed: () async {
-          _formKey.currentState.save();
-          print(_cardItem.toMap.toString());
-          final imgBytes =
-              await ImgFromTempelate.generateBankCard(_cardItem.toMap);
-          imgBytes == null
-              ? Scaffold.of(ctx).showSnackBar(
-                  SnackBar(
-                    content: Container(
-                      height: 20,
-                      alignment: Alignment.center,
-                      child: FittedBox(
-                        child: Text(
-                          'Image generation failed. Please fill all the fields',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    ),
-                    backgroundColor: Colors.white,
-                  ),
-                )
-              : _showDialog(ctx, imgBytes);
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.blue[900],
-        child: Text(
-          'CREATE',
-          style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 1.5,
-            fontSize: 15.0,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-
-// Dropdown Builder
-  // Container buildDropdown({
-  //   IconData icon,
-  //   String displayText,
-  //   List list,
-  //   Function getter,
-  //   Function setter,
-  // }) {
-  //   return MyDropDown();
-  // }
 }
 
 class MyDropDown extends StatelessWidget {
@@ -328,6 +267,85 @@ class CreateButton extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey;
   final CardItem _cardItem;
+  void _showDialog(context, ByteData imgBytes) {
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+            title: Container(
+              child: Text(
+                "Your Card is Successfully Generated !",
+                style: TextStyle(color: Colors.green, fontSize: 15),
+              ),
+            ),
+            // content: Image.asset('assets/images/banktamlets/yes.png'),
+            content: Image.memory(imgBytes.buffer.asUint8List()),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Row(
+                  children: [
+                    FaIcon(
+                      Icons.delete,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      "DISCARD",
+                      style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+                color: Colors.red[700],
+              ),
+              FlatButton(
+                onPressed: () async {
+                  if (await Permission.storage.request().isGranted) {
+                    var directory = await getApplicationDocumentsDirectory();
+                    print(directory.path);
+                    // print(DateTime.now().toIso8601String());
+                    File(directory.path +
+                            '/saved_cards' +
+                            DateTime.now().toString())
+                        .create(recursive: true)
+                        .then((value) {
+                      value.writeAsBytes(imgBytes.buffer.asUint8List());
+                    });
+                    Navigator.of(ctx).pop();
+                    Scaffold.of(context).showSnackBar(
+                        SnackBar(content: Text('Saved Succefully')));
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FaIcon(
+                      FontAwesomeIcons.solidSave,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      "SAVE",
+                      style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+                color: Colors.green[700],
+              ),
+            ]);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -418,82 +436,3 @@ class MyTextBox extends StatelessWidget {
 }
 
 // Card Popup
-void _showDialog(ctx, ByteData imgBytes) {
-  showDialog(
-    context: ctx,
-    builder: (BuildContext ctx) {
-      return AlertDialog(
-          title: Container(
-            child: Text(
-              "Your Card is Successfully Generated !",
-              style: TextStyle(color: Colors.green, fontSize: 15),
-            ),
-          ),
-          // content: Image.asset('assets/images/banktamlets/yes.png'),
-          content: Image.memory(imgBytes.buffer.asUint8List()),
-          actions: [
-            FlatButton(
-              onPressed: () {
-                Navigator.of(ctx).pop();
-              },
-              child: Row(
-                children: [
-                  FaIcon(
-                    Icons.delete,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    "DISCARD",
-                    style: TextStyle(
-                      color: Colors.white,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                ],
-              ),
-              color: Colors.red[700],
-            ),
-            FlatButton(
-              onPressed: () async {
-                if (await Permission.storage.request().isGranted) {
-                  var directory = await getApplicationDocumentsDirectory();
-                  print(directory.path);
-                  // print(DateTime.now().toIso8601String());
-                  File(directory.path +
-                          '/saved_cards' +
-                          DateTime.now().toString())
-                      .create(recursive: true)
-                      .then((value) {
-                    value.writeAsBytes(imgBytes.buffer.asUint8List());
-                  });
-                  Navigator.of(ctx).pop();
-                  Scaffold.of(ctx).showSnackBar(
-                      SnackBar(content: Text('Saved Succefully')));
-                }
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FaIcon(
-                    FontAwesomeIcons.solidSave,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    "SAVE",
-                    style: TextStyle(
-                      color: Colors.white,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                ],
-              ),
-              color: Colors.green[700],
-            ),
-          ]);
-    },
-  );
-}

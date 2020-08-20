@@ -139,7 +139,11 @@ class ImgFromTempelate {
       //   width: 60,
       // ),
       rect: Rect.fromLTRB(
-          offset.dx + 20, offset.dy + 15, offset.dx + 20 + 50, offset.dy + 65),
+        offset.dx + 20,
+        offset.dy + 15,
+        offset.dx + 20 + 50,
+        offset.dy + 65,
+      ),
       image: img,
     );
 
