@@ -327,6 +327,7 @@ class ImgFromTempelate {
           details,
           yInitial: 100,
           xInitial: 100,
+          fromAsset: true,
         );
       } catch (e) {
         print('Error occured while generating card');

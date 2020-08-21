@@ -60,7 +60,7 @@ class _FormScreenState extends State<FormScreen> {
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
-                // physics: AlwaysScrollableScrollPhysics(),
+                physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(
                   horizontal: 40.0,
                 ),
@@ -284,6 +284,7 @@ class CreateButton extends StatelessWidget {
               FlatButton(
                 onPressed: () {
                   Navigator.of(ctx).pop();
+                  FocusScope.of(ctx).unfocus();
                 },
                 child: Row(
                   children: [
@@ -308,18 +309,23 @@ class CreateButton extends StatelessWidget {
                 onPressed: () async {
                   if (await Permission.storage.request().isGranted) {
                     var directory = await getApplicationDocumentsDirectory();
-                    print(directory.path);
-                    // print(DateTime.now().toIso8601String());
-                    File(directory.path +
-                            '/saved_cards' +
-                            DateTime.now().toString())
-                        .create(recursive: true)
-                        .then((value) {
+                    var filePath = directory.path +
+                        '/saved_cards' +
+                        '/' +
+                        DateTime.now().toString() +
+                        '.png';
+                    print(filePath);
+                    File(filePath).create(recursive: true).then((value) {
                       value.writeAsBytes(imgBytes.buffer.asUint8List());
                     });
                     Navigator.of(ctx).pop();
+                    FocusScope.of(ctx).unfocus();
+                    _formKey.currentState.reset();
                     Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text('Saved Succefully')));
+                      SnackBar(
+                        content: Text('Saved Succefully'),
+                      ),
+                    );
                   }
                 },
                 child: Row(
