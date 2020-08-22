@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
@@ -37,10 +38,14 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
 //     final ByteData bytes = await rootBundle.load(BASE64_IMAGE);
 //     await EsysFlutterShare.shareImage('myImageTest.png', bytes, 'my image title');
 //     }
-  Future<void> _shareImage(int index) async {
+  Future<void> _shareImage( pathList,int index) async {
     try {
+      // final tempDir = await getTemporaryDirectory();
+      await new File('assets${pathList[index]}').create();
+      print("new file created");
+      print('${pathList[index]}');
       final ByteData bytes = await rootBundle
-          .load("assets/images/banktamlets/${savedCards[index]}");
+          .load(pathList[index]);
       await Share.file(
         'esys image',
         'esys.png',
@@ -51,6 +56,22 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
       print('error: $e');
     }
   }
+  //  Future<void> _shareImage(pathList,index) async {
+  //   try {
+  //     final ByteData bytes = await rootBundle.load(pathList[index]);
+  //     final Uint8List list = bytes.buffer.asUint8List();
+
+  //     // final tempDir = await getTemporaryDirectory();
+  //     final file = await new File(pathList[index]).create();
+  //     file.writeAsBytesSync(list);
+
+  //     final channel = const MethodChannel('channel:me.albie.share/share');
+  //     channel.invokeMethod('shareFile', 'image.jpg');
+
+  //   } catch (e) {
+  //     print('Share error: $e');
+  //   }
+  // }
 
   Future<Directory> _getImgs() async {
     Directory photoDir;
@@ -84,13 +105,15 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
           builder: (context, snapshot) {
             var child;
             List pathList;
+           
             try {
               pathList = snapshot.data
                   .listSync()
                   .map((e) => e.path)
                   .where((element) => element.endsWith(".png"))
-                  .toList(growable: false);
+                  .toList(growable: true);
               print(pathList);
+              
             } catch (e) {
               return Center(
                 child: Container(
@@ -98,6 +121,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                 ),
               );
             }
+             List pathListnew =[...pathList];
             if (snapshot.hasData) {
               child = ListView.builder(
                 itemCount: pathList.length,
@@ -117,7 +141,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                                 topLeft: Radius.circular(12),
                                 topRight: Radius.circular(12)),
                             child: Image.file(
-                              File(pathList[index]),
+                              File(pathListnew[index]),
                               width: double.infinity,
                               height: 190,
                               fit: BoxFit.fill,
@@ -127,7 +151,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               InkWell(
-                                onTap: () async => await _shareImage(index),
+                                onTap: () async => await _shareImage(pathList,index),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 8),
@@ -143,7 +167,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                               InkWell(
                                 onTap: () {
                                   setState(() {
-                                    savedCards.removeAt(index);
+                                    pathListnew.removeAt(index);
                                   });
                                 },
                                 child: Padding(
