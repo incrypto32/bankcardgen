@@ -50,7 +50,7 @@ class CardItem {
     return {
       "Ac/No": accountNumber,
       "Name": name,
-      "Bank": bank,
+      "Bank": bank.replaceAll(new RegExp(r"\s+"), "").toLowerCase(),
       "Branch": branch,
       code: ifsc,
       "Phone": phone,
