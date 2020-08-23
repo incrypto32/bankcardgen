@@ -41,11 +41,11 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
   Future<void> _shareImage( pathList,int index) async {
     try {
       // final tempDir = await getTemporaryDirectory();
-      await new File('assets${pathList[index]}').create();
+      // await new File('assets${pathList[index]}').create();
       print("new file created");
-      print('${pathList[index]}');
+      print('${pathList[index].toString()}');
       final ByteData bytes = await rootBundle
-          .load(pathList[index]);
+          .load(pathList[index].toString());
       await Share.file(
         'esys image',
         'esys.png',
@@ -121,7 +121,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                 ),
               );
             }
-             List pathListnew =[...pathList];
+             final List pathListnew =[...pathList];
             if (snapshot.hasData) {
               child = ListView.builder(
                 itemCount: pathList.length,
@@ -151,7 +151,11 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               InkWell(
-                                onTap: () async => await _shareImage(pathList,index),
+                                onTap:(){setState(() {
+                                   _shareImage(pathList,index);
+                                });
+                                  
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 8),
