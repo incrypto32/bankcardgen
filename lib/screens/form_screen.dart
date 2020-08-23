@@ -37,8 +37,8 @@ class _FormScreenState extends State<FormScreen> {
     "Canara Bank",
     "Federal Bank",
     "Axis bank",
-    "PNB",
-    "yes"
+    "India Post",
+    "Yes Bank"
   ];
 
   var _gPay = false;
@@ -267,6 +267,7 @@ class CreateButton extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey;
   final CardItem _cardItem;
+
   void _showDialog(context, ByteData imgBytes) {
     showDialog(
       context: context,

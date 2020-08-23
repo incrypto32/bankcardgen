@@ -46,7 +46,7 @@ class MainColumn extends StatelessWidget {
               )
             ]),
             margin: EdgeInsets.symmetric(horizontal: 30),
-            child: Image.asset('assets/images/banktamlets/yes.png'),
+            child: Image.asset('assets/images/banktamlets/yesbank.png'),
           ),
         ),
         Expanded(
@@ -57,38 +57,6 @@ class MainColumn extends StatelessWidget {
               color: Colors.transparent,
               child: Column(
                 children: [
-                  // Row(
-                  //   children: [
-                  //     Expanded(
-                  //         child: Column(
-                  //       children: [
-                  //         FaIcon(
-                  //           FontAwesomeIcons.idCard,
-                  //           size: 40,
-                  //         ),
-                  //         Divider(
-                  //           indent: 5,
-                  //           endIndent: 5,
-                  //         ),
-                  //         Text("Add New Card")
-                  //       ],
-                  //     )),
-                  //     Expanded(
-                  //         child: Column(
-                  //       children: [
-                  //         FaIcon(
-                  //           FontAwesomeIcons.save,
-                  //           size: 40,
-                  //         ),
-                  //         Divider(
-                  //           indent: 5,
-                  //           endIndent: 5,
-                  //         ),
-                  //         Text("Saved Cards")
-                  //       ],
-                  //     ))
-                  //   ],
-                  // ),
                   ListTile(
                     enabled: true,
                     onTap: () =>
@@ -111,8 +79,9 @@ class MainColumn extends StatelessWidget {
                     ),
                     title: Text("Saved Cards"),
                     trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      Navigator.of(context).pushNamed(SavedCardsScreen.routeName);
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(SavedCardsScreen.routeName);
                     },
                   ),
                   ListTile(
