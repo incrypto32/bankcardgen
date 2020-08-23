@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SavedCardsScreen extends StatefulWidget {
   static const String routeName = "/savedCardsScreen";
@@ -38,18 +39,20 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
 //     final ByteData bytes = await rootBundle.load(BASE64_IMAGE);
 //     await EsysFlutterShare.shareImage('myImageTest.png', bytes, 'my image title');
 //     }
-  Future<void> _shareImage( pathList,int index) async {
+  Future<void> _shareImage(pathList, int index) async {
     try {
       // final tempDir = await getTemporaryDirectory();
       // await new File('assets${pathList[index]}').create();
       print("new file created");
       print('${pathList[index].toString()}');
-      final ByteData bytes = await rootBundle
-          .load(pathList[index].toString());
+      // final ByteData bytes = await rootBundle.load(pathList[index].toString());
+      final Uint8List byteArray =
+          await File(pathList[index].toString()).readAsBytes();
       await Share.file(
         'esys image',
         'esys.png',
-        bytes.buffer.asUint8List(),
+        // bytes.buffer.asUint8List(),
+        byteArray,
         'image/png',
       );
     } catch (e) {
@@ -76,15 +79,16 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
   Future<Directory> _getImgs() async {
     Directory photoDir;
     try {
-      print("hellloo");
-      final Directory imgDir = await getApplicationDocumentsDirectory();
-      print(imgDir.path);
-      final String imgDirPath = imgDir.path + '/saved_cards';
-      print(imgDirPath);
+      if (await Permission.storage.request().isGranted) {
+        final Directory imgDir = await getApplicationDocumentsDirectory();
+        print(imgDir.path);
+        final String imgDirPath = imgDir.path + '/saved_cards';
+        print(imgDirPath);
 
-      photoDir = Directory(imgDirPath);
-      photoDir.createSync();
-      print(photoDir);
+        photoDir = Directory(imgDirPath);
+        photoDir.createSync();
+        print(photoDir);
+      }
     } catch (e) {
       print("error caught");
       print(e);
@@ -105,7 +109,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
           builder: (context, snapshot) {
             var child;
             List pathList;
-           
+
             try {
               pathList = snapshot.data
                   .listSync()
@@ -113,7 +117,6 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                   .where((element) => element.endsWith(".png"))
                   .toList(growable: true);
               print(pathList);
-              
             } catch (e) {
               return Center(
                 child: Container(
@@ -121,7 +124,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                 ),
               );
             }
-             final List pathListnew =[...pathList];
+
             if (snapshot.hasData) {
               child = ListView.builder(
                 itemCount: pathList.length,
@@ -141,7 +144,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                                 topLeft: Radius.circular(12),
                                 topRight: Radius.circular(12)),
                             child: Image.file(
-                              File(pathListnew[index]),
+                              File(pathList[index]),
                               width: double.infinity,
                               height: 190,
                               fit: BoxFit.fill,
@@ -151,10 +154,10 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               InkWell(
-                                onTap:(){setState(() {
-                                   _shareImage(pathList,index);
-                                });
-                                  
+                                onTap: () {
+                                  setState(() {
+                                    _shareImage(pathList, index);
+                                  });
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -171,7 +174,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                               InkWell(
                                 onTap: () {
                                   setState(() {
-                                    pathListnew.removeAt(index);
+                                    pathList.removeAt(index);
                                   });
                                 },
                                 child: Padding(
