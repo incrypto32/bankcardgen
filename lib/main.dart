@@ -1,8 +1,13 @@
-import 'package:bankcardmaker/cache_manager/custom_cache_manager.dart';
+import 'dart:convert';
+
+import 'package:bankcardmaker/models/banks.dart';
+import 'package:flutter/material.dart';
+import 'package:bankcardmaker/constants/constants.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:bankcardmaker/screens/form_screen.dart';
 import 'package:bankcardmaker/screens/home_screen.dart';
 import 'package:bankcardmaker/screens/saved_cards_screen.dart';
-import 'package:flutter/material.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,9 +40,25 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+void downloadAndCaching() async {
+  http.get(backendDataUrl).then((response) {
+    ServerJsonResponse serverJsonResponse;
+    if (response.statusCode == 200) {
+      serverJsonResponse = ServerJsonResponse.fromJson(
+        json.decode(response.body),
+      );
+    } else {
+      print("Error fetching data");
+    }
+    serverJsonResponse.saveToSharePrefs();
+  });
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    // Initalize caching
+    downloadAndCaching();
     return HomeScreen();
   }
 }
