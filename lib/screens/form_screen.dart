@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:bankcardmaker/imageGen/image_generator.dart';
 import 'package:bankcardmaker/models/card_item.dart';
 import 'package:bankcardmaker/widgets/main_appbar.dart';
-import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -40,8 +39,6 @@ class _FormScreenState extends State<FormScreen> {
     "India Post",
     "Yes Bank"
   ];
-
-  var _gPay = false;
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,3 @@
-import 'package:bankcardmaker/constants/constants.dart';
 import 'package:bankcardmaker/imageGen/image_generator.dart';
 import 'package:flutter/material.dart';
 

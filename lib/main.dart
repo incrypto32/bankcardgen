@@ -51,6 +51,8 @@ void downloadAndCaching() async {
       print("Error fetching data");
     }
     serverJsonResponse.saveToSharePrefs();
+  }).catchError((e) {
+    print(e);
   });
 }
 
