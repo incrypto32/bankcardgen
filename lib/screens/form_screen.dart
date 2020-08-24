@@ -313,7 +313,7 @@ class CreateButton extends StatelessWidget {
                     var filePath = directory.path +
                         '/saved_cards' +
                         '/' +
-                        DateTime.now().toString() +
+                        DateTime.now().toIso8601String() +
                         '.png';
                     print(filePath);
                     File(filePath).create(recursive: true).then((value) {
@@ -362,27 +362,51 @@ class CreateButton extends StatelessWidget {
       child: RaisedButton(
         elevation: 10.0,
         onPressed: () async {
+          var imgBytes;
           _formKey.currentState.save();
           print(_cardItem.toMap.toString());
-          final imgBytes =
-              await ImgFromTempelate.generateBankCard(_cardItem.toMap);
-          imgBytes == null
-              ? Scaffold.of(context).showSnackBar(
-                  SnackBar(
-                    content: Container(
-                      height: 20,
-                      alignment: Alignment.center,
-                      child: FittedBox(
-                        child: Text(
-                          'Image generation failed. Please fill all the fields',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
+          try {
+            imgBytes = await ImgFromTempelate.generateBankCard(_cardItem.toMap);
+            _showDialog(context, imgBytes);
+          } catch (e) {
+            String msg;
+            e.runtimeType == SocketException
+                ? msg = "Check your network connection"
+                : msg = 'Image generation failed. Please fill all the fields';
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Container(
+                  height: 20,
+                  alignment: Alignment.center,
+                  child: FittedBox(
+                    child: Text(
+                      msg,
+                      style: TextStyle(color: Colors.red),
                     ),
-                    backgroundColor: Colors.white,
                   ),
-                )
-              : _showDialog(context, imgBytes);
+                ),
+                backgroundColor: Colors.white,
+              ),
+            );
+          }
+
+          // imgBytes == null
+          //     ? Scaffold.of(context).showSnackBar(
+          //         SnackBar(
+          //           content: Container(
+          //             height: 20,
+          //             alignment: Alignment.center,
+          //             child: FittedBox(
+          //               child: Text(
+          //                 'Image generation failed. Please fill all the fields',
+          //                 style: TextStyle(color: Colors.red),
+          //               ),
+          //             ),
+          //           ),
+          //           backgroundColor: Colors.white,
+          //         ),
+          //       )
+          //     : _showDialog(context, imgBytes);
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

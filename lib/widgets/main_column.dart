@@ -1,3 +1,5 @@
+import 'package:bankcardmaker/constants/constants.dart';
+import 'package:bankcardmaker/imageGen/image_generator.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -85,6 +87,11 @@ class MainColumn extends StatelessWidget {
                     },
                   ),
                   ListTile(
+                    onTap: () {
+                      print("hi");
+                      ImgFromTempelate.loadImageFromCacheOrNetwork(
+                          'https://i.pinimg.com/originals/53/dc/ed/53dceddd64f5b0fe65c9fbee4f689701.png');
+                    },
                     contentPadding: listTileContentPadding,
                     leading: FaIcon(
                       FontAwesomeIcons.infoCircle,

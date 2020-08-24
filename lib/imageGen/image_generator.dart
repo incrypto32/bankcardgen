@@ -3,6 +3,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:bankcardmaker/cache_manager/custom_cache_manager.dart';
+import 'package:bankcardmaker/constants/constants.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -10,12 +12,24 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+enum TempelateLoadMethod { assets, extDir, cached }
+
 class ImgFromTempelate {
   // Loads an Image from assets and conver it into a darts Image encoding
   static Future<ui.Image> loadImageAsset(String imageAssetPath) async {
     final ByteData data = await rootBundle.load(imageAssetPath);
     final Completer<ui.Image> completer = Completer();
     ui.decodeImageFromList(Uint8List.view(data.buffer), (ui.Image img) {
+      return completer.complete(img);
+    });
+    return completer.future;
+  }
+
+  static Future<ui.Image> loadImageFromCacheOrNetwork(String imageUrl) async {
+    final File file = await CustomCacheManager().getSingleFile(imageUrl);
+    final Uint8List byteArray = await file.readAsBytes();
+    final Completer<ui.Image> completer = Completer();
+    ui.decodeImageFromList(byteArray, (ui.Image img) {
       return completer.complete(img);
     });
     return completer.future;
@@ -224,21 +238,40 @@ class ImgFromTempelate {
   }
 
 // The core funtion which puts all the drawings together
-  static Future<ui.Image> _bankCardWorker(details,
-      {bool fromAsset = false,
-      @required double yInitial,
-      @required double xInitial}) async {
+  static Future<ui.Image> _bankCardWorker(
+    details, {
+    bool fromAsset = false,
+    @required double yInitial,
+    @required double xInitial,
+    @required TempelateLoadMethod tempelateLoadMethod,
+  }) async {
     ui.Image img;
 
     // Load Gpay logo
     final gpayImg = await loadImageAsset('assets/images/gpay.png');
 
-    // Loading the tempelate banktamlet
-    fromAsset
-        ? img = await loadImageAsset(
-            'assets/images/banktamlets/' + details['Bank'] + '.png')
-        : img =
-            await loadUiImageFromExteranalDirectory(details['Bank'] + '.png');
+    if (tempelateLoadMethod == TempelateLoadMethod.assets) {
+      img = await loadImageAsset(
+        'assets/images/banktamlets/' + details['Bank'] + '.png',
+      );
+    } else if (tempelateLoadMethod == TempelateLoadMethod.extDir) {
+      img = await loadUiImageFromExteranalDirectory(
+        details['Bank'] + '.png',
+      );
+    } else if (tempelateLoadMethod == TempelateLoadMethod.cached) {
+      img = await loadImageFromCacheOrNetwork(
+        backendImagesEndPoint + '/' + details['Bank'] + '.png',
+      );
+    }
+
+    // // Loading the tempelate banktamlet
+    // fromAsset
+    //     ? img = await loadImageFromCacheOrNetwork(
+    //         backendImagesEndPoint + '/' + details['Bank'] + '.png')
+    //     // img = await loadImageAsset(
+    //     //     'assets/images/banktamlets/' + details['Bank'] + '.png')
+    //     : img =
+    //         await loadUiImageFromExteranalDirectory(details['Bank'] + '.png');
 
     // The picture recorder which records the canvas
     final ui.PictureRecorder recorder = ui.PictureRecorder();
@@ -313,6 +346,7 @@ class ImgFromTempelate {
     } catch (err) {
       print('pngBytes : An error occured');
       print(err);
+      return null;
     }
 
     return pngBytes;
@@ -322,18 +356,29 @@ class ImgFromTempelate {
   static Future<ByteData> generateBankCard(Map<String, dynamic> details) async {
     var img;
     if (details != null) {
-      try {
-        img = await _bankCardWorker(
-          details,
-          yInitial: 100,
-          xInitial: 100,
-          fromAsset: true,
-        );
-      } catch (e) {
-        print('Error occured while generating card');
-        print(e);
-        return null;
-      }
+      img = await _bankCardWorker(
+        details,
+        yInitial: 100,
+        xInitial: 100,
+        tempelateLoadMethod: TempelateLoadMethod.cached,
+        fromAsset: true,
+      );
+      // try {
+      //   img = await _bankCardWorker(
+      //     details,
+      //     yInitial: 100,
+      //     xInitial: 100,
+      //     tempelateLoadMethod: TempelateLoadMethod.cached,
+      //     fromAsset: true,
+      //   );
+      // } catch (e) {
+      //   print('Error occured while generating card');
+      //   print(e.runtimeType);
+      //   if (e.runtimeType == SocketException) {
+      //     print("Hi");
+      //   }
+      //   return null;
+      // }
     }
     return _pngBytes(img);
   }
