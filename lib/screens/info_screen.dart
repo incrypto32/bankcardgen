@@ -13,7 +13,7 @@ class InfoScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
-          horizontal: 20,vertical: 10
+          horizontal: 10,vertical: 10
         ),
         child: Column(
           children: [ _myHeading("Terms Of Service", context),
