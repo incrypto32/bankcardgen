@@ -27,6 +27,7 @@ class ImgFromTempelate {
 
   static Future<ui.Image> loadImageFromCacheOrNetwork(String imageUrl) async {
     final File file = await CustomCacheManager().getSingleFile(imageUrl);
+    print("Got file from cache: " + file.path);
     final Uint8List byteArray = await file.readAsBytes();
     final Completer<ui.Image> completer = Completer();
     ui.decodeImageFromList(byteArray, (ui.Image img) {
@@ -194,14 +195,17 @@ class ImgFromTempelate {
       map.forEach((key, value) {
         // print(text);
         if (key != 'Gpay' && key != 'Bank') {
-          if (key == 'Ac/No') {
-            text += '\n$key : $value';
-          } else if (['Name', 'IFSC', 'IBAN', 'Branch'].contains(key)) {
-            text2 += '\n$key : $value';
-          } else if (key != 'Phone') {
-            text3 += '\n$key : $value';
-          } else if (key != 'Phone' && map['Gpay'] == false) {
-            text3 += '\n$key : $value';
+          if (!(value.toString().replaceAll(new RegExp(r"\s+"), '') == '' ||
+              value == null)) {
+            if (key == 'Ac/No') {
+              text += '\n$key : $value';
+            } else if (['Name', 'IFSC', 'IBAN', 'Branch'].contains(key)) {
+              text2 += '\n$key : $value';
+            } else if (key != 'Phone') {
+              text3 += '\n$key : $value';
+            } else if (key == 'Phone' && map['Gpay'] == false) {
+              text3 += '\n$key : $value';
+            }
           }
         }
       });
@@ -210,18 +214,24 @@ class ImgFromTempelate {
     TextSpan span = TextSpan(
       style: TextStyle(
         color: Colors.white,
-        fontSize: 50,
+        fontSize: 55,
         fontWeight: FontWeight.bold,
       ),
       children: [
         TextSpan(
           style: TextStyle(
-              color: Colors.white, fontSize: 48, fontWeight: FontWeight.normal),
+            color: Colors.white,
+            fontSize: 50,
+            fontWeight: FontWeight.normal,
+          ),
           text: text2,
         ),
         TextSpan(
           style: TextStyle(
-              color: Colors.white, fontSize: 40, fontWeight: FontWeight.normal),
+            color: Colors.white,
+            fontSize: 45,
+            fontWeight: FontWeight.normal,
+          ),
           text: text3,
         ),
       ],
@@ -240,7 +250,6 @@ class ImgFromTempelate {
 // The core funtion which puts all the drawings together
   static Future<ui.Image> _bankCardWorker(
     details, {
-    bool fromAsset = false,
     @required double yInitial,
     @required double xInitial,
     @required TempelateLoadMethod tempelateLoadMethod,
@@ -308,7 +317,7 @@ class ImgFromTempelate {
       // Printing the Gpay number box
       stroke.color = Colors.white;
       stroke.style = PaintingStyle.fill;
-      if (details['Gpay'] == true) {
+      if (details['Gpay'] == true && details['Phone'] != null) {
         printGpay(
           canvas: canvas,
           no: details['Phone'],
@@ -356,29 +365,13 @@ class ImgFromTempelate {
   static Future<ByteData> generateBankCard(Map<String, dynamic> details) async {
     var img;
     if (details != null) {
+      print(details);
       img = await _bankCardWorker(
         details,
         yInitial: 100,
         xInitial: 100,
         tempelateLoadMethod: TempelateLoadMethod.cached,
-        fromAsset: true,
       );
-      // try {
-      //   img = await _bankCardWorker(
-      //     details,
-      //     yInitial: 100,
-      //     xInitial: 100,
-      //     tempelateLoadMethod: TempelateLoadMethod.cached,
-      //     fromAsset: true,
-      //   );
-      // } catch (e) {
-      //   print('Error occured while generating card');
-      //   print(e.runtimeType);
-      //   if (e.runtimeType == SocketException) {
-      //     print("Hi");
-      //   }
-      //   return null;
-      // }
     }
     return _pngBytes(img);
   }

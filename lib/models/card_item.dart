@@ -6,6 +6,7 @@ class CardItem {
   String branch;
   String country;
   String phone;
+  String email;
   bool gPay;
 
   set setCountry(String value) {
@@ -14,6 +15,10 @@ class CardItem {
 
   set setPhone(String value) {
     this.phone = value;
+  }
+
+  set setEmail(String value) {
+    this.email = value;
   }
 
   set setAccountNo(String value) {
@@ -41,7 +46,6 @@ class CardItem {
   }
 
   get getGpay => this.gPay;
-
   get getBank => this.bank;
   get getCountry => this.country;
   Map<String, dynamic> get toMap {
@@ -54,6 +58,7 @@ class CardItem {
       "Branch": branch,
       code: ifsc,
       "Phone": phone,
+      "Email": email,
       "Gpay": gPay,
     };
   }
@@ -67,5 +72,6 @@ class CardItem {
     this.country,
     this.gPay,
     this.ifsc,
+    this.email,
   });
 }

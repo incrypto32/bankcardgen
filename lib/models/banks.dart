@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bankcardmaker/constants/constants.dart';
+
+import 'package:http/http.dart' as http;
 
 class Bank {
   final String bank;
@@ -27,18 +30,18 @@ class ServerJsonResponse {
   ServerJsonResponse({this.banks, this.delete});
   factory ServerJsonResponse.fromJson(Map<String, dynamic> json) {
     return ServerJsonResponse(
-      banks: _decodeBankList(json["banks"]),
-      delete: _decodeBankList(json["delete"]),
+      banks: decodeBankList(json["banks"]),
+      delete: decodeBankList(json["delete"]),
     );
   }
   Map<String, dynamic> toJson() {
     return {
-      'banks': _encodeBankList(banks),
-      'delete': _encodeBankList(delete),
+      'banks': encodeBankList(banks),
+      'delete': encodeBankList(delete),
     };
   }
 
-  List<Map<String, dynamic>> _encodeBankList(List<Bank> banks) {
+  static List<Map<String, dynamic>> encodeBankList(List<Bank> banks) {
     List<Map<String, dynamic>> bankListMap = [];
 
     banks.forEach(
@@ -54,7 +57,7 @@ class ServerJsonResponse {
 
   Future<bool> saveToSharePrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final encodedBankList = _encodeBankList(banks);
+    final encodedBankList = encodeBankList(banks);
     final value = await prefs.setString(
       "banks",
       json.encode(encodedBankList),
@@ -64,11 +67,27 @@ class ServerJsonResponse {
     return value;
   }
 
-  static List<Bank> _decodeBankList(List<dynamic> banksJson) {
+  static List<Bank> decodeBankList(List<dynamic> banksJson) {
     List<Bank> banks = [];
     banksJson.forEach((element) {
       banks.add(Bank.fromJson(element));
     });
     return banks;
   }
+}
+
+void downloadAndCaching() async {
+  http.get(backendDataUrl).then((response) {
+    ServerJsonResponse serverJsonResponse;
+    if (response.statusCode == 200) {
+      serverJsonResponse = ServerJsonResponse.fromJson(
+        json.decode(response.body),
+      );
+    } else {
+      print("Error fetching data");
+    }
+    serverJsonResponse.saveToSharePrefs();
+  }).catchError((e) {
+    print(e);
+  });
 }

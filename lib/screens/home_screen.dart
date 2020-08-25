@@ -1,4 +1,6 @@
+import 'package:bankcardmaker/services/database_service.dart';
 import 'package:bankcardmaker/widgets/MainDrawer.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:bankcardmaker/widgets/main_appbar.dart';
 import 'package:bankcardmaker/widgets/main_column.dart';
@@ -33,7 +35,21 @@ class HomeScreen extends StatelessWidget {
                       // top: Radius.circular(40),
                       ),
                 ),
-                child: MainColumn(),
+                child: FutureBuilder(future: () async {
+                  var app = await Firebase.initializeApp().then((value) {
+                    DatabaseService.getBanks();
+                  });
+
+                  return app;
+                }(), builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text("Error");
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return MainColumn();
+                  }
+                  return Text("Error");
+                }),
               ),
             ),
           ],

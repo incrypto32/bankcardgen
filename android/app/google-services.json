@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "443573184712",
+    "firebase_url": "https://bank-card-generator.firebaseio.com",
+    "project_id": "bank-card-generator",
+    "storage_bucket": "bank-card-generator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443573184712:android:31b9987bffbccc64369dfd",
+        "android_client_info": {
+          "package_name": "com.example.bankcardmaker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443573184712-m8noepcbnirr967ugbd3qkqudtt19eh5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBINEnny__YuKFEjbvlidsvuTpSCqA97Ms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443573184712-m8noepcbnirr967ugbd3qkqudtt19eh5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
