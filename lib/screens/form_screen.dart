@@ -44,11 +44,11 @@ class _FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: MainAppBar(
-          color: Colors.transparent,
-          textColor: Colors.white,
-          title: 'Enter Your Details',
-        ),
+        // appBar: MainAppBar(
+        //   color: Colors.transparent,
+        //   textColor: Colors.white,
+        //   title: 'Enter Your Details',
+        // ),
         backgroundColor: Colors.indigo,
         body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light,
@@ -61,87 +61,96 @@ class _FormScreenState extends State<FormScreen> {
                 padding: EdgeInsets.symmetric(
                   horizontal: 40.0,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    //  Divider(),
+                child: SafeArea(
+                                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0,40,0,30),
+                        child: Text("Enter Your Details",style: Theme.of(context).textTheme.headline6.copyWith(
+                          color:Colors.white
+                        )
+                        ),
+                      ),
+                      //  Divider(),
 
-                    MyTextBox(
-                      title: "Name",
-                      hint: "Enter your Name",
-                      icon: Icons.account_circle,
-                      input: TextInputType.name,
-                      setter: (v) => _cardItem.setName = v,
-                    ),
+                      MyTextBox(
+                        title: "Name",
+                        hint: "Enter your Name",
+                        icon: Icons.account_circle,
+                        input: TextInputType.name,
+                        setter: (v) => _cardItem.setName = v,
+                      ),
 
-                    MyDropDown(
-                      displayText: 'Choose Your Country',
-                      icon: (Icons.public),
-                      list: _countries,
-                      getter: () => _cardItem.getCountry,
-                      setter: (v) => _cardItem.setCountry = v,
-                      setState: (Function func) {
-                        setState(() {
-                          func();
-                        });
-                      },
-                    ),
-                    MyDropDown(
-                      displayText: 'Choose Your Bank',
-                      icon: (Icons.account_balance),
-                      list: _banks,
-                      getter: () => _cardItem.getBank,
-                      setter: (v) => _cardItem.setBank = v,
-                      setState: (Function func) {
-                        setState(() {
-                          func();
-                        });
-                      },
-                    ),
+                      MyDropDown(
+                        displayText: 'Choose Your Country',
+                        icon: (Icons.public),
+                        list: _countries,
+                        getter: () => _cardItem.getCountry,
+                        setter: (v) => _cardItem.setCountry = v,
+                        setState: (Function func) {
+                          setState(() {
+                            func();
+                          });
+                        },
+                      ),
+                      MyDropDown(
+                        displayText: 'Choose Your Bank',
+                        icon: (Icons.account_balance),
+                        list: _banks,
+                        getter: () => _cardItem.getBank,
+                        setter: (v) => _cardItem.setBank = v,
+                        setState: (Function func) {
+                          setState(() {
+                            func();
+                          });
+                        },
+                      ),
 
-                    MyTextBox(
-                      title: "Account Number",
-                      hint: "Enter your Account Number",
-                      icon: Icons.account_balance_wallet,
-                      input: TextInputType.number,
-                      setter: (v) => _cardItem.setAccountNo = v,
-                    ),
+                      MyTextBox(
+                        title: "Account Number",
+                        hint: "Enter your Account Number",
+                        icon: Icons.account_balance_wallet,
+                        input: TextInputType.number,
+                        setter: (v) => _cardItem.setAccountNo = v,
+                      ),
 
-                    MyTextBox(
-                      title: "IFSC",
-                      hint: "Enter your IFSC Code",
-                      icon: Icons.payment,
-                      input: TextInputType.text,
-                      setter: (v) => _cardItem.setIfsc = v,
-                    ),
+                      MyTextBox(
+                        title: "IFSC",
+                        hint: "Enter your IFSC Code",
+                        icon: Icons.payment,
+                        input: TextInputType.text,
+                        setter: (v) => _cardItem.setIfsc = v,
+                      ),
 
-                    MyTextBox(
-                      title: "Branch",
-                      hint: "Enter your Branch",
-                      icon: Icons.business,
-                      input: TextInputType.text,
-                      setter: (v) => _cardItem.setBranch = v,
-                    ),
+                      MyTextBox(
+                        title: "Branch",
+                        hint: "Enter your Branch",
+                        icon: Icons.business,
+                        input: TextInputType.text,
+                        setter: (v) => _cardItem.setBranch = v,
+                      ),
 
-                    MyTextBox(
-                      title: "Phone",
-                      hint: "Enter your Phone Number",
-                      icon: Icons.phone_android,
-                      input: TextInputType.phone,
-                      setter: (v) => _cardItem.setPhone = v,
-                    ),
+                      MyTextBox(
+                        title: "Phone",
+                        hint: "Enter your Phone Number",
+                        icon: Icons.phone_android,
+                        input: TextInputType.phone,
+                        setter: (v) => _cardItem.setPhone = v,
+                      ),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        _buildGpaybox(
-                            getter: () => _cardItem.getGpay,
-                            setter: (v) => _cardItem.setGpay = v),
-                      ],
-                    ),
-                    // _buildBtn(ctx),
-                    CreateButton(formKey: _formKey, cardItem: _cardItem),
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          _buildGpaybox(
+                              getter: () => _cardItem.getGpay,
+                              setter: (v) => _cardItem.setGpay = v),
+                        ],
+                      ),
+                      // _buildBtn(ctx),
+                      CreateButton(formKey: _formKey, cardItem: _cardItem),
+                    ],
+                  ),
                 ),
               ),
             ),
