@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:bankcardmaker/services/banks.dart';
-import 'package:bankcardmaker/services/database_service.dart';
 import 'package:bankcardmaker/models/card_item.dart';
 import 'package:bankcardmaker/widgets/create_button.dart';
-import 'package:bankcardmaker/widgets/main_appbar.dart';
 import 'package:bankcardmaker/widgets/my_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../accessories/constants.dart';
 import 'package:flutter/services.dart';
@@ -175,7 +174,10 @@ class _FormScreenState extends State<FormScreen> {
               } else {
                 return Center(
                   child: Container(
-                    child: Text("An error occured"),
+                    child: SpinKitCircle(
+                      color: Colors.white,
+                      size: 45,
+                    ),
                   ),
                 );
               }

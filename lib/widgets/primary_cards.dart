@@ -41,9 +41,6 @@ class _PrimaryCardState extends State<PrimaryCard> {
 
         var error = Image.asset('assets/images/banktamlets/placeholder.png');
         if (snapshot.hasData) {
-          print(stateProvider.primaryCard + " from stateprovider");
-          print(snapshot.hasData.toString() + "coooollley");
-          print(snapshot.data.toString() + "from file");
           try {
             if ((snapshot.data != null)) {
               return Image.file(

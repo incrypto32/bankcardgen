@@ -1,4 +1,3 @@
-import 'package:bankcardmaker/widgets/primary_cards.dart';
 import 'package:flutter/cupertino.dart';
 
 class StateProvider with ChangeNotifier {

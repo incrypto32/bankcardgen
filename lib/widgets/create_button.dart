@@ -146,12 +146,14 @@ class _CreateButtonState extends State<CreateButton> {
 
               print(widget._cardItem.toMap);
               imgBytes = await ImgFromTempelate.generateBankCard(
-                  widget._cardItem.toMap);
+                widget._cardItem.toMap,
+              );
 
               _showDialog(context, imgBytes);
               _stopLoading();
             } catch (e) {
               _stopLoading();
+              print("NEYT");
               String msg;
               e.runtimeType == SocketException
                   ? msg = "Check your network connection"

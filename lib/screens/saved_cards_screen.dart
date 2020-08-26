@@ -4,6 +4,7 @@ import 'package:bankcardmaker/providers/state_provider.dart';
 import 'package:bankcardmaker/widgets/saved_cards_list.dart';
 import 'package:flutter/material.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -129,7 +130,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
               FlatButton(
                   onPressed: () async {
                     var prefs = await SharedPreferences.getInstance();
-                    var val = await prefs.getString("primaryCard");
+                    var val = prefs.getString("primaryCard");
                     setState(() {
                       try {
                         File(pathList[index]).deleteSync();
@@ -187,8 +188,13 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
               deleteDialog: deleteDialog,
             );
           } else {
-            child = Container(
-              child: Text("Error"),
+            child = Center(
+              child: Container(
+                child: SpinKitCircle(
+                  color: Colors.white,
+                  size: 45,
+                ),
+              ),
             );
           }
           return child;

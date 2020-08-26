@@ -8,8 +8,8 @@ class InfoScreen extends StatelessWidget {
     "user is not allowed to share the images of the card by any other means than this app",
   ];
   final List _about = [
-    "this app was created by krishnanand(cse undergrad)",
-    "his contact number will be provided if you contact us",
+    "this app was created by ________",
+    "______________________________________",
     "rating 5 star is mandatory for users of this app"
   ];
   @override
