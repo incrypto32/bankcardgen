@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:bankcardmaker/cache_manager/custom_cache_manager.dart';
+import 'package:bankcardmaker/cache_manager/firebase_cache_manager.dart';
 import 'package:bankcardmaker/constants/constants.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-enum TempelateLoadMethod { assets, extDir, cached }
+enum TempelateLoadMethod { assets, extDir, cached, cachedFirebase }
 
 class ImgFromTempelate {
   // Loads an Image from assets and conver it into a darts Image encoding
@@ -27,6 +28,19 @@ class ImgFromTempelate {
 
   static Future<ui.Image> loadImageFromCacheOrNetwork(String imageUrl) async {
     final File file = await CustomCacheManager().getSingleFile(imageUrl);
+    // final File file = await FirebaseCacheManager().getSingleFile(imageUrl);
+    print("Got file from cache: " + file.path);
+    final Uint8List byteArray = await file.readAsBytes();
+    final Completer<ui.Image> completer = Completer();
+    ui.decodeImageFromList(byteArray, (ui.Image img) {
+      return completer.complete(img);
+    });
+    return completer.future;
+  }
+
+  static Future<ui.Image> loadImageFromCacheOrFirebase(String imageUrl) async {
+    // final File file = await CustomCacheManager().getSingleFile(imageUrl);
+    final File file = await FirebaseCacheManager().getSingleFile(imageUrl);
     print("Got file from cache: " + file.path);
     final Uint8List byteArray = await file.readAsBytes();
     final Completer<ui.Image> completer = Completer();
@@ -271,6 +285,10 @@ class ImgFromTempelate {
       img = await loadImageFromCacheOrNetwork(
         backendImagesEndPoint + '/' + details['Bank'] + '.png',
       );
+    } else if (tempelateLoadMethod == TempelateLoadMethod.cachedFirebase) {
+      img = await loadImageFromCacheOrFirebase(
+        details['Bank'] + '.png',
+      );
     }
 
     // // Loading the tempelate banktamlet
@@ -370,7 +388,7 @@ class ImgFromTempelate {
         details,
         yInitial: 100,
         xInitial: 100,
-        tempelateLoadMethod: TempelateLoadMethod.cached,
+        tempelateLoadMethod: TempelateLoadMethod.cachedFirebase,
       );
     }
     return _pngBytes(img);

@@ -8,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateButton extends StatefulWidget {
   const CreateButton({
@@ -66,13 +67,13 @@ class _CreateButtonState extends State<CreateButton> {
               FlatButton(
                 onPressed: () async {
                   if (await Permission.storage.request().isGranted) {
+                    var prefs = await SharedPreferences.getInstance();
                     var directory = await getApplicationDocumentsDirectory();
-                    var filePath = directory.path +
-                        '/saved_cards' +
-                        '/' +
-                        DateTime.now().toIso8601String() +
-                        '.png';
+                    var fileName = DateTime.now().toIso8601String() + '.png';
+                    var filePath =
+                        directory.path + '/saved_cards' + '/' + fileName;
                     print(filePath);
+                    prefs.setString(fileName, widget._cardItem.toString());
                     File(filePath).create(recursive: true).then((value) {
                       value.writeAsBytes(imgBytes.buffer.asUint8List());
                     });

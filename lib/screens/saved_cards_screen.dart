@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SavedCardsScreen extends StatefulWidget {
   static const String routeName = "/savedCardsScreen";
@@ -15,18 +16,24 @@ class SavedCardsScreen extends StatefulWidget {
 class _SavedCardsScreenState extends State<SavedCardsScreen> {
   //
   // Share Image Function
-  Future<void> _shareImage(pathList, int index) async {
+  Future<void> _share(pathList, int index, bool image) async {
     try {
-      print("new file created");
-      print('${pathList[index].toString()}');
-      final Uint8List byteArray =
-          await File(pathList[index].toString()).readAsBytes();
-      await Share.file(
-        'esys image',
-        'bank.png',
-        byteArray,
-        'image/png',
-      );
+      if (image) {
+        final Uint8List byteArray =
+            await File(pathList[index].toString()).readAsBytes();
+        await Share.file(
+          'esys image',
+          'bank.png',
+          byteArray,
+          'image/png',
+        );
+      } else {
+        var prefs = await SharedPreferences.getInstance();
+        var id = pathList[index].split('/').reversed.toList()[0];
+
+        String shareText = prefs.getString(id);
+        Share.text("Account Details", shareText, "text/plain");
+      }
     } catch (e) {
       print('error: $e');
     }
@@ -112,7 +119,50 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                               InkWell(
                                 onTap: () {
                                   setState(() {
-                                    _shareImage(pathList, index);
+                                    showBottomSheet(
+                                        elevation: 5,
+                                        context: context,
+                                        builder: (context) {
+                                          return Material(
+                                            color: Colors.amber[50],
+                                            child: Container(
+                                              height: 100,
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    child: ListTile(
+                                                      onTap: () {
+                                                        _share(pathList, index,
+                                                            false);
+                                                      },
+                                                      leading: Icon(
+                                                          Icons.text_fields),
+                                                      title:
+                                                          Text('Share as Text'),
+                                                      trailing: Icon(
+                                                          Icons.chevron_right),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: ListTile(
+                                                      onTap: () {
+                                                        _share(pathList, index,
+                                                            true);
+                                                      },
+                                                      leading:
+                                                          Icon(Icons.image),
+                                                      title: Text(
+                                                          'Share as Image'),
+                                                      trailing: Icon(
+                                                          Icons.chevron_right),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                    // _share(pathList, index);
                                   });
                                 },
                                 child: Padding(

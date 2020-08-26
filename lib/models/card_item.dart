@@ -63,6 +63,39 @@ class CardItem {
     };
   }
 
+  String toString() {
+    String text = "";
+    if (accountNumber != null) {
+      text += "\nA/c no : " + accountNumber.toString();
+    }
+    if (bank != null) {
+      text += "\nBank : " + bank.toString();
+    }
+    if (country != null) {
+      text += "\nCountry : " + country.toString();
+    }
+    if (name != null) {
+      text += "\nBank : " + name.toString();
+    }
+    if (ifsc != null) {
+      text += country != "India"
+          ? "\nIBAN : " + ifsc.toString()
+          : "\nIFSC : " + ifsc.toString();
+    }
+    if (branch != null) {
+      text += "\nBranch : " + branch.toString();
+    }
+    if (email != null) {
+      text += "\nEmail : " + email.toString();
+    }
+    if (phone != null) {
+      gPay
+          ? text += "\nPhone/Gpay : " + phone.toString()
+          : text += "\nPhone : " + phone.toString();
+    }
+    return text;
+  }
+
   CardItem({
     this.phone,
     this.name,

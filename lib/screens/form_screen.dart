@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bankcardmaker/models/banks.dart';
+import 'package:bankcardmaker/services/banks.dart';
 import 'package:bankcardmaker/services/database_service.dart';
 import 'package:bankcardmaker/models/card_item.dart';
 import 'package:bankcardmaker/widgets/create_button.dart';

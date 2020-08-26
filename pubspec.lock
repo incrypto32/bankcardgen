@@ -88,9 +88,11 @@ packages:
   esys_flutter_share:
     dependency: "direct main"
     description:
-      name: esys_flutter_share
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "148e664e0bff7c61266e74104950ae9abe3d1e61"
+      url: "git://github.com/jawad12345A/esys-flutter-share.git"
+    source: git
     version: "1.0.2"
   ext_storage:
     dependency: "direct main"
@@ -141,6 +143,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+  firebase_storage:
+    dependency: "direct main"
+    description:
+      name: firebase_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   flutter:
     dependency: "direct main"
     description: flutter
