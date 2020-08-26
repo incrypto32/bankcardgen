@@ -49,11 +49,11 @@ class _FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: MainAppBar(
-          color: Colors.transparent,
-          textColor: Colors.white,
-          title: 'Enter Your Details',
-        ),
+        // appBar: MainAppBar(
+        //   color: Colors.transparent,
+        //   textColor: Colors.white,
+        //   title: 'Enter Your Details',
+        // ),
         backgroundColor: Colors.indigo,
         body: FutureBuilder<List<String>>(
             future: _getCountryList(),
@@ -74,7 +74,14 @@ class _FormScreenState extends State<FormScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             //  Divider(),
-
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 40, 0, 30),
+                              child: Text("Enter Your Details",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline6
+                                      .copyWith(color: Colors.white)),
+                            ),
                             MyTextBox(
                               title: "Name",
                               hint: "Enter your Name",

@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../screens/saved_cards_screen.dart';
 import 'package:bankcardmaker/screens/bank_request.dart';
+import '../screens/info_screen.dart';
 
 class MainColumn extends StatelessWidget {
   const MainColumn({
@@ -95,7 +96,7 @@ class MainColumn extends StatelessWidget {
                     },
                     contentPadding: listTileContentPadding,
                     leading: FaIcon(
-                      FontAwesomeIcons.infoCircle,
+                      Icons.account_balance,
                       color: Colors.black,
                       size: 30,
                     ),
@@ -103,13 +104,19 @@ class MainColumn extends StatelessWidget {
                     trailing: Icon(Icons.chevron_right),
                   ),
                   ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => InfoScreen()));
+                    },
                     contentPadding: listTileContentPadding,
                     leading: FaIcon(
-                      Icons.settings,
+                      FontAwesomeIcons.infoCircle,
                       color: Colors.black,
                       size: 30,
                     ),
-                    title: Text("Settings"),
+                    title: Text("Info"),
                     trailing: Icon(Icons.chevron_right),
                   ),
                 ],
