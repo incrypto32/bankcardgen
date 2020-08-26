@@ -1,3 +1,6 @@
+import 'package:bankcardmaker/providers/state_provider.dart';
+import 'package:bankcardmaker/screens/bank_request.dart';
+import 'package:bankcardmaker/screens/info_screen.dart';
 import 'package:bankcardmaker/services/database_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,9 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:bankcardmaker/screens/form_screen.dart';
 import 'package:bankcardmaker/screens/home_screen.dart';
 import 'package:bankcardmaker/screens/saved_cards_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => StateProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +38,9 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(),
       routes: {
         FormScreen.routeName: (context) => FormScreen(),
-        SavedCardsScreen.routeName: (context) => SavedCardsScreen()
+        SavedCardsScreen.routeName: (context) => SavedCardsScreen(),
+        BankRequestForm.routeName: (context) => BankRequestForm(),
+        InfoScreen.routeName: (context) => InfoScreen()
       },
     );
   }

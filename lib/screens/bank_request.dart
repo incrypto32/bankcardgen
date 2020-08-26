@@ -4,14 +4,16 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:bankcardmaker/accessories/constants.dart';
 
-class bankRequestForm extends StatefulWidget {
+class BankRequestForm extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return formState();
+    return BankRequestFormState();
   }
+
+  static final String routeName = '/bankRequestForm';
 }
 
-class formState extends State<bankRequestForm> {
+class BankRequestFormState extends State<BankRequestForm> {
   final _formKey = GlobalKey<FormState>();
   String _country;
   String _bankName;

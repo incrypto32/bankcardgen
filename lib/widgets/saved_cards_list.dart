@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:bankcardmaker/providers/state_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SavedCardsList extends StatelessWidget {
   const SavedCardsList({
@@ -71,6 +73,44 @@ class SavedCardsList extends StatelessWidget {
                           ],
                         ),
                       ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          child: AlertDialog(
+                            title: Text(
+                                "Do you want to save this card as primary card ?"),
+                            actions: [
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("Cancel"),
+                              ),
+                              FlatButton(
+                                onPressed: () async {
+                                  print("boom");
+                                  print(pathList[index] + " insde onpressed");
+                                  var prefs =
+                                      await SharedPreferences.getInstance();
+                                  bool val = await prefs.setString(
+                                    "primaryCard",
+                                    pathList[index],
+                                  );
+                                  val
+                                      ? stateProvider
+                                          .changePrimaryCard(pathList[index])
+                                      : print("error");
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("Yes"),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      child: Icon(Icons.more_vert),
                     ),
                   ],
                 )

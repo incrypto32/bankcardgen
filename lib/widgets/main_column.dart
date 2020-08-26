@@ -1,7 +1,9 @@
-import 'package:bankcardmaker/imageGen/image_generator.dart';
+import 'package:bankcardmaker/providers/state_provider.dart';
+import 'package:bankcardmaker/widgets/primary_cards.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/saved_cards_screen.dart';
 import 'package:bankcardmaker/screens/bank_request.dart';
@@ -49,7 +51,10 @@ class MainColumn extends StatelessWidget {
               )
             ]),
             margin: EdgeInsets.symmetric(horizontal: 30),
-            child: Image.asset('assets/images/banktamlets/yesbank.png'),
+            child: ChangeNotifierProvider.value(
+              value: stateProvider,
+              child: PrimaryCard(),
+            ),
           ),
         ),
         Expanded(
@@ -91,7 +96,7 @@ class MainColumn extends StatelessWidget {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return bankRequestForm();
+                        return BankRequestForm();
                       }));
                     },
                     contentPadding: listTileContentPadding,
@@ -106,9 +111,13 @@ class MainColumn extends StatelessWidget {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InfoScreen()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InfoScreen(),
+                        ),
+                      );
+                      // stateProvider.changePrimaryCard(
+                      //     "/data/user/0/com.example.bankcardmaker/app_flutter/saved_cards/2020-08-26T15:59:29.255956.png");
                     },
                     contentPadding: listTileContentPadding,
                     leading: FaIcon(
@@ -119,6 +128,11 @@ class MainColumn extends StatelessWidget {
                     title: Text("Info"),
                     trailing: Icon(Icons.chevron_right),
                   ),
+                  // FlatButton(
+                  //     onPressed: () {
+                  //       StateProvider().changePrimaryCard("hello");
+                  //     },
+                  //     child: null)
                 ],
               ),
             ),

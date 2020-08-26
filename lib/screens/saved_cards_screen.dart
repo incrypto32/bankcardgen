@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:bankcardmaker/providers/state_provider.dart';
 import 'package:bankcardmaker/widgets/saved_cards_list.dart';
 import 'package:flutter/material.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
@@ -126,12 +127,17 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                   },
                   child: Text("Cancel")),
               FlatButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    var prefs = await SharedPreferences.getInstance();
+                    var val = await prefs.getString("primaryCard");
                     setState(() {
                       try {
                         File(pathList[index]).deleteSync();
                       } catch (e) {
                         print("couldnt delete");
+                      }
+                      if (val == pathList[index]) {
+                        stateProvider.changePrimaryCard(null);
                       }
                       Navigator.of(context).pop();
                     });
