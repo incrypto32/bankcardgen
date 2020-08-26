@@ -192,13 +192,38 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    try {
-                                      File(pathList[index]).deleteSync();
-                                    } catch (e) {
-                                      print(e);
-                                    }
-                                  });
+                                  try {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                "Do you want to delete this card ?"),
+                                            actions: [
+                                              FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text("Cancel")),
+                                              FlatButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      File(pathList[index])
+                                                          .deleteSync();
+                                                    });
+                                                  },
+                                                  child: Text(
+                                                    "Delete",
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                    ),
+                                                  ))
+                                            ],
+                                          );
+                                        });
+                                  } catch (e) {
+                                    print(e);
+                                  }
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
