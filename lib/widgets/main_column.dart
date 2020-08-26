@@ -88,9 +88,10 @@ class MainColumn extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      print("hi");
-                      ImgFromTempelate.loadImageFromCacheOrNetwork(
-                          'https://i.pinimg.com/originals/53/dc/ed/53dceddd64f5b0fe65c9fbee4f689701.png');
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return bankRequestForm();
+                      }));
                     },
                     contentPadding: listTileContentPadding,
                     leading: FaIcon(
@@ -100,11 +101,6 @@ class MainColumn extends StatelessWidget {
                     ),
                     title: Text("Request a bank"),
                     trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return bankRequestForm();
-                            }));
-                    },
                   ),
                   ListTile(
                     contentPadding: listTileContentPadding,

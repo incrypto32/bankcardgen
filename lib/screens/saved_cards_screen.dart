@@ -16,7 +16,10 @@ class SavedCardsScreen extends StatefulWidget {
 class _SavedCardsScreenState extends State<SavedCardsScreen> {
   //
   // Share Image Function
+  bool tapped = false;
   Future<void> _share(pathList, int index, bool image) async {
+    tapped = true;
+
     try {
       if (image) {
         final Uint8List byteArray =
@@ -34,9 +37,12 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
         String shareText = prefs.getString(id);
         Share.text("Account Details", shareText, "text/plain");
       }
+      tapped = false;
     } catch (e) {
       print('error: $e');
+      tapped = false;
     }
+    tapped = false;
   }
 
   // get Images from filesystem
@@ -63,6 +69,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(tapped);
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -109,7 +116,6 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                             child: Image.file(
                               File(pathList[index]),
                               width: double.infinity,
-                              height: 190,
                               fit: BoxFit.fill,
                             ),
                           ),
@@ -132,8 +138,13 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                                                   Expanded(
                                                     child: ListTile(
                                                       onTap: () {
-                                                        _share(pathList, index,
-                                                            false);
+                                                        print("helo");
+                                                        print(
+                                                            tapped.toString());
+                                                        !tapped
+                                                            ? _share(pathList,
+                                                                index, false)
+                                                            : print("tapped");
                                                       },
                                                       leading: Icon(
                                                           Icons.text_fields),
@@ -146,8 +157,10 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                                                   Expanded(
                                                     child: ListTile(
                                                       onTap: () {
-                                                        _share(pathList, index,
-                                                            true);
+                                                        !tapped
+                                                            ? _share(pathList,
+                                                                index, true)
+                                                            : print("tapped");
                                                       },
                                                       leading:
                                                           Icon(Icons.image),
