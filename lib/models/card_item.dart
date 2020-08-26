@@ -89,7 +89,7 @@ class CardItem {
       text += "\nEmail : " + email.toString();
     }
     if (phone != null) {
-      gPay
+      gPay ?? false
           ? text += "\nPhone/Gpay : " + phone.toString()
           : text += "\nPhone : " + phone.toString();
     }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:bankcardmaker/widgets/saved_cards_list.dart';
 import 'package:flutter/material.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:path_provider/path_provider.dart';
@@ -33,7 +34,6 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
       } else {
         var prefs = await SharedPreferences.getInstance();
         var id = pathList[index].split('/').reversed.toList()[0];
-
         String shareText = prefs.getString(id);
         Share.text("Account Details", shareText, "text/plain");
       }
@@ -67,6 +67,86 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
     return photoDir;
   }
 
+// Bottom Sheet fo sharing
+  shareSheet(pathList, index, context) {
+    showBottomSheet(
+        elevation: 5,
+        context: context,
+        builder: (context) {
+          return Material(
+            color: Colors.amber[50],
+            child: Container(
+              height: 100,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListTile(
+                      onTap: () {
+                        print("helo");
+                        print(tapped.toString());
+                        !tapped
+                            ? _share(pathList, index, false)
+                            : print("tapped");
+                      },
+                      leading: Icon(Icons.text_fields),
+                      title: Text('Share as Text'),
+                      trailing: Icon(Icons.chevron_right),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                      onTap: () {
+                        !tapped
+                            ? _share(pathList, index, true)
+                            : print("tapped");
+                      },
+                      leading: Icon(Icons.image),
+                      title: Text('Share as Image'),
+                      trailing: Icon(Icons.chevron_right),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+// Dialog for Delete
+  deleteDialog(pathList, index, context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Do you want to delete this card ?"),
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Cancel")),
+              FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      try {
+                        File(pathList[index]).deleteSync();
+                      } catch (e) {
+                        print("couldnt delete");
+                      }
+                      Navigator.of(context).pop();
+                    });
+                  },
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  ))
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     print(tapped);
@@ -76,11 +156,12 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
         title: Text('Saved Cards'),
       ),
       body: FutureBuilder<Directory>(
-          future: _getImgs(),
-          builder: (context, snapshot) {
-            var child;
-            List pathList;
+        future: _getImgs(),
+        builder: (context, snapshot) {
+          var child;
 
+          if (snapshot.hasData) {
+            List pathList;
             try {
               pathList = snapshot.data
                   .listSync()
@@ -94,163 +175,19 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                 ),
               );
             }
-
-            if (snapshot.hasData) {
-              child = ListView.builder(
-                itemCount: pathList.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: EdgeInsets.symmetric(vertical: 7, horizontal: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: Column(
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                topRight: Radius.circular(12)),
-                            child: Image.file(
-                              File(pathList[index]),
-                              width: double.infinity,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    showBottomSheet(
-                                        elevation: 5,
-                                        context: context,
-                                        builder: (context) {
-                                          return Material(
-                                            color: Colors.amber[50],
-                                            child: Container(
-                                              height: 100,
-                                              child: Column(
-                                                children: [
-                                                  Expanded(
-                                                    child: ListTile(
-                                                      onTap: () {
-                                                        print("helo");
-                                                        print(
-                                                            tapped.toString());
-                                                        !tapped
-                                                            ? _share(pathList,
-                                                                index, false)
-                                                            : print("tapped");
-                                                      },
-                                                      leading: Icon(
-                                                          Icons.text_fields),
-                                                      title:
-                                                          Text('Share as Text'),
-                                                      trailing: Icon(
-                                                          Icons.chevron_right),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: ListTile(
-                                                      onTap: () {
-                                                        !tapped
-                                                            ? _share(pathList,
-                                                                index, true)
-                                                            : print("tapped");
-                                                      },
-                                                      leading:
-                                                          Icon(Icons.image),
-                                                      title: Text(
-                                                          'Share as Image'),
-                                                      trailing: Icon(
-                                                          Icons.chevron_right),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        });
-                                    // _share(pathList, index);
-                                  });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 8),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(Icons.share),
-                                      SizedBox(width: 6),
-                                      Text("Share")
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  try {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: Text(
-                                                "Do you want to delete this card ?"),
-                                            actions: [
-                                              FlatButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text("Cancel")),
-                                              FlatButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      File(pathList[index])
-                                                          .deleteSync();
-                                                    });
-                                                  },
-                                                  child: Text(
-                                                    "Delete",
-                                                    style: TextStyle(
-                                                      color: Colors.red,
-                                                    ),
-                                                  ))
-                                            ],
-                                          );
-                                        });
-                                  } catch (e) {
-                                    print(e);
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(Icons.delete),
-                                      SizedBox(width: 6),
-                                      Text("Delete")
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            } else {
-              child = Container(
-                child: Text("Error"),
-              );
-            }
-            return child;
-          }),
+            child = SavedCardsList(
+              pathList: pathList,
+              shareSheet: shareSheet,
+              deleteDialog: deleteDialog,
+            );
+          } else {
+            child = Container(
+              child: Text("Error"),
+            );
+          }
+          return child;
+        },
+      ),
     );
   }
 }
