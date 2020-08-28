@@ -25,10 +25,18 @@ class _FormScreenState extends State<FormScreen> {
   List<Bank> _banks;
   List<String> _bankOptions = [];
 
-  Future<List<String>> _getCountryList() async {
+  Future<List<String>> _getCountryList(context) async {
     try {
       var prefs = await SharedPreferences.getInstance();
       var banksString = await prefs.get("banks");
+      (banksString == null || banksString == '[]')
+          ? Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(
+              "Please check your network connection",
+              textAlign: TextAlign.center,
+            )))
+          : print("Network connection existsI");
+
       var banksJson = json.decode(banksString);
       _banks = ServerJsonResponse.decodeBankList(banksJson);
       var countries = _banks.map((e) => e.country).toSet().toList();
@@ -54,134 +62,139 @@ class _FormScreenState extends State<FormScreen> {
         //   title: 'Enter Your Details',
         // ),
         backgroundColor: Colors.indigo,
-        body: FutureBuilder<List<String>>(
-            future: _getCountryList(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return AnnotatedRegion<SystemUiOverlayStyle>(
-                  value: SystemUiOverlayStyle.light,
-                  child: GestureDetector(
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    child: Form(
-                      key: _formKey,
-                      child: SingleChildScrollView(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 40.0,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            //  Divider(),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 40, 0, 30),
-                              child: Text("Enter Your Details",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6
-                                      .copyWith(color: Colors.white)),
-                            ),
-                            MyTextBox(
-                              title: "Name",
-                              hint: "Enter your Name",
-                              icon: Icons.account_circle,
-                              input: TextInputType.name,
-                              setter: (v) => _cardItem.setName = v,
-                            ),
+        body: Builder(builder: (context) {
+          return FutureBuilder<List<String>>(
+              future: _getCountryList(context),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  print("SnapShot data >>>>>>>>>");
+                  print(snapshot.data);
+                  return AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: SystemUiOverlayStyle.light,
+                    child: GestureDetector(
+                      onTap: () => FocusScope.of(context).unfocus(),
+                      child: Form(
+                        key: _formKey,
+                        child: SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 40.0,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              //  Divider(),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 40, 0, 30),
+                                child: Text("Enter Your Details",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        .copyWith(color: Colors.white)),
+                              ),
+                              MyTextBox(
+                                title: "Name",
+                                hint: "Enter your Name",
+                                icon: Icons.account_circle,
+                                input: TextInputType.name,
+                                setter: (v) => _cardItem.setName = v,
+                              ),
 
-                            MyDropDown(
-                              displayText: 'Choose Your Country',
-                              icon: (Icons.public),
-                              list: snapshot.data,
-                              getter: () => _cardItem.getCountry,
-                              setter: (v) => _cardItem.setCountry = v,
-                              setState: (Function func) {
-                                setState(() {
-                                  func();
-                                  _bankOptions =
-                                      _getBankList(_cardItem.getCountry);
-                                });
-                              },
-                            ),
-                            MyDropDown(
-                              displayText: 'Choose Your Bank',
-                              icon: (Icons.account_balance),
-                              list: _bankOptions ?? [],
-                              getter: () => _cardItem.getBank,
-                              setter: (v) => _cardItem.setBank = v,
-                              setState: (Function func) {
-                                setState(() {
-                                  func();
-                                });
-                              },
-                            ),
+                              MyDropDown(
+                                displayText: 'Choose Your Country',
+                                icon: (Icons.public),
+                                list: snapshot.data,
+                                getter: () => _cardItem.getCountry,
+                                setter: (v) => _cardItem.setCountry = v,
+                                setState: (Function func) async {
+                                  setState(() {
+                                    func();
+                                    _bankOptions =
+                                        _getBankList(_cardItem.getCountry);
+                                  });
+                                },
+                              ),
+                              MyDropDown(
+                                displayText: 'Choose Your Bank',
+                                icon: (Icons.account_balance),
+                                list: _bankOptions ?? [],
+                                getter: () => _cardItem.getBank,
+                                setter: (v) => _cardItem.setBank = v,
+                                setState: (Function func) {
+                                  setState(() {
+                                    func();
+                                  });
+                                },
+                              ),
 
-                            MyTextBox(
-                              title: "Account Number",
-                              hint: "Enter your Account Number",
-                              icon: Icons.account_balance_wallet,
-                              input: TextInputType.number,
-                              setter: (v) => _cardItem.setAccountNo = v,
-                            ),
+                              MyTextBox(
+                                title: "Account Number",
+                                hint: "Enter your Account Number",
+                                icon: Icons.account_balance_wallet,
+                                input: TextInputType.number,
+                                setter: (v) => _cardItem.setAccountNo = v,
+                              ),
 
-                            MyTextBox(
-                              title: "IFSC",
-                              hint: "Enter your IFSC Code",
-                              icon: Icons.payment,
-                              input: TextInputType.text,
-                              setter: (v) => _cardItem.setIfsc = v,
-                            ),
+                              MyTextBox(
+                                title: "IFSC",
+                                hint: "Enter your IFSC Code",
+                                icon: Icons.payment,
+                                input: TextInputType.text,
+                                setter: (v) => _cardItem.setIfsc = v,
+                              ),
 
-                            MyTextBox(
-                              title: "Branch",
-                              hint: "Enter your Branch",
-                              icon: Icons.business,
-                              input: TextInputType.text,
-                              setter: (v) => _cardItem.setBranch = v,
-                            ),
-                            MyTextBox(
-                              title: "Email",
-                              hint: "Enter your Email Address",
-                              icon: Icons.email,
-                              input: TextInputType.text,
-                              setter: (v) => _cardItem.setEmail = v,
-                            ),
-                            MyTextBox(
-                              title: "Phone",
-                              hint: "Enter your Phone Number",
-                              icon: Icons.phone_android,
-                              input: TextInputType.phone,
-                              setter: (v) => _cardItem.setPhone = v,
-                            ),
+                              MyTextBox(
+                                title: "Branch",
+                                hint: "Enter your Branch",
+                                icon: Icons.business,
+                                input: TextInputType.text,
+                                setter: (v) => _cardItem.setBranch = v,
+                              ),
+                              MyTextBox(
+                                title: "Email",
+                                hint: "Enter your Email Address",
+                                icon: Icons.email,
+                                input: TextInputType.text,
+                                setter: (v) => _cardItem.setEmail = v,
+                              ),
+                              MyTextBox(
+                                title: "Phone",
+                                hint: "Enter your Phone Number",
+                                icon: Icons.phone_android,
+                                input: TextInputType.phone,
+                                setter: (v) => _cardItem.setPhone = v,
+                              ),
 
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                _buildGpaybox(
-                                    getter: () => _cardItem.getGpay,
-                                    setter: (v) => _cardItem.setGpay = v),
-                              ],
-                            ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  _buildGpaybox(
+                                      getter: () => _cardItem.getGpay,
+                                      setter: (v) => _cardItem.setGpay = v),
+                                ],
+                              ),
 
-                            CreateButton(
-                                formKey: _formKey, cardItem: _cardItem),
-                          ],
+                              CreateButton(
+                                  formKey: _formKey, cardItem: _cardItem),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              } else {
-                return Center(
-                  child: Container(
-                    child: SpinKitCircle(
-                      color: Colors.white,
-                      size: 45,
+                  );
+                } else {
+                  return Center(
+                    child: Container(
+                      child: SpinKitCircle(
+                        color: Colors.white,
+                        size: 45,
+                      ),
                     ),
-                  ),
-                );
-              }
-            }),
+                  );
+                }
+              });
+        }),
       ),
     );
   }

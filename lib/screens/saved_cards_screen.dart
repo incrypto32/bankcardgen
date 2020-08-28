@@ -20,6 +20,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
   //
   // Share Image Function
   bool tapped = false;
+
   Future<void> _share(pathList, int index, bool image) async {
     tapped = true;
 

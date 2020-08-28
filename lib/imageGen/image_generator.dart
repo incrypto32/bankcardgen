@@ -207,17 +207,24 @@ class ImgFromTempelate {
       text = "";
 
       map.forEach((key, value) {
-        // print(text);
+        print("$key : $value");
         if (key != 'Gpay' && key != 'Bank') {
           if (!(value.toString().replaceAll(new RegExp(r"\s+"), '') == '' ||
               value == null)) {
             if (key == 'Ac/No') {
+              print("Printed  $key : $value");
               text += '\n$key : $value';
             } else if (['Name', 'IFSC', 'IBAN', 'Branch'].contains(key)) {
+              print("Printed  $key : $value");
               text2 += '\n$key : $value';
             } else if (key != 'Phone') {
+              print("Printed  $key : $value");
               text3 += '\n$key : $value';
             } else if (key == 'Phone' && map['Gpay'] == false) {
+              print("Printed $key : $value");
+              text3 += '\n$key : $value';
+            } else {
+              print("Printed  $key : $value");
               text3 += '\n$key : $value';
             }
           }
@@ -290,15 +297,6 @@ class ImgFromTempelate {
         details['Bank'] + '.png',
       );
     }
-
-    // // Loading the tempelate banktamlet
-    // fromAsset
-    //     ? img = await loadImageFromCacheOrNetwork(
-    //         backendImagesEndPoint + '/' + details['Bank'] + '.png')
-    //     // img = await loadImageAsset(
-    //     //     'assets/images/banktamlets/' + details['Bank'] + '.png')
-    //     : img =
-    //         await loadUiImageFromExteranalDirectory(details['Bank'] + '.png');
 
     // The picture recorder which records the canvas
     final ui.PictureRecorder recorder = ui.PictureRecorder();

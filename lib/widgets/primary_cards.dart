@@ -25,6 +25,8 @@ _getCard() async {
   return null;
 }
 
+var tapped = false;
+
 class _PrimaryCardState extends State<PrimaryCard> {
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class _PrimaryCardState extends State<PrimaryCard> {
     return FutureBuilder(
       future: _getCard(),
       builder: (context, snapshot) {
-        // var error = Container(
+        // var child = Container(
         //   height: double.infinity,
         //   alignment: Alignment.center,
         //   child:
@@ -40,27 +42,55 @@ class _PrimaryCardState extends State<PrimaryCard> {
         // );
 
         var error = Image.asset('assets/images/banktamlets/placeholder.png');
+        var child = error;
         if (snapshot.hasData) {
           try {
             if ((snapshot.data != null)) {
-              return Image.file(
+              child = Image.file(
                 snapshot.data ?? File(stateProvider.primaryCard),
               );
             }
-            return error;
           } catch (e) {
-            print("error occured catched");
-            print(e);
-
-            return error;
+            print("__________error occured catched________");
+            child = error;
           }
-        }
-        if (snapshot.hasError) {
-          print("error occured snapshot");
-          return error;
+        } else if (snapshot.hasError) {
+          print("__________error occured snapshot catched________");
+          child = error;
         } else {
-          return error;
+          child = error;
         }
+        return InkWell(
+          child: child,
+          onTap: () {
+            Scaffold.of(context).showBottomSheet(
+              (context) => Material(
+                color: Colors.white,
+                child: Container(
+                    height: 150,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListTile(
+                            onTap: () {
+                              print("helo");
+                              print(tapped.toString());
+                              !tapped
+                                  // ? _share(pathList, index, false)
+                                  ? print("object")
+                                  : print("tapped");
+                            },
+                            leading: Icon(Icons.text_fields),
+                            title: Text('Share as Text'),
+                            trailing: Icon(Icons.chevron_right),
+                          ),
+                        )
+                      ],
+                    )),
+              ),
+            );
+          },
+        );
       },
     );
   }
