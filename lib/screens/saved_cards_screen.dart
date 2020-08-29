@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:bankcardmaker/providers/state_provider.dart';
+import 'package:bankcardmaker/tools/tool_functions.dart';
 import 'package:bankcardmaker/widgets/saved_cards_list.dart';
 import 'package:flutter/material.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
@@ -19,34 +20,6 @@ class SavedCardsScreen extends StatefulWidget {
 class _SavedCardsScreenState extends State<SavedCardsScreen> {
   //
   // Share Image Function
-  bool tapped = false;
-
-  Future<void> _share(pathList, int index, bool image) async {
-    tapped = true;
-
-    try {
-      if (image) {
-        final Uint8List byteArray =
-            await File(pathList[index].toString()).readAsBytes();
-        await Share.file(
-          'esys image',
-          'bank.png',
-          byteArray,
-          'image/png',
-        );
-      } else {
-        var prefs = await SharedPreferences.getInstance();
-        var id = pathList[index].split('/').reversed.toList()[0];
-        String shareText = prefs.getString(id);
-        Share.text("Account Details", shareText, "text/plain");
-      }
-      tapped = false;
-    } catch (e) {
-      print('error: $e');
-      tapped = false;
-    }
-    tapped = false;
-  }
 
   // get Images from filesystem
   Future<Directory> _getImgs() async {
@@ -70,53 +43,24 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
     return photoDir;
   }
 
-// Bottom Sheet fo sharing
-  shareSheet(pathList, index, context) {
-    showBottomSheet(
-        elevation: 5,
-        context: context,
-        builder: (context) {
-          return Material(
-            color: Colors.amber[50],
-            child: Container(
-              height: 100,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListTile(
-                      onTap: () {
-                        print("helo");
-                        print(tapped.toString());
-                        !tapped
-                            ? _share(pathList, index, false)
-                            : print("tapped");
-                      },
-                      leading: Icon(Icons.text_fields),
-                      title: Text('Share as Text'),
-                      trailing: Icon(Icons.chevron_right),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      onTap: () {
-                        !tapped
-                            ? _share(pathList, index, true)
-                            : print("tapped");
-                      },
-                      leading: Icon(Icons.image),
-                      title: Text('Share as Image'),
-                      trailing: Icon(Icons.chevron_right),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
+  void onDelete(path) async {
+    var prefs = await SharedPreferences.getInstance();
+    var val = prefs.getString("primaryCard");
+    setState(() {
+      try {
+        File(path).deleteSync();
+      } catch (e) {
+        print("couldnt delete");
+      }
+      if (val == path) {
+        stateProvider.changePrimaryCard(null);
+      }
+      Navigator.of(context).pop();
+    });
   }
 
 // Dialog for Delete
-  deleteDialog(pathList, index, context) {
+  deleteDialog(path, context) {
     showDialog(
         context: context,
         builder: (context) {
@@ -129,27 +73,16 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                   },
                   child: Text("Cancel")),
               FlatButton(
-                  onPressed: () async {
-                    var prefs = await SharedPreferences.getInstance();
-                    var val = prefs.getString("primaryCard");
-                    setState(() {
-                      try {
-                        File(pathList[index]).deleteSync();
-                      } catch (e) {
-                        print("couldnt delete");
-                      }
-                      if (val == pathList[index]) {
-                        stateProvider.changePrimaryCard(null);
-                      }
-                      Navigator.of(context).pop();
-                    });
-                  },
-                  child: Text(
-                    "Delete",
-                    style: TextStyle(
-                      color: Colors.red,
-                    ),
-                  ))
+                onPressed: () {
+                  onDelete(path);
+                },
+                child: Text(
+                  "Delete",
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              )
             ],
           );
         });
@@ -157,7 +90,6 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(tapped);
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -185,7 +117,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
             }
             child = SavedCardsList(
               pathList: pathList,
-              shareSheet: shareSheet,
+              shareSheet: ToolFunctions.shareSheet,
               deleteDialog: deleteDialog,
             );
           } else {

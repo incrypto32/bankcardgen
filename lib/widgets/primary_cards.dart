@@ -25,6 +25,36 @@ _getCard() async {
   return null;
 }
 
+shareSheet(context) {
+  Scaffold.of(context).showBottomSheet(
+    (context) => Material(
+      color: Colors.white,
+      child: Container(
+        height: 150,
+        child: Column(
+          children: [
+            Expanded(
+              child: ListTile(
+                onTap: () {
+                  print("helo");
+                  print(tapped.toString());
+                  !tapped
+                      // ? _share(pathList, index, false)
+                      ? print("object")
+                      : print("tapped");
+                },
+                leading: Icon(Icons.text_fields),
+                title: Text('Share as Text'),
+                trailing: Icon(Icons.chevron_right),
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 var tapped = false;
 
 class _PrimaryCardState extends State<PrimaryCard> {
@@ -34,13 +64,6 @@ class _PrimaryCardState extends State<PrimaryCard> {
     return FutureBuilder(
       future: _getCard(),
       builder: (context, snapshot) {
-        // var child = Container(
-        //   height: double.infinity,
-        //   alignment: Alignment.center,
-        //   child:
-        //       Text(stateProvider.primaryCard ?? "Set your Primary card now"),
-        // );
-
         var error = Image.asset('assets/images/banktamlets/placeholder.png');
         var child = error;
         if (snapshot.hasData) {
@@ -63,32 +86,7 @@ class _PrimaryCardState extends State<PrimaryCard> {
         return InkWell(
           child: child,
           onTap: () {
-            Scaffold.of(context).showBottomSheet(
-              (context) => Material(
-                color: Colors.white,
-                child: Container(
-                    height: 150,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: ListTile(
-                            onTap: () {
-                              print("helo");
-                              print(tapped.toString());
-                              !tapped
-                                  // ? _share(pathList, index, false)
-                                  ? print("object")
-                                  : print("tapped");
-                            },
-                            leading: Icon(Icons.text_fields),
-                            title: Text('Share as Text'),
-                            trailing: Icon(Icons.chevron_right),
-                          ),
-                        )
-                      ],
-                    )),
-              ),
-            );
+            shareSheet(context);
           },
         );
       },
