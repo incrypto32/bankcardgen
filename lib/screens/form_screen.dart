@@ -6,6 +6,7 @@ import 'package:bankcardmaker/widgets/create_button.dart';
 import 'package:bankcardmaker/widgets/my_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../accessories/constants.dart';
 import 'package:flutter/services.dart';
@@ -49,6 +50,8 @@ class _FormScreenState extends State<FormScreen> {
 
   List<String> _getBankList(String country) {
     var list = _banks ?? [];
+    print("Getting banklist");
+    print(_banks);
     return list.where((e) => e.country == country).map((e) => e.bank).toList();
   }
 
@@ -105,8 +108,12 @@ class _FormScreenState extends State<FormScreen> {
                                 displayText: 'Choose Your Country',
                                 icon: (Icons.public),
                                 list: snapshot.data,
-                                getter: () => _cardItem.getCountry,
-                                setter: (v) => _cardItem.setCountry = v,
+                                getter: _cardItem.getCountry,
+                                setter: (v) {
+                                  setState(() {
+                                    _cardItem.setCountry = v;
+                                  });
+                                },
                                 setState: (Function func) async {
                                   setState(() {
                                     func();
@@ -119,7 +126,7 @@ class _FormScreenState extends State<FormScreen> {
                                 displayText: 'Choose Your Bank',
                                 icon: (Icons.account_balance),
                                 list: _bankOptions ?? [],
-                                getter: () => _cardItem.getBank,
+                                getter: _cardItem.getBank,
                                 setter: (v) => _cardItem.setBank = v,
                                 setState: (Function func) {
                                   setState(() {
@@ -166,14 +173,17 @@ class _FormScreenState extends State<FormScreen> {
                                 setter: (v) => _cardItem.setPhone = v,
                               ),
 
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  _buildGpaybox(
-                                      getter: () => _cardItem.getGpay,
-                                      setter: (v) => _cardItem.setGpay = v),
-                                ],
-                              ),
+                              _cardItem.country == 'India'
+                                  ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        _buildGpaybox(
+                                            getter: () => _cardItem.getGpay,
+                                            setter: (v) =>
+                                                _cardItem.setGpay = v),
+                                      ],
+                                    )
+                                  : Container(),
 
                               CreateButton(
                                   formKey: _formKey, cardItem: _cardItem),

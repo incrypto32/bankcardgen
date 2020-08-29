@@ -1,14 +1,13 @@
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:bankcardmaker/providers/state_provider.dart';
-import 'package:bankcardmaker/tools/tool_functions.dart';
-import 'package:bankcardmaker/widgets/saved_cards_list.dart';
+
 import 'package:flutter/material.dart';
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:bankcardmaker/providers/state_provider.dart';
+import 'package:bankcardmaker/widgets/saved_cards_list.dart';
 
 class SavedCardsScreen extends StatefulWidget {
   static const String routeName = "/savedCardsScreen";
@@ -117,7 +116,6 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
             }
             child = SavedCardsList(
               pathList: pathList,
-              shareSheet: ToolFunctions.shareSheet,
               deleteDialog: deleteDialog,
             );
           } else {

@@ -1,19 +1,20 @@
 import 'dart:io';
 
-import 'package:bankcardmaker/providers/state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:bankcardmaker/providers/state_provider.dart';
+import 'package:bankcardmaker/tools/tool_functions.dart';
 
 class SavedCard extends StatelessWidget {
   SavedCard({
     Key key,
     @required this.path,
-    @required this.shareSheet,
     @required this.deleteDialog,
   }) : super(key: key);
 
   final String path;
-  final Function shareSheet;
+
   final Function deleteDialog;
 
   @override
@@ -40,7 +41,7 @@ class SavedCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                ShareButton(shareSheet: shareSheet, path: path),
+                ShareButton(path: path),
                 InkWell(
                   onTap: () {
                     deleteDialog(path, context);
@@ -115,21 +116,15 @@ class ShareTapped extends ChangeNotifier {
 class ShareButton extends StatelessWidget {
   ShareButton({
     Key key,
-    @required this.shareSheet,
     @required this.path,
   }) : super(key: key);
-
-  final Function shareSheet;
 
   final String path;
 
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await shareSheet(
-          path,
-          context,
-        );
+        await ToolFunctions.shareSheet(path, context);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

@@ -1,4 +1,6 @@
-class CardItem {
+import 'package:flutter/cupertino.dart';
+
+class CardItem extends ChangeNotifier {
   String name;
   String accountNumber;
   String ifsc;
@@ -11,6 +13,11 @@ class CardItem {
 
   set setCountry(String value) {
     this.country = value;
+  }
+
+  setCountryMethod(String value) {
+    this.country = value;
+    notifyListeners();
   }
 
   set setPhone(String value) {

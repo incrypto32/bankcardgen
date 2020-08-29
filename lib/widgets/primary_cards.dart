@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bankcardmaker/providers/state_provider.dart';
+import 'package:bankcardmaker/tools/tool_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -23,36 +24,6 @@ _getCard() async {
     return File(path);
   }
   return null;
-}
-
-shareSheet(context) {
-  Scaffold.of(context).showBottomSheet(
-    (context) => Material(
-      color: Colors.white,
-      child: Container(
-        height: 150,
-        child: Column(
-          children: [
-            Expanded(
-              child: ListTile(
-                onTap: () {
-                  print("helo");
-                  print(tapped.toString());
-                  !tapped
-                      // ? _share(pathList, index, false)
-                      ? print("object")
-                      : print("tapped");
-                },
-                leading: Icon(Icons.text_fields),
-                title: Text('Share as Text'),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            )
-          ],
-        ),
-      ),
-    ),
-  );
 }
 
 var tapped = false;
@@ -86,7 +57,11 @@ class _PrimaryCardState extends State<PrimaryCard> {
         return InkWell(
           child: child,
           onTap: () {
-            shareSheet(context);
+            ToolFunctions.shareSheet(
+              snapshot.data.path,
+              context,
+              primaryCard: true,
+            );
           },
         );
       },

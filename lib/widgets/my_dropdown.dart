@@ -5,7 +5,7 @@ class MyDropDown extends StatelessWidget {
   final IconData icon;
   final String displayText;
   final List list;
-  final Function getter;
+  final String getter;
   final Function setter;
   final Function setState;
   const MyDropDown({
@@ -56,7 +56,7 @@ class MyDropDown extends StatelessWidget {
                     setter(selectedValue);
                   });
                 },
-                value: getter(),
+                value: getter,
                 isExpanded: true,
                 hint: Text(
                   displayText,

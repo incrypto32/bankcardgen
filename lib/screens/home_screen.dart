@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:bankcardmaker/widgets/main_appbar.dart';
 import 'package:bankcardmaker/widgets/main_column.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:share/share.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
