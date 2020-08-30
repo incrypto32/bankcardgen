@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:bankcardmaker/imageGen/image_generator.dart';
 import 'package:bankcardmaker/models/card_item.dart';
+import 'package:bankcardmaker/tools/tool_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -153,26 +154,28 @@ class _CreateButtonState extends State<CreateButton> {
               _stopLoading();
             } catch (e) {
               _stopLoading();
-              print("NEYT");
+              print("NETWORK ISSUE");
               String msg;
-              e.runtimeType == SocketException
-                  ? msg = "Check your network connection"
-                  : msg = 'Image generation failed. Please fill all the fields';
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Container(
-                    height: 20,
-                    alignment: Alignment.center,
-                    child: FittedBox(
-                      child: Text(
-                        msg,
-                        style: TextStyle(color: Colors.red),
+              msg = 'Image generation failed. Please fill all the fields';
+              var connection =
+                  await ToolFunctions.checkConnectivity(context: context);
+              if (connection) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Container(
+                      height: 20,
+                      alignment: Alignment.center,
+                      child: FittedBox(
+                        child: Text(
+                          msg,
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
                     ),
+                    backgroundColor: Colors.white,
                   ),
-                  backgroundColor: Colors.white,
-                ),
-              );
+                );
+              }
             }
           }
 

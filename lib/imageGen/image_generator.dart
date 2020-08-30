@@ -208,7 +208,7 @@ class ImgFromTempelate {
 
       map.forEach((key, value) {
         print("$key : $value");
-        if (key != 'Gpay' && key != 'Bank') {
+        if (!(key == 'Gpay' || key == 'Bank')) {
           if (!(value.toString().replaceAll(new RegExp(r"\s+"), '') == '' ||
               value == null)) {
             if (key == 'Ac/No') {
@@ -220,10 +220,11 @@ class ImgFromTempelate {
             } else if (key != 'Phone') {
               print("Printed  $key : $value");
               text3 += '\n$key : $value';
-            } else if (key == 'Phone' && map['Gpay'] == false) {
+            } else if (key == 'Phone' &&
+                (map['Gpay'] == false || map['Gpay'] == null)) {
               print("Printed $key : $value");
               text3 += '\n$key : $value';
-            } else {
+            } else if (key != 'Phone') {
               print("Printed  $key : $value");
               text3 += '\n$key : $value';
             }

@@ -7,7 +7,7 @@ class MyDropDown extends StatelessWidget {
   final List list;
   final String getter;
   final Function setter;
-  final Function setState;
+
   const MyDropDown({
     Key key,
     this.icon,
@@ -15,7 +15,6 @@ class MyDropDown extends StatelessWidget {
     this.list,
     this.getter,
     this.setter,
-    this.setState,
   }) : super(key: key);
 
   @override
@@ -52,9 +51,8 @@ class MyDropDown extends StatelessWidget {
                     )
                     .toList(),
                 onChanged: (selectedValue) {
-                  setState(() {
-                    setter(selectedValue);
-                  });
+                  print("_______________running onChanged_______________");
+                  setter(selectedValue);
                 },
                 value: getter,
                 isExpanded: true,

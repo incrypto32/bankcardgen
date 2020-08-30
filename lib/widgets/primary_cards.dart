@@ -18,8 +18,7 @@ class PrimaryCard extends StatefulWidget {
 _getCard() async {
   var prefs = await SharedPreferences.getInstance();
   var path = prefs.getString("primaryCard");
-  var fileExists = await File(path ?? 'adfad').exists();
-  print("boom ><>" + fileExists.toString());
+  var fileExists = await File(path ?? 'ILLATHA ORU PATH___').exists();
   if (fileExists) {
     return File(path);
   }

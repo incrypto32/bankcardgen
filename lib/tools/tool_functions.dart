@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -94,5 +95,27 @@ class ToolFunctions {
         );
       },
     );
+  }
+
+  static checkConnectivity({BuildContext context}) async {
+    ConnectivityResult connectivityResult =
+        await (Connectivity().checkConnectivity());
+    bool connection;
+    if (connectivityResult == ConnectivityResult.none) {
+      connection = false;
+      if (context != null) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Please check your network connection",
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    } else {
+      connection = true;
+    }
+    return connection;
   }
 }
