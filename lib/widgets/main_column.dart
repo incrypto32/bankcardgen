@@ -1,4 +1,5 @@
 import 'package:bankcardmaker/providers/state_provider.dart';
+import 'package:bankcardmaker/services/database_service.dart';
 import 'package:bankcardmaker/widgets/primary_cards.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +40,12 @@ class MainColumn extends StatelessWidget {
             ),
           ),
         ),
+        // FlatButton(
+        //     onPressed: () {
+        //       print("test button clicked");
+        //       DatabaseService.test("South Indian Bank");
+        //     },
+        // child: Text("Click Me")),
         Expanded(
           flex: 2,
           child: Container(

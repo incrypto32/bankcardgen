@@ -22,14 +22,7 @@ class BankRequestFormState extends State<BankRequestForm> {
   }
 
   var selectedCountry;
-  final List<String> _countries = [
-    "India",
-    "Qatar",
-    "Abu Dabi",
-    "Kuwait",
-    "Sharjah",
-    "Muscat"
-  ];
+  final List<String> _countries = ["India"];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
