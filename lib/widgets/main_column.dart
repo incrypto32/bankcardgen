@@ -1,5 +1,4 @@
 import 'package:bankcardmaker/providers/state_provider.dart';
-import 'package:bankcardmaker/services/database_service.dart';
 import 'package:bankcardmaker/widgets/primary_cards.dart';
 import 'package:flutter/material.dart';
 

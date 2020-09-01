@@ -56,7 +56,7 @@ class DatabaseService {
   }
 
 // Ads Driver whether be it bank or random
-  static Future getAd(String bank) async {
+  static Future<Ad> getAd(String bank) async {
     print("_______________getAd called_________________");
     int rand(n, dn) {
       int r;
@@ -100,6 +100,7 @@ class DatabaseService {
         return null;
       }
     }
+    return null;
   }
 
   // Gets a random ad from doc path
