@@ -57,12 +57,14 @@ class _FormScreenState extends State<FormScreen> {
     print(_banks);
     _bankOptions =
         list.where((e) => e.country == country).map((e) => e.bank).toList();
-    print(_bankOptions);
+    print(_bankOptions.toString());
+
     // if()
     // _cardItem.setBank = _bankOptions[0] ?? '';
     return _bankOptions;
   }
 
+  String bankCode = "IFSC";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,8 +119,14 @@ class _FormScreenState extends State<FormScreen> {
                                   _cardItem.setCountry = v;
                                   _cardItem.setBank = null;
                                   _cardItem.setGpay = false;
+                                  if (v == "India") {
+                                    bankCode = "IFSC";
+                                  } else {
+                                    bankCode = "IBAN";
+                                  }
                                   print(
-                                      "______________Country  Changed to $v ____________");
+                                    "______________Country  Changed to $v ____________",
+                                  );
                                 });
                               },
                             ),
@@ -142,10 +150,26 @@ class _FormScreenState extends State<FormScreen> {
                               input: TextInputType.number,
                               setter: (v) => _cardItem.setAccountNo = v,
                             ),
+                            MyDropDown(
+                              displayText: 'Account Type',
+                              icon: (Icons.account_balance),
+                              list: [
+                                "Savings Account",
+                                "Current Account",
+                                "NRO Account",
+                                "NRE Account"
+                              ],
+                              getter: _cardItem.getType,
+                              setter: (v) {
+                                setState(() {
+                                  _cardItem.setType = v;
+                                });
+                              },
+                            ),
 
                             MyTextBox(
                               title: "IFSC",
-                              hint: "Enter your IFSC Code",
+                              hint: "Enter your $bankCode Code",
                               icon: Icons.payment,
                               input: TextInputType.text,
                               setter: (v) => _cardItem.setIfsc = v,

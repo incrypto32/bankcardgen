@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class CardItem extends ChangeNotifier {
+class CardItem {
   String name;
   String accountNumber;
   String ifsc;
@@ -9,15 +9,15 @@ class CardItem extends ChangeNotifier {
   String country;
   String phone;
   String email;
+  String type;
   bool gPay;
 
   set setCountry(String value) {
     this.country = value;
   }
 
-  setCountryMethod(String value) {
-    this.country = value;
-    notifyListeners();
+  set setType(String value) {
+    this.type = value;
   }
 
   set setPhone(String value) {
@@ -55,6 +55,7 @@ class CardItem extends ChangeNotifier {
   get getGpay => this.gPay;
   get getBank => this.bank;
   get getCountry => this.country;
+  get getType => this.type;
   Map<String, dynamic> get toMap {
     String code;
     country == 'India' ? code = "IFSC" : code = "IBAN";
@@ -67,6 +68,7 @@ class CardItem extends ChangeNotifier {
       "Phone": phone,
       "Email": email,
       "Gpay": gPay,
+      "Type": type
     };
   }
 
@@ -82,7 +84,7 @@ class CardItem extends ChangeNotifier {
       text += "\nCountry : " + country.toString();
     }
     if (name != null) {
-      text += "\nBank : " + name.toString();
+      text += "\nName : " + name.toString();
     }
     if (ifsc != null) {
       text += country != "India"

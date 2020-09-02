@@ -6,6 +6,8 @@ import 'package:bankcardmaker/models/request.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// var print = (a) {};
+
 class DatabaseService {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
   static CollectionReference banks = firestore.collection('banks');
@@ -17,11 +19,16 @@ class DatabaseService {
     return banks.add({});
   }
 
-  static Future<void> getBanks() async {
+  // gets Banks from server and caches the data
+  static Future<bool> getBanks({bool caching = false}) async {
+    print("_______________________getBanks________________________");
+    print("getBanks called with caching : $caching ");
+    var getOption = GetOptions(
+      source: caching ? Source.cache : Source.serverAndCache,
+    );
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      print(banks);
-      var bankSnapshots = await banks.get();
+      var bankSnapshots = await banks.get(getOption);
       List<Map<String, dynamic>> bankMapList = bankSnapshots.docs.map((e) {
         if (e.exists) {
           return e.data();
@@ -32,7 +39,7 @@ class DatabaseService {
 
       print(json.decode(bankListJson).runtimeType);
       print(
-        "__________________Caching to Shared Preferences___________________",
+        "----Caching to Shared Preferences----",
       );
       bool value;
       if (!(bankListJson.toString().replaceAll(new RegExp(r"\s+"), '') ==
@@ -45,26 +52,108 @@ class DatabaseService {
       }
       print("saved : " + value.toString());
       print("value : " + bankListJson.toString());
+      print(
+        "|_______________________getBanks ended successfully________________________|",
+      );
+      return true;
     } catch (e) {
       print(e);
+      print(
+        "|_______________________getBanks ended with error____________________________|",
+      );
+      return false;
     }
   }
 
+  // Function which checks the tiemstamp of the latest data updates on server
+  // And accordingly pull data from cache or from server using getBanks()
+  static cacheUpdate(SharedPreferences prefs) async {
+    print(
+      '________________________cacheUpdateCheck called_________________________',
+    );
+    Map<String, dynamic> caching = await metadata
+        .doc('caching')
+        .get()
+        .then((value) => value.exists ? value.data() : null);
+
+    print(caching);
+
+    if (caching['caching'] != null && caching['caching']) {
+      print(
+        "Caching is ${caching['caching']}",
+      );
+
+      Timestamp serverTimeStamp =
+          caching['lud']; // The server time stamp from firebase
+      String localTimeStamp =
+          prefs.getString('lud'); // Local time stamp from cache
+
+      // If there is a serverTimestamp check whether cache is upto date
+      // If not then update cache from server (Done by cache=true in getBanks()))
+
+      if (serverTimeStamp != null && serverTimeStamp.toString().trim() != '') {
+        print(
+          'lud available in server in utc it is ${caching['lud'].toDate().toUtc().toIso8601String()}',
+        );
+
+        print('ISO string timestamp from cache is $localTimeStamp');
+
+        var localTimeStampParsed = localTimeStamp != null
+            ? DateTime.parse(
+                localTimeStamp) // Parse time stamp from sharedprefs
+            : DateTime(2000).toUtc();
+
+        print(
+            'parsed local timestamp is ${localTimeStampParsed.toIso8601String()}');
+        print(
+            'parsed local timestamp in utc is ${localTimeStampParsed.toUtc().toIso8601String()}');
+
+        DateTime serverTimeStampUtc = serverTimeStamp.toDate().toUtc();
+        bool needCacheUpdate = serverTimeStampUtc.isAfter(localTimeStampParsed);
+        print(needCacheUpdate
+            ? 'cache needs update'
+            : 'cache update not required');
+        if (needCacheUpdate) {
+          print('updating Cache');
+          if (await getBanks()) {
+            prefs.setString(
+              "lud",
+              serverTimeStampUtc.toIso8601String(),
+            );
+          }
+        } else {
+          print(
+            "uncomment here if shared preferences need update from local cache",
+          );
+          // await getBanks(caching: true);
+        }
+      } else {
+        print('serverTimestamp null :$serverTimeStamp');
+      }
+    } else {
+      print('It seems the document dont exist');
+      await getBanks();
+    }
+    print('|_______________________cache update end_________________________|');
+  }
+
   static Future<DocumentReference> requestBank(BankRequest request) async {
-    var doc = await banks.add(request.toMap());
+    var doc = banks.add(request.toMap());
     return doc;
   }
 
 // Ads Driver whether be it bank or random
   static Future<Ad> getAd(String bank) async {
     print("_______________getAd called_________________");
+
     int rand(n, dn) {
+      print("-----random number func called-----");
       int r;
       var random = Random();
       do {
         r = random.nextInt(n);
       } while (r + 1 == dn);
-      print("random number output: ${r + 1}");
+      print("----random number output: ${r + 1}----");
       return r + 1;
     }
 
@@ -121,19 +210,14 @@ class DatabaseService {
     return a;
   }
 
-  // // Test functions
-  // static Future test(String path) async {
-  //   getAd("Federal");
-  //   print("test");
-  //   // var bankAdSnaps =
-  //   //     bankAds.get(GetOptions(source: Source.server)).then((value) {
-  //   //   print("then");
-  //   //   print(value.docs);
-  //   //   value.docs.forEach((element) {
-  //   //     print(element.data());
-  //   //   });
-  //   // }).catchError((e) {
-  //   //   print(e);
-  //   // });
-  // }
+  // Test functions
+  static Future test(String path) async {
+    for (var i = 0; i <= 10; i++) {
+      banks.get(GetOptions(source: Source.server)).then((value) {
+        value.docs.forEach((element) {
+          print(element.data());
+        });
+      });
+    }
+  }
 }

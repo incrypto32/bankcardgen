@@ -193,22 +193,23 @@ class ImgFromTempelate {
 // Function to paint text
   static double printPara({
     @required Canvas canvas,
-    bool fromMap,
+    @required bool fromMap,
     Map<String, dynamic> map,
     String text,
     @required double widthConstraint,
     @required Offset offset,
   }) {
+    double fontSize = 55;
     String text2 = "";
     String text3 = "";
 
     //
     if (fromMap && map != null) {
       text = "";
-
+      fontSize = 55;
       map.forEach((key, value) {
         print("$key : $value");
-        if (!(key == 'Gpay' || key == 'Bank')) {
+        if (!(key == 'Gpay' || key == 'Bank' || key == 'Type')) {
           if (!(value.toString().replaceAll(new RegExp(r"\s+"), '') == '' ||
               value == null)) {
             if (key == 'Ac/No') {
@@ -231,12 +232,15 @@ class ImgFromTempelate {
           }
         }
       });
+    } else {
+      print("reached here");
+      fontSize = 40;
     }
 
     TextSpan span = TextSpan(
       style: TextStyle(
         color: Colors.white,
-        fontSize: 55,
+        fontSize: fontSize,
         fontWeight: FontWeight.bold,
       ),
       children: [
@@ -342,6 +346,14 @@ class ImgFromTempelate {
           img: gpayImg,
         );
       }
+
+      printPara(
+        canvas: canvas,
+        fromMap: false,
+        widthConstraint: 400,
+        offset: Offset(40, 40),
+        text: details['Type'] ?? '',
+      );
     } else {
       throw ("Error : details map is null");
     }
