@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:bankcardmaker/imageGen/image_generator.dart';
+import 'package:bankcardmaker/image_generator/image_generator.dart';
 import 'package:bankcardmaker/models/card_item.dart';
 import 'package:bankcardmaker/tools/tool_functions.dart';
 import 'package:bankcardmaker/widgets/ad_widget.dart';

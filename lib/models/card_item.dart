@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class CardItem {
   String name;
   String accountNumber;
@@ -60,7 +58,7 @@ class CardItem {
     String code;
     country == 'India' ? code = "IFSC" : code = "IBAN";
     return {
-      "Ac/No": accountNumber,
+      "A/c No": accountNumber,
       "Name": name,
       "Bank": bank.replaceAll(new RegExp(r"\s+"), "").toLowerCase(),
       "Branch": branch,

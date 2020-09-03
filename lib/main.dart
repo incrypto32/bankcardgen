@@ -1,5 +1,6 @@
 import 'package:bankcardmaker/providers/state_provider.dart';
 import 'package:bankcardmaker/screens/bank_request.dart';
+import 'package:bankcardmaker/screens/card_screen.dart';
 import 'package:bankcardmaker/screens/info_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
         FormScreen.routeName: (context) => FormScreen(),
         SavedCardsScreen.routeName: (context) => SavedCardsScreen(),
         BankRequestForm.routeName: (context) => BankRequestForm(),
-        InfoScreen.routeName: (context) => InfoScreen()
+        InfoScreen.routeName: (context) => InfoScreen(),
+        '/card_screen': (context) => CardScreen()
       },
     );
   }

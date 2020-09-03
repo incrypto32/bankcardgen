@@ -40,6 +40,7 @@ class ImgFromTempelate {
 
   static Future<ui.Image> loadImageFromCacheOrFirebase(String imageUrl) async {
     // final File file = await CustomCacheManager().getSingleFile(imageUrl);
+    print('trying to get $imageUrl');
     final File file = await FirebaseCacheManager().getSingleFile(imageUrl);
     print("Got file from cache: " + file.path);
     final Uint8List byteArray = await file.readAsBytes();
@@ -179,14 +180,14 @@ class ImgFromTempelate {
     // Prints Number
     TextSpan span = TextSpan(
         style: TextStyle(
-            color: Colors.blueGrey, fontSize: 35, fontWeight: FontWeight.bold),
+            color: Colors.blueGrey, fontSize: 45, fontWeight: FontWeight.bold),
         text: 'Pay : $no');
     TextPainter tp = TextPainter(
         text: span,
         textAlign: TextAlign.left,
         textDirection: TextDirection.ltr);
     tp.layout();
-    tp.paint(canvas, offset.translate(80, 20));
+    tp.paint(canvas, offset.translate(75, 15));
     // canvas.drawParagraph(paragraph, offset.translate(90, 10));
   }
 
@@ -212,7 +213,7 @@ class ImgFromTempelate {
         if (!(key == 'Gpay' || key == 'Bank' || key == 'Type')) {
           if (!(value.toString().replaceAll(new RegExp(r"\s+"), '') == '' ||
               value == null)) {
-            if (key == 'Ac/No') {
+            if (key == 'A/c No') {
               print("Printed  $key : $value");
               text += '\n$key : $value';
             } else if (['Name', 'IFSC', 'IBAN', 'Branch'].contains(key)) {
