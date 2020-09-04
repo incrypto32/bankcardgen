@@ -6,8 +6,6 @@ import 'package:bankcardmaker/models/request.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// var print = (a) {};
-
 class DatabaseService {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
   static CollectionReference banks = firestore.collection('banks');
@@ -15,8 +13,17 @@ class DatabaseService {
   static CollectionReference bankAds = firestore.collection('bank_ads');
   static CollectionReference randomAds = firestore.collection('random_ads');
   static CollectionReference metadata = firestore.collection('metadata');
+
   Future<void> addBank() {
     return banks.add({});
+  }
+
+  Future<void> addBankRequest(BankRequest bankRequest) async {
+    try {
+      requests.add(bankRequest.toMap());
+    } catch (e) {
+      print('_________________$e _________________');
+    }
   }
 
   // gets Banks from server and caches the data
