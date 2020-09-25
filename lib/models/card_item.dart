@@ -10,6 +10,18 @@ class CardItem {
   String type;
   bool gPay;
 
+  CardItem({
+    this.phone,
+    this.name,
+    this.accountNumber,
+    this.bank,
+    this.branch,
+    this.country,
+    this.gPay,
+    this.ifsc,
+    this.email,
+  });
+
   set setCountry(String value) {
     this.country = value;
   }
@@ -102,16 +114,4 @@ class CardItem {
     }
     return text;
   }
-
-  CardItem({
-    this.phone,
-    this.name,
-    this.accountNumber,
-    this.bank,
-    this.branch,
-    this.country,
-    this.gPay,
-    this.ifsc,
-    this.email,
-  });
 }
