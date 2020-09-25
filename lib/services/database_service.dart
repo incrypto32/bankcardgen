@@ -10,11 +10,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseService {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  static CollectionReference banks = firestore.collection('banks');
-  static CollectionReference requests = firestore.collection('requests');
-  static CollectionReference bankAds = firestore.collection('bank_ads');
-  static CollectionReference randomAds = firestore.collection('random_ads');
-  static CollectionReference metadata = firestore.collection('metadata');
+  static final CollectionReference banks = firestore.collection('banks');
+  static final CollectionReference requests = firestore.collection('requests');
+  static final CollectionReference bankAds = firestore.collection('bank_ads');
+  static final CollectionReference randomAds =
+      firestore.collection('random_ads');
+  static final CollectionReference metadata = firestore.collection('metadata');
   Future<void> addBank() {
     return banks.add({});
   }

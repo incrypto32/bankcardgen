@@ -398,8 +398,8 @@ class ImgFromTempelate {
       print(details);
       img = await _bankCardWorker(
         details,
-        yInitial: 100,
-        xInitial: 100,
+        yInitial: 80,
+        xInitial: 80,
         tempelateLoadMethod: TempelateLoadMethod.cachedFirebase,
       );
     }
