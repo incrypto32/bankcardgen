@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
       ),
       backgroundColor: Theme.of(context).accentColor,
       appBar: MainAppBar(
-        title: "Card Generater",
+        title: "B-Card",
         color: Colors.transparent,
       ),
       body: SafeArea(

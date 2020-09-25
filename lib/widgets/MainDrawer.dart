@@ -14,7 +14,7 @@ class MainDrawer extends StatelessWidget {
         DrawerHeader(
           child: Center(
             child: Text(
-              "Card Generator",
+              "B-Card",
               style: Theme.of(context).textTheme.headline6.copyWith(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,

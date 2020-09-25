@@ -4,6 +4,7 @@ import 'package:bankcardmaker/models/ad.dart';
 import 'package:bankcardmaker/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AdWidget extends StatelessWidget {
   const AdWidget({Key key, this.showPopupFunc, this.imgFuture, this.bank})
@@ -19,16 +20,20 @@ class AdWidget extends StatelessWidget {
       insetPadding: EdgeInsets.all(10),
       elevation: 0,
       content: FutureBuilder<Ad>(
-          future: DatabaseService.getAd(bank),
+          future: DatabaseService.adGetter(bank),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Stack(
                 alignment: Alignment.center,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      if (await canLaunch(snapshot.data.link)) {
+                        await launch(snapshot.data.link);
+                      }
+                    },
                     child: Image.network(
-                      snapshot.data.assetUrl,
+                      snapshot.data.assetUrl ?? "",
                     ),
                   ),
                   Positioned(
@@ -80,22 +85,22 @@ class AdWidget extends StatelessWidget {
                       return Column(
                         children: [
                           RaisedButton(
-                              color: Colors.indigo,
-                              child: Icon(Icons.chevron_right),
+                              padding: EdgeInsets.all(10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              color: Colors.green,
+                              child: Text("View Your Card"),
                               onPressed: () {
                                 showPopupFunc(
                                   snapshot.data,
                                 );
                               }),
-                          Text(
-                            "Card Generated",
-                            style: TextStyle(color: Colors.white),
-                          ),
                         ],
                       );
                     } else if (snapshot.hasError) {
                       return Text(
-                        "Generating your card please wait ",
+                        "An error Occured Please try again ",
                         style: TextStyle(color: Colors.white),
                       );
                     } else {
