@@ -202,8 +202,14 @@ class _FormScreenState extends State<FormScreen> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       _buildGpaybox(
-                                          getter: () => _cardItem.getGpay,
-                                          setter: (v) => _cardItem.setGpay = v),
+                                        getter: () => _cardItem.getGpay,
+                                        setter: (v) => _cardItem.setGpay = v,
+                                      ),
+                                      _buildGpaybox(
+                                        getter: () => _cardItem.getPhonePe,
+                                        setter: (v) => _cardItem.setPhonePe = v,
+                                        name: "PhonePe",
+                                      ),
                                     ],
                                   )
                                 : Container(),
@@ -241,7 +247,8 @@ class _FormScreenState extends State<FormScreen> {
   }
 
 // Build Gpay checkbox
-  Widget _buildGpaybox({Function getter, Function setter}) {
+  Widget _buildGpaybox(
+      {Function getter, Function setter, final String name = "Google Pay"}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       height: 20.0,
@@ -263,7 +270,7 @@ class _FormScreenState extends State<FormScreen> {
             ),
           ),
           Text(
-            'Gpay',
+            name,
             style: TextStyle(color: Colors.white),
           ),
         ],

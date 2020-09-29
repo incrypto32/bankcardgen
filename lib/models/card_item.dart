@@ -9,6 +9,7 @@ class CardItem {
   String email;
   String type;
   bool gPay;
+  bool phonePe;
 
   CardItem({
     this.phone,
@@ -18,6 +19,7 @@ class CardItem {
     this.branch,
     this.country,
     this.gPay,
+    this.phonePe,
     this.ifsc,
     this.email,
   });
@@ -50,6 +52,10 @@ class CardItem {
     this.gPay = value;
   }
 
+  set setPhonePe(bool value) {
+    this.phonePe = value;
+  }
+
   set setIfsc(String value) {
     this.ifsc = value;
   }
@@ -63,6 +69,7 @@ class CardItem {
   }
 
   get getGpay => this.gPay;
+  get getPhonePe => this.phonePe;
   get getBank => this.bank;
   get getCountry => this.country;
   get getType => this.type;
@@ -78,6 +85,7 @@ class CardItem {
       "Phone": phone,
       "Email": email,
       "Gpay": gPay,
+      "PhonePe": phonePe,
       "Type": type
     };
   }
