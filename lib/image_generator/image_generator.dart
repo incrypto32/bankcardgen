@@ -197,10 +197,10 @@ class ImgFromTempelate {
     @required bool fromMap,
     Map<String, dynamic> map,
     String text,
+    double fontSize = 55,
     @required double widthConstraint,
     @required Offset offset,
   }) {
-    double fontSize = 55;
     String text2 = "";
     String text3 = "";
 
@@ -233,9 +233,6 @@ class ImgFromTempelate {
           }
         }
       });
-    } else {
-      print("reached here");
-      fontSize = 40;
     }
 
     TextSpan span = TextSpan(
@@ -352,7 +349,8 @@ class ImgFromTempelate {
         canvas: canvas,
         fromMap: false,
         widthConstraint: 400,
-        offset: Offset(40, 40),
+        offset: Offset(xInitial, 60),
+        fontSize: 35,
         text: details['Type'] ?? '',
       );
     } else {
