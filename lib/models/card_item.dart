@@ -18,8 +18,8 @@ class CardItem {
     this.bank,
     this.branch,
     this.country,
-    this.gPay,
-    this.phonePe,
+    this.gPay = false,
+    this.phonePe = false,
     this.ifsc,
     this.email,
   });
@@ -84,8 +84,8 @@ class CardItem {
       code: ifsc,
       "Phone": phone,
       "Email": email,
-      "Gpay": gPay,
-      "PhonePe": phonePe,
+      "Gpay": gPay ?? false,
+      "PhonePe": phonePe ?? false,
       "Type": type
     };
   }

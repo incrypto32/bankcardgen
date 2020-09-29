@@ -135,60 +135,64 @@ class ImgFromTempelate {
     @required Canvas canvas,
     @required Offset offset,
     @required String no,
+    bool gPay = false,
+    bool phonePe = false,
     @required ui.Image img,
   }) async {
     Paint paint = Paint();
     paint.color = Colors.white;
     paint.style = PaintingStyle.fill;
 
-    try {
-      //  paragraph= createParagraph(fromMap: false,text: 'Pay : 7034320115',color: Colors.black);
-      //  paragraph.layout(ui.ParagraphConstraints(width: 830));
-
-    } catch (e) {
-      print(e);
-    }
-
     // Draws a rounded rectangle
-    print("hello");
-    print(canvas);
+
     canvas.drawRRect(
       RRect.fromRectAndRadius(offset & Size(450, 80), Radius.circular(10)),
       paint,
     );
-    // Offset(75, 150 + pH + 20)
-
-    // Draws the Gpay logo
-    paintImage(
-      canvas: canvas,
-      scale: 1,
-      fit: BoxFit.contain,
-      // rect: Rect.fromCenter(
-      //   center: Offset(130, offset.dy + 10),
-      //   height: 60,
-      //   width: 60,
-      // ),
-      rect: Rect.fromLTRB(
-        offset.dx + 20,
-        offset.dy + 15,
-        offset.dx + 20 + 50,
-        offset.dy + 65,
-      ),
-      image: img,
+    paint.color = Colors.grey;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+          offset.translate(0, 50) & Size(450, 30), Radius.circular(10)),
+      paint,
     );
 
     // Prints Number
     TextSpan span = TextSpan(
-        style: TextStyle(
-            color: Colors.blueGrey, fontSize: 45, fontWeight: FontWeight.bold),
-        text: 'Pay : $no');
+      style: TextStyle(
+        color: Colors.blueGrey,
+        fontSize: 40,
+        fontWeight: FontWeight.bold,
+      ),
+      text: 'Mob : $no',
+    );
     TextPainter tp = TextPainter(
+      text: span,
+      textAlign: TextAlign.left,
+      textDirection: TextDirection.ltr,
+    );
+    tp.layout();
+    tp.paint(canvas, offset.translate(60, 5));
+
+    if (gPay || phonePe) {
+      // Prints Number
+      span = TextSpan(
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 25,
+        ),
+        text:
+            'Available :  ${gPay ? "Google Pay" : ""} ${phonePe ? ", PhonePe" : ""}',
+      );
+      tp = TextPainter(
         text: span,
         textAlign: TextAlign.left,
-        textDirection: TextDirection.ltr);
-    tp.layout();
-    tp.paint(canvas, offset.translate(75, 15));
-    // canvas.drawParagraph(paragraph, offset.translate(90, 10));
+        textDirection: TextDirection.ltr,
+      );
+      tp.layout();
+      tp.paint(canvas, offset.translate(50, 50));
+    }
+
+    // canvas.drawParagraph(paragraph, offset.translate(30, 0));
   }
 
 // Function to paint text
@@ -210,7 +214,10 @@ class ImgFromTempelate {
       fontSize = 55;
       map.forEach((key, value) {
         print("$key : $value");
-        if (!(key == 'Gpay' || key == 'Bank' || key == 'Type')) {
+        if (!(key == 'Gpay' ||
+            key == "PhonePe" ||
+            key == 'Bank' ||
+            key == 'Type')) {
           if (!(value.toString().replaceAll(new RegExp(r"\s+"), '') == '' ||
               value == null)) {
             if (key == 'A/c No') {
@@ -273,7 +280,7 @@ class ImgFromTempelate {
 
 // The core funtion which puts all the drawings together
   static Future<ui.Image> _bankCardWorker(
-    details, {
+    Map details, {
     @required double yInitial,
     @required double xInitial,
     @required TempelateLoadMethod tempelateLoadMethod,
@@ -336,11 +343,13 @@ class ImgFromTempelate {
       // Printing the Gpay number box
       stroke.color = Colors.white;
       stroke.style = PaintingStyle.fill;
-      if (details['Gpay'] == true && details['Phone'] != null) {
+      if ((details['Gpay'] || details['PhonePe']) && details['Phone'] != null) {
         printGpay(
           canvas: canvas,
           no: details['Phone'],
           offset: Offset(xInitial, yInitial + pH + 20),
+          gPay: details['Gpay'] ?? false,
+          phonePe: details['PhonePe'] ?? false,
           img: gpayImg,
         );
       }

@@ -99,6 +99,7 @@ class AdWidget extends StatelessWidget {
                         ],
                       );
                     } else if (snapshot.hasError) {
+                      print(snapshot.error);
                       return Text(
                         "An error Occured Please try again ",
                         style: TextStyle(color: Colors.white),

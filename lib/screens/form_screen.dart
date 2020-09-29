@@ -218,12 +218,12 @@ class _FormScreenState extends State<FormScreen> {
                               formKey: _formKey,
                               cardItem: _cardItem,
                             ),
-                            FlatButton(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed('/card_screen');
-                              },
-                              child: Text("Click"),
-                            ),
+                            // FlatButton(
+                            //   onPressed: () {
+                            //     Navigator.of(context).pushNamed('/card_screen');
+                            //   },
+                            //   child: Text("Click"),
+                            // ),
                             // AdWidget(),
                           ],
                         ),

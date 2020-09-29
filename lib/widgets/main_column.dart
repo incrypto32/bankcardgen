@@ -39,12 +39,6 @@ class MainColumn extends StatelessWidget {
             ),
           ),
         ),
-        // FlatButton(
-        //     onPressed: () {
-        //       print("test button clicked");
-        //       DatabaseService.test("South Indian Bank");
-        //     },
-        // child: Text("Click Me")),
         Expanded(
           flex: 2,
           child: Container(
@@ -122,8 +116,6 @@ class MainColumn extends StatelessWidget {
                           builder: (context) => InfoScreen(),
                         ),
                       );
-                      // stateProvider.changePrimaryCard(
-                      //     "/data/user/0/com.example.bankcardmaker/app_flutter/saved_cards/2020-08-26T15:59:29.255956.png");
                     },
                     contentPadding: listTileContentPadding,
                     leading: FaIcon(
@@ -134,11 +126,6 @@ class MainColumn extends StatelessWidget {
                     title: Text("Info"),
                     trailing: Icon(Icons.chevron_right),
                   ),
-                  // FlatButton(
-                  //     onPressed: () {
-                  //       StateProvider().changePrimaryCard("hello");
-                  //     },
-                  //     child: null)
                 ],
               ),
             ),

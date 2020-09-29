@@ -154,7 +154,11 @@ class DatabaseService {
     print("_______________addGetter called_________________");
 
     print("Bank is $bank");
-
+    var ads = await metadata.doc('metadata').get();
+    if (!ads.data()["ads"] ?? false) {
+      print("bei");
+      return null;
+    }
     var bankAdSnaps = await bankAds.where("name", isEqualTo: bank).get();
     print(bankAdSnaps.size);
     if (bankAdSnaps.size <= 0) {

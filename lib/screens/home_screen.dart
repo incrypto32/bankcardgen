@@ -51,56 +51,46 @@ class HomeScreen extends StatelessWidget {
       ),
       backgroundColor: Theme.of(context).accentColor,
       appBar: MainAppBar(
-        title: "B-Card",
+        title: "BCard",
         color: Colors.transparent,
       ),
       body: SafeArea(
         child: LayoutBuilder(builder: (context, constraints) {
-          return SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Container(
-              height: constraints.maxHeight,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: Container(
-                      // margin: EdgeInsets.only(top: 30),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                            // top: Radius.circular(40),
-                            ),
-                      ),
-                      child: FutureBuilder(
-                          future: initialize(context),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Center(
-                                child: Container(
-                                  child: Text(
-                                      "An Error occured please check your network connection."),
-                                ),
-                              );
-                            }
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              return MainColumn();
-                            }
+          return Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: FutureBuilder(
+                        future: initialize(context),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
                             return Center(
                               child: Container(
-                                child: SpinKitCircle(
-                                  color: Colors.blue,
-                                  size: 45,
-                                ),
+                                child: Text(
+                                    "An Error occured please check your network connection."),
                               ),
                             );
-                          }),
-                    ),
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return MainColumn();
+                          }
+                          return Center(
+                            child: Container(
+                              child: SpinKitCircle(
+                                color: Colors.blue,
+                                size: 45,
+                              ),
+                            ),
+                          );
+                        }),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         }),
