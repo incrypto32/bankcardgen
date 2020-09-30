@@ -13,13 +13,7 @@ class MainDrawer extends StatelessWidget {
       children: [
         DrawerHeader(
           child: Center(
-            child: Text(
-              "BCard",
-              style: Theme.of(context).textTheme.headline6.copyWith(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
+            child: Image.asset('assets/images/icon.png'),
           ),
         ),
         Column(

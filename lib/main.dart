@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:bankcardmaker/screens/form_screen.dart';
 import 'package:bankcardmaker/screens/home_screen.dart';
 import 'package:bankcardmaker/screens/saved_cards_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
       title: 'Cardora',
       debugShowCheckedModeBanner: false,

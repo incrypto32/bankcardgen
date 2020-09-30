@@ -1,5 +1,5 @@
 import 'package:bankcardmaker/services/database_service.dart';
-import 'package:bankcardmaker/widgets/MainDrawer.dart';
+import 'package:bankcardmaker/widgets/main_drawer.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -49,51 +49,48 @@ class HomeScreen extends StatelessWidget {
       drawer: Drawer(
         child: MainDrawer(),
       ),
-      backgroundColor: Theme.of(context).accentColor,
+      backgroundColor: Colors.white,
       appBar: MainAppBar(
         title: "BCard",
-        color: Colors.transparent,
+        textColor: Colors.white,
+        color: Colors.indigo,
       ),
       body: SafeArea(
-        child: LayoutBuilder(builder: (context, constraints) {
-          return Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: FutureBuilder(
-                        future: initialize(context),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Center(
-                              child: Container(
-                                child: Text(
-                                    "An Error occured please check your network connection."),
-                              ),
-                            );
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return MainColumn();
-                          }
-                          return Center(
-                            child: Container(
-                              child: SpinKitCircle(
-                                color: Colors.blue,
-                                size: 45,
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: double.infinity,
+                color: Colors.white,
+                child: FutureBuilder(
+                  future: initialize(context),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Container(
+                          child: Text(
+                              "An Error occured please check your network connection."),
+                        ),
+                      );
+                    }
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return MainColumn();
+                    }
+                    return Center(
+                      child: Container(
+                        child: SpinKitCircle(
+                          color: Colors.blue,
+                          size: 45,
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
-          );
-        }),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

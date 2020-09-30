@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class InfoScreen extends StatelessWidget {
   static final String routeName = 'info_screen';
   final List _terms = [
-    "user shall impart the whole responsibilty of their credentials shared using cards.",
+    "The app itself comes without any warranty or ",
     "we will not be responsible for the information lost through sharing images,although your data is stored anywhere in our system",
     "user is not allowed to share the images of the card by any other means than this app",
   ];
