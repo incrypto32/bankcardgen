@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class CardItem {
   String name;
   String accountNumber;
@@ -11,6 +9,20 @@ class CardItem {
   String email;
   String type;
   bool gPay;
+  bool phonePe;
+
+  CardItem({
+    this.phone,
+    this.name,
+    this.accountNumber,
+    this.bank,
+    this.branch,
+    this.country,
+    this.gPay = false,
+    this.phonePe = false,
+    this.ifsc,
+    this.email,
+  });
 
   set setCountry(String value) {
     this.country = value;
@@ -40,6 +52,10 @@ class CardItem {
     this.gPay = value;
   }
 
+  set setPhonePe(bool value) {
+    this.phonePe = value;
+  }
+
   set setIfsc(String value) {
     this.ifsc = value;
   }
@@ -53,6 +69,7 @@ class CardItem {
   }
 
   get getGpay => this.gPay;
+  get getPhonePe => this.phonePe;
   get getBank => this.bank;
   get getCountry => this.country;
   get getType => this.type;
@@ -60,14 +77,15 @@ class CardItem {
     String code;
     country == 'India' ? code = "IFSC" : code = "IBAN";
     return {
-      "Ac/No": accountNumber,
+      "A/c No": accountNumber,
       "Name": name,
       "Bank": bank.replaceAll(new RegExp(r"\s+"), "").toLowerCase(),
       "Branch": branch,
       code: ifsc,
       "Phone": phone,
       "Email": email,
-      "Gpay": gPay,
+      "Gpay": gPay ?? false,
+      "PhonePe": phonePe ?? false,
       "Type": type
     };
   }
@@ -104,16 +122,4 @@ class CardItem {
     }
     return text;
   }
-
-  CardItem({
-    this.phone,
-    this.name,
-    this.accountNumber,
-    this.bank,
-    this.branch,
-    this.country,
-    this.gPay,
-    this.ifsc,
-    this.email,
-  });
 }

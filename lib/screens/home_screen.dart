@@ -1,5 +1,5 @@
 import 'package:bankcardmaker/services/database_service.dart';
-import 'package:bankcardmaker/widgets/MainDrawer.dart';
+import 'package:bankcardmaker/widgets/main_drawer.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -49,61 +49,48 @@ class HomeScreen extends StatelessWidget {
       drawer: Drawer(
         child: MainDrawer(),
       ),
-      backgroundColor: Theme.of(context).accentColor,
+      backgroundColor: Colors.white,
       appBar: MainAppBar(
-        title: "Card Generater",
-        color: Colors.transparent,
+        title: "BCard",
+        textColor: Colors.white,
+        color: Colors.indigo,
       ),
       body: SafeArea(
-        child: LayoutBuilder(builder: (context, constraints) {
-          return SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Container(
-              height: constraints.maxHeight,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: Container(
-                      // margin: EdgeInsets.only(top: 30),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                            // top: Radius.circular(40),
-                            ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: double.infinity,
+                color: Colors.white,
+                child: FutureBuilder(
+                  future: initialize(context),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Container(
+                          child: Text(
+                              "An Error occured please check your network connection."),
+                        ),
+                      );
+                    }
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return MainColumn();
+                    }
+                    return Center(
+                      child: Container(
+                        child: SpinKitCircle(
+                          color: Colors.blue,
+                          size: 45,
+                        ),
                       ),
-                      child: FutureBuilder(
-                          future: initialize(context),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Center(
-                                child: Container(
-                                  child: Text(
-                                      "An Error occured please check your network connection."),
-                                ),
-                              );
-                            }
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              return MainColumn();
-                            }
-                            return Center(
-                              child: Container(
-                                child: SpinKitCircle(
-                                  color: Colors.blue,
-                                  size: 45,
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-                  ),
-                ],
+                    );
+                  },
+                ),
               ),
-            ),
-          );
-        }),
+            ],
+          ),
+        ),
       ),
     );
   }

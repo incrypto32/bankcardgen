@@ -6,17 +6,24 @@ import 'package:bankcardmaker/models/request.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// var print = (a) {};
-
 class DatabaseService {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  static CollectionReference banks = firestore.collection('banks');
-  static CollectionReference requests = firestore.collection('requests');
-  static CollectionReference bankAds = firestore.collection('bank_ads');
-  static CollectionReference randomAds = firestore.collection('random_ads');
-  static CollectionReference metadata = firestore.collection('metadata');
+  static final CollectionReference banks = firestore.collection('banks');
+  static final CollectionReference requests = firestore.collection('requests');
+  static final CollectionReference bankAds = firestore.collection('bank_ads');
+  static final CollectionReference randomAds =
+      firestore.collection('random_ads');
+  static final CollectionReference metadata = firestore.collection('metadata');
   Future<void> addBank() {
     return banks.add({});
+  }
+
+  Future<void> addBankRequest(BankRequest bankRequest) async {
+    try {
+      requests.add(bankRequest.toMap());
+    } catch (e) {
+      print('_________________$e _________________');
+    }
   }
 
   // gets Banks from server and caches the data
@@ -142,6 +149,56 @@ class DatabaseService {
     return doc;
   }
 
+  // Ads Driver whether be it bank or random
+  static Future<Ad> adGetter(String bank) async {
+    print("_______________addGetter called_________________");
+
+    print("Bank is $bank");
+    var ads = await metadata.doc('metadata').get();
+    if (!ads.data()["ads"] ?? false) {
+      print("bei");
+      return null;
+    }
+    var bankAdSnaps = await bankAds.where("name", isEqualTo: bank).get();
+    print(bankAdSnaps.size);
+    if (bankAdSnaps.size <= 0) {
+      print("getting random ad");
+      Ad ad = await getRandomAd2();
+      return ad;
+    } else {
+      var doc = bankAdSnaps.docs[0];
+      if (doc.exists) {
+        //
+        var ad = doc.data();
+        print("Bank Exists");
+        print(ad);
+        return Ad(name: ad['name'], link: ad['link'], assetUrl: ad['asset']);
+      } else {
+        return null;
+      }
+    }
+  }
+
+  // Gets a random ad from doc path
+  static Future<Ad> getRandomAd2() async {
+    print("Random Ad2 called");
+    try {
+      var randomAdsDoc = await randomAds.get();
+      if (randomAdsDoc.docs.length == 0) {
+        return null;
+      }
+      int n = rand(randomAdsDoc.docs.length - 1) - 1;
+      print("N is $n");
+
+      var doc = randomAdsDoc.docs[n].data();
+      print("doc is $doc");
+      return Ad(assetUrl: doc["asset"], link: doc["link"], name: doc["name"]);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
 // Ads Driver whether be it bank or random
   static Future<Ad> getAd(String bank) async {
     print("_______________getAd called_________________");
@@ -208,6 +265,19 @@ class DatabaseService {
     });
     print("Random ad output : ${a.toString()}");
     return a;
+  }
+
+  static int rand(int n) {
+    print("-----random number func called-----");
+    if (n == 0) {
+      return 0;
+    }
+    int r;
+    var random = Random();
+
+    r = random.nextInt(n);
+
+    return r + 1;
   }
 
   // Test functions

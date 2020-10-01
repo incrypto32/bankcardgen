@@ -13,49 +13,11 @@ class MainDrawer extends StatelessWidget {
       children: [
         DrawerHeader(
           child: Center(
-            child: Text(
-              "Card Generator",
-              style: Theme.of(context).textTheme.headline6.copyWith(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
+            child: Image.asset('assets/images/icon.png'),
           ),
         ),
         Column(
           children: [
-            // Row(
-            //   children: [
-            //     Expanded(
-            //         child: Column(
-            //       children: [
-            //         FaIcon(
-            //           FontAwesomeIcons.idCard,
-            //           size: 40,
-            //         ),
-            //         Divider(
-            //           indent: 5,
-            //           endIndent: 5,
-            //         ),
-            //         Text("Add New Card")
-            //       ],
-            //     )),
-            //     Expanded(
-            //         child: Column(
-            //       children: [
-            //         FaIcon(
-            //           FontAwesomeIcons.save,
-            //           size: 40,
-            //         ),
-            //         Divider(
-            //           indent: 5,
-            //           endIndent: 5,
-            //         ),
-            //         Text("Saved Cards")
-            //       ],
-            //     ))
-            //   ],
-            // ),
             ListTile(
               enabled: true,
               onTap: () => Navigator.of(context).pushNamed('/form_screen'),

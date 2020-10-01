@@ -10,7 +10,36 @@
       "client_info": {
         "mobilesdk_app_id": "1:443573184712:android:31b9987bffbccc64369dfd",
         "android_client_info": {
-          "package_name": "com.example.bankcardmaker"
+          "package_name": "com.example.bankcardgen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443573184712-m8noepcbnirr967ugbd3qkqudtt19eh5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBINEnny__YuKFEjbvlidsvuTpSCqA97Ms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443573184712-m8noepcbnirr967ugbd3qkqudtt19eh5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443573184712:android:7d24b91f5a90ae75369dfd",
+        "android_client_info": {
+          "package_name": "com.obeyinternational.baccountcard"
         }
       },
       "oauth_client": [
