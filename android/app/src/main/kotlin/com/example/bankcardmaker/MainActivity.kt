@@ -1,4 +1,4 @@
-package com.example.bankcardmaker
+package com.obeyinternational.baccountcard
 
 import io.flutter.embedding.android.FlutterActivity
 
