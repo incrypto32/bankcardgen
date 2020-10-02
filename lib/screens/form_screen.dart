@@ -199,7 +199,6 @@ class _FormScreenState extends State<FormScreen> {
 
                             _cardItem.country == 'India'
                                 ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       _buildGpaybox(
                                         getter: () => _cardItem.getGpay,

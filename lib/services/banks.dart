@@ -34,6 +34,7 @@ class ServerJsonResponse {
       delete: decodeBankList(json["delete"]),
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'banks': encodeBankList(banks),

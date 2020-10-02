@@ -74,63 +74,6 @@ class ImgFromTempelate {
     return completer.future;
   }
 
-  // Prints a paragraph onto the canvas
-  static ui.Paragraph createParagraph(
-      {String text,
-      bool fromMap = false,
-      Map<String, String> map,
-      Color color = Colors.white,
-      double fontSize = 35}) {
-    final textStyle = ui.TextStyle(
-      color: color,
-      fontSize: fontSize,
-    );
-    final paragraphStyle = ui.ParagraphStyle(
-      textDirection: TextDirection.ltr,
-    );
-    final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle)
-      ..pushStyle(textStyle);
-    try {
-      if (fromMap) {
-        map.forEach((key, value) {
-          paragraphBuilder.addText('\n$key : $value');
-        });
-      } else {
-        paragraphBuilder.addText(text);
-      }
-    } catch (e) {
-      print('Cannot addText');
-    }
-
-    final paragraph = paragraphBuilder.build();
-
-    print(paragraph.height);
-    // final offset = Offset(75, 150);
-    return paragraph;
-  }
-
-  static double printParagraph(
-      {@required Canvas canvas,
-      String text,
-      @required double widthConstraint,
-      @required Offset offset,
-      bool fromMap = false,
-      Map<String, String> map}) {
-    ui.Paragraph paragraph;
-    try {
-      print(map);
-
-      paragraph = createParagraph(fromMap: fromMap, text: text, map: map);
-    } catch (e) {
-      print('Error in printParagraph');
-    }
-
-    paragraph.layout(ui.ParagraphConstraints(width: widthConstraint));
-    canvas.drawParagraph(paragraph, offset);
-
-    return paragraph.height;
-  }
-
   static void printGpay({
     @required Canvas canvas,
     @required Offset offset,
@@ -145,18 +88,7 @@ class ImgFromTempelate {
 
     // Draws a rounded rectangle
 
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(offset & Size(450, 80), Radius.circular(10)),
-      paint,
-    );
-    paint.color = Colors.grey;
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-          offset.translate(0, 50) & Size(450, 30), Radius.circular(10)),
-      paint,
-    );
-
-    // Prints Number
+    // Paints Phone Number
     TextSpan span = TextSpan(
       style: TextStyle(
         color: Colors.blueGrey,
@@ -165,12 +97,28 @@ class ImgFromTempelate {
       ),
       text: 'Mob : $no',
     );
+
     TextPainter tp = TextPainter(
       text: span,
       textAlign: TextAlign.left,
       textDirection: TextDirection.ltr,
     );
     tp.layout();
+
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+          offset & Size(tp.width + 120, 80), Radius.circular(10)),
+      paint,
+    );
+
+    paint.color = Colors.grey;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+          offset.translate(0, 50) & Size(tp.width + 120, 30),
+          Radius.circular(10)),
+      paint,
+    );
+
     tp.paint(canvas, offset.translate(60, 5));
 
     if (gPay || phonePe) {
@@ -189,10 +137,8 @@ class ImgFromTempelate {
         textDirection: TextDirection.ltr,
       );
       tp.layout();
-      tp.paint(canvas, offset.translate(50, 50));
+      tp.paint(canvas, offset.translate(60, 50));
     }
-
-    // canvas.drawParagraph(paragraph, offset.translate(30, 0));
   }
 
 // Function to paint text

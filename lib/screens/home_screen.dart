@@ -70,18 +70,22 @@ class HomeScreen extends StatelessWidget {
                       return Center(
                         child: Container(
                           child: Text(
-                              "An Error occured please check your network connection."),
+                            "An Error occured please check your network connection",
+                          ),
                         ),
                       );
                     }
                     if (snapshot.connectionState == ConnectionState.done) {
                       return MainColumn();
                     }
-                    return Center(
-                      child: Container(
-                        child: SpinKitCircle(
-                          color: Colors.blue,
-                          size: 45,
+                    return Container(
+                      height: MediaQuery.of(context).size.height,
+                      child: Center(
+                        child: Container(
+                          child: SpinKitCircle(
+                            color: Colors.blue,
+                            size: 45,
+                          ),
                         ),
                       ),
                     );
