@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:bankcardmaker/providers/state_provider.dart';
-import 'package:bankcardmaker/tools/tool_functions.dart';
+import 'package:bcard/providers/state_provider.dart';
+import 'package:bcard/tools/tool_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';

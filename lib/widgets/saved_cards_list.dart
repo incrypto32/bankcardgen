@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bankcardmaker/widgets/saved_card.dart';
+import 'package:bcard/widgets/saved_card.dart';
 
 class SavedCardsList extends StatelessWidget {
   const SavedCardsList({

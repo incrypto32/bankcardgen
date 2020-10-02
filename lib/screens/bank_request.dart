@@ -1,12 +1,12 @@
-import 'package:bankcardmaker/constants/countries.dart';
-import 'package:bankcardmaker/models/request.dart';
-import 'package:bankcardmaker/services/database_service.dart';
-import 'package:bankcardmaker/widgets/country_picker.dart';
-import 'package:bankcardmaker/widgets/main_appbar.dart';
+import 'package:bcard/constants/countries.dart';
+import 'package:bcard/models/request.dart';
+import 'package:bcard/services/database_service.dart';
+import 'package:bcard/widgets/country_picker.dart';
+import 'package:bcard/widgets/main_appbar.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 
-import 'package:bankcardmaker/accessories/constants.dart';
+import 'package:bcard/accessories/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class BankRequestForm extends StatefulWidget {

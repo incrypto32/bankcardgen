@@ -1,4 +1,4 @@
-# bankcardmaker
+# bcard
 
 A new Flutter project.
 

@@ -1,4 +1,4 @@
-import 'package:bankcardmaker/accessories/constants.dart';
+import 'package:bcard/accessories/constants.dart';
 import 'package:flutter/material.dart';
 
 class MyDropDown extends StatelessWidget {

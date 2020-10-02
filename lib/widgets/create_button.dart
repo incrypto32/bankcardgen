@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:bankcardmaker/image_generator/image_generator.dart';
-import 'package:bankcardmaker/models/card_item.dart';
-import 'package:bankcardmaker/tools/tool_functions.dart';
-import 'package:bankcardmaker/widgets/ad_widget.dart';
+import 'package:bcard/image_generator/image_generator.dart';
+import 'package:bcard/models/card_item.dart';
+import 'package:bcard/tools/tool_functions.dart';
+import 'package:bcard/widgets/ad_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

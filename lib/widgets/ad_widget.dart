@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:bankcardmaker/models/ad.dart';
-import 'package:bankcardmaker/services/database_service.dart';
+import 'package:bcard/models/ad.dart';
+import 'package:bcard/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';

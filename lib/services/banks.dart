@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bankcardmaker/constants/constants.dart';
+import 'package:bcard/constants/constants.dart';
 
 import 'package:http/http.dart' as http;
 

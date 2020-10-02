@@ -1,4 +1,4 @@
-import 'package:bankcardmaker/services/firebase_http_file_service.dart';
+import 'package:bcard/services/firebase_http_file_service.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 import 'package:path/path.dart' as p;

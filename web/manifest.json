@@ -1,6 +1,6 @@
 {
-    "name": "bankcardmaker",
-    "short_name": "bankcardmaker",
+    "name": "bcard",
+    "short_name": "bcard",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

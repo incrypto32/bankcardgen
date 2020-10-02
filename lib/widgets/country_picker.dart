@@ -1,4 +1,4 @@
-import 'package:bankcardmaker/constants/countries.dart';
+import 'package:bcard/constants/countries.dart';
 import 'package:flutter/material.dart';
 
 //______________COUNTRY CODE CLASS DEFINITION_________________
@@ -46,16 +46,6 @@ class Country {
     return '$name';
   }
 }
-
-
-
-
-
-
-
-
-
-
 
 //__________________COUTRY_CODE_PICKER_(WIDGET)________________
 
@@ -304,16 +294,7 @@ class CountryPickerState extends State<CountryPicker> {
   }
 }
 
-
-
-
-
-
-
-
-
 // ____________________SELECTION DIALOG__________________
-
 
 class SelectionDialog extends StatefulWidget {
   final List<Country> elements;
@@ -430,7 +411,8 @@ class _SelectionDialogState extends State<SelectionDialog> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                e.flag, style: TextStyle(fontSize: 20),
+                e.flag,
+                style: TextStyle(fontSize: 20),
               ),
             ),
           Expanded(

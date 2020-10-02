@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:bankcardmaker/providers/state_provider.dart';
-import 'package:bankcardmaker/tools/tool_functions.dart';
+import 'package:bcard/providers/state_provider.dart';
+import 'package:bcard/tools/tool_functions.dart';
 
 class SavedCard extends StatelessWidget {
   SavedCard({

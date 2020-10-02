@@ -1,10 +1,10 @@
-import 'package:bankcardmaker/services/database_service.dart';
-import 'package:bankcardmaker/widgets/main_drawer.dart';
+import 'package:bcard/services/database_service.dart';
+import 'package:bcard/widgets/main_drawer.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:bankcardmaker/widgets/main_appbar.dart';
-import 'package:bankcardmaker/widgets/main_column.dart';
+import 'package:bcard/widgets/main_appbar.dart';
+import 'package:bcard/widgets/main_column.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';

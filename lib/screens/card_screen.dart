@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:bankcardmaker/image_generator/image_generator.dart';
+import 'package:bcard/image_generator/image_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

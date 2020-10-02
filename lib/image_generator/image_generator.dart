@@ -3,9 +3,9 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:bankcardmaker/cache_manager/custom_cache_manager.dart';
-import 'package:bankcardmaker/cache_manager/firebase_cache_manager.dart';
-import 'package:bankcardmaker/constants/constants.dart';
+import 'package:bcard/cache_manager/custom_cache_manager.dart';
+import 'package:bcard/cache_manager/firebase_cache_manager.dart';
+import 'package:bcard/constants/constants.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';

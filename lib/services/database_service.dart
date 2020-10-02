@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:bankcardmaker/models/ad.dart';
-import 'package:bankcardmaker/models/request.dart';
+import 'package:bcard/models/ad.dart';
+import 'package:bcard/models/request.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseService {
@@ -122,6 +123,7 @@ class DatabaseService {
             : 'cache update not required');
         if (needCacheUpdate) {
           print('updating Cache');
+          (await getTemporaryDirectory()).delete(recursive: true);
           if (await getBanks()) {
             prefs.setString(
               "lud",

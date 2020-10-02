@@ -1,6 +1,6 @@
-import 'package:bankcardmaker/screens/bank_request.dart';
-import 'package:bankcardmaker/screens/info_screen.dart';
-import 'package:bankcardmaker/screens/saved_cards_screen.dart';
+import 'package:bcard/screens/bank_request.dart';
+import 'package:bcard/screens/info_screen.dart';
+import 'package:bcard/screens/saved_cards_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

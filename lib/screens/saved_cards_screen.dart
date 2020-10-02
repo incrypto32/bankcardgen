@@ -6,8 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:bankcardmaker/providers/state_provider.dart';
-import 'package:bankcardmaker/widgets/saved_cards_list.dart';
+import 'package:bcard/providers/state_provider.dart';
+import 'package:bcard/widgets/saved_cards_list.dart';
 
 class SavedCardsScreen extends StatefulWidget {
   static const String routeName = "/savedCardsScreen";

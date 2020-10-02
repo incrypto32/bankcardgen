@@ -1,12 +1,12 @@
-import 'package:bankcardmaker/providers/state_provider.dart';
-import 'package:bankcardmaker/widgets/primary_cards.dart';
+import 'package:bcard/providers/state_provider.dart';
+import 'package:bcard/widgets/primary_cards.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/saved_cards_screen.dart';
-import 'package:bankcardmaker/screens/bank_request.dart';
+import 'package:bcard/screens/bank_request.dart';
 import '../screens/info_screen.dart';
 
 class MainColumn extends StatelessWidget {

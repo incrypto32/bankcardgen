@@ -1,12 +1,11 @@
-import 'package:bankcardmaker/providers/state_provider.dart';
-import 'package:bankcardmaker/screens/bank_request.dart';
-import 'package:bankcardmaker/screens/card_screen.dart';
-import 'package:bankcardmaker/screens/info_screen.dart';
+import 'package:bcard/providers/state_provider.dart';
+import 'package:bcard/screens/bank_request.dart';
+import 'package:bcard/screens/card_screen.dart';
+import 'package:bcard/screens/info_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'package:bankcardmaker/screens/form_screen.dart';
-import 'package:bankcardmaker/screens/home_screen.dart';
-import 'package:bankcardmaker/screens/saved_cards_screen.dart';
+import 'package:bcard/screens/form_screen.dart';
+import 'package:bcard/screens/home_screen.dart';
+import 'package:bcard/screens/saved_cards_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
