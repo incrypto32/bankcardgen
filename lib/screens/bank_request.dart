@@ -92,7 +92,6 @@ class _BankRequestFormState extends State<BankRequestForm> {
     ConnectivityResult connection = await Connectivity().checkConnectivity();
 
     if (connection == ConnectivityResult.none) {
-      print(connection);
       print("___________________NETWORK ISSUE_______________");
       _showSnackBar("Request Failed. Please check your network connection !");
     } else {

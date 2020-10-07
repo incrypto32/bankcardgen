@@ -31,7 +31,7 @@ class DatabaseService {
     );
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var bankSnapshots = await banks.get(getOption);
+      var bankSnapshots = await banks.orderBy("bank").get(getOption);
       List<Map<String, dynamic>> bankMapList = bankSnapshots.docs.map((e) {
         if (e.exists) {
           return e.data();
@@ -55,12 +55,9 @@ class DatabaseService {
   // Function which checks the tiemstamp of the latest data updates on server
   // And accordingly pull data from cache or from server using getBanks()
   static cacheUpdate(SharedPreferences prefs) async {
-    Map<String, dynamic> caching = await metadata
-        .doc('caching')
-        .get()
-        .then((value) => value.exists ? value.data() : null);
-
-    print(caching);
+    Map<String, dynamic> caching = await metadata.doc('caching').get().then(
+          (value) => value.exists ? value.data() : null,
+        );
 
     if (caching['caching'] != null && caching['caching']) {
       // The server time stamp from firebase
@@ -104,14 +101,17 @@ class DatabaseService {
 
   // Ads Driver whether be it bank or random
   static Future<Ad> adGetter(String bank) async {
+    print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
     var ads = await metadata.doc('metadata').get();
     if (!ads.data()["ads"] ?? false) {
+      print("no add");
       return null;
     }
     var bankAdSnaps = await bankAds.where("name", isEqualTo: bank).get();
 
     if (bankAdSnaps.size <= 0) {
       Ad ad = await getRandomAd();
+      print("${ad.assetUrl} ||||||||");
       return ad;
     } else {
       var doc = bankAdSnaps.docs[0];

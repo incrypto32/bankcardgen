@@ -69,6 +69,10 @@ class _CreateButtonState extends State<CreateButton> {
               FlatButton(
                 onPressed: () async {
                   if (await Permission.storage.request().isGranted) {
+                    if (widget._cardItem.country != "India") {
+                      widget._cardItem.gPay = false;
+                      widget._cardItem.phonePe = false;
+                    }
                     var prefs = await SharedPreferences.getInstance();
                     var directory = await getApplicationDocumentsDirectory();
                     var fileName = DateTime.now().toIso8601String() + '.png';

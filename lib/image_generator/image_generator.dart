@@ -6,7 +6,6 @@ import 'dart:ui' as ui;
 import 'package:bcard/cache_manager/custom_cache_manager.dart';
 import 'package:bcard/cache_manager/firebase_cache_manager.dart';
 import 'package:bcard/constants/constants.dart';
-import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +28,7 @@ class ImgFromTempelate {
   static Future<ui.Image> loadImageFromCacheOrNetwork(String imageUrl) async {
     final File file = await CustomCacheManager().getSingleFile(imageUrl);
     // final File file = await FirebaseCacheManager().getSingleFile(imageUrl);
-    print("Got file from cache: " + file.path);
+
     final Uint8List byteArray = await file.readAsBytes();
     final Completer<ui.Image> completer = Completer();
     ui.decodeImageFromList(byteArray, (ui.Image img) {
@@ -129,7 +128,7 @@ class ImgFromTempelate {
           fontSize: 25,
         ),
         text:
-            'Available :  ${gPay ? "Google Pay" : ""} ${phonePe ? ", PhonePe" : ""}',
+            'Available :  ${gPay ? "Google Pay," : ""} ${phonePe ? " PhonePe" : ""}',
       );
       tp = TextPainter(
         text: span,
@@ -167,20 +166,15 @@ class ImgFromTempelate {
           if (!(value.toString().replaceAll(new RegExp(r"\s+"), '') == '' ||
               value == null)) {
             if (key == 'A/c No') {
-              print("Printed  $key : $value");
               text += '\n$key : $value';
             } else if (['Name', 'IFSC', 'IBAN', 'Branch'].contains(key)) {
-              print("Printed  $key : $value");
               text2 += '\n$key : $value';
             } else if (key != 'Phone') {
-              print("Printed  $key : $value");
               text3 += '\n$key : $value';
             } else if (key == 'Phone' &&
                 (map['Gpay'] == false || map['Gpay'] == null)) {
-              print("Printed $key : $value");
               text3 += '\n$key : $value';
             } else if (key != 'Phone') {
-              print("Printed  $key : $value");
               text3 += '\n$key : $value';
             }
           }
@@ -289,7 +283,8 @@ class ImgFromTempelate {
       // Printing the Gpay number box
       stroke.color = Colors.white;
       stroke.style = PaintingStyle.fill;
-      if ((details['Gpay'] || details['PhonePe']) && details['Phone'] != null) {
+      if ((details['Gpay'] || details['PhonePe']) &&
+          (details['Phone'] != null && details['Phone'] != "")) {
         printGpay(
           canvas: canvas,
           no: details['Phone'],
@@ -319,24 +314,12 @@ class ImgFromTempelate {
 // The core function which genrates the compressed PNG Image
   static Future<ByteData> _pngBytes(ui.Image img) async {
     var pngBytes;
-    var buffer;
 
     try {
       pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
-      buffer = pngBytes.buffer;
-      if (await Permission.storage.request().isGranted) {
-        var directory = await ExtStorage.getExternalStorageDirectory();
-        File(directory +
-                '/' +
-                ExtStorage.DIRECTORY_DOWNLOADS +
-                '/blah/cardeyyy.png')
-            .create(recursive: true)
-            .then((value) {
-          value.writeAsBytes(buffer.asUint8List());
-        });
-      }
+
+      if (await Permission.storage.request().isGranted) {}
     } catch (err) {
-      print('pngBytes : An error occured');
       print(err);
       return null;
     }
@@ -348,7 +331,6 @@ class ImgFromTempelate {
   static Future<ByteData> generateBankCard(Map<String, dynamic> details) async {
     var img;
     if (details != null) {
-      print(details);
       img = await _bankCardWorker(
         details,
         yInitial: 80,

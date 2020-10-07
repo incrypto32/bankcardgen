@@ -7,8 +7,7 @@ class StateProvider with ChangeNotifier {
 
   void changePrimaryCard(String card) {
     _primaryCard = card;
-    print(card);
-    print(_primaryCard);
+
     notifyListeners();
   }
 }

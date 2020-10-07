@@ -33,9 +33,8 @@ class HomeScreen extends StatelessWidget {
       print(connectivityResult);
       var app = await Firebase.initializeApp();
 
-      // await DatabaseService.getBanks();
       DatabaseService.cacheUpdate(prefs);
-      // DatabaseService.getAd("Federal Bank");
+
       return app;
     } catch (e) {
       print(e);
@@ -51,7 +50,7 @@ class HomeScreen extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       appBar: MainAppBar(
-        title: "BCard",
+        title: "B Account Card",
         textColor: Colors.white,
         color: Colors.indigo,
       ),

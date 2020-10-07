@@ -39,7 +39,7 @@ class _FormScreenState extends State<FormScreen> {
                 ),
               ),
             )
-          : print("Network connection existsI");
+          : print("Network connection exists");
 
       var banksJson = json.decode(banksString);
       _banks = ServerJsonResponse.decodeBankList(banksJson);
@@ -53,14 +53,9 @@ class _FormScreenState extends State<FormScreen> {
 
   _getBankList(String country) {
     var list = _banks ?? [];
-    print("_________________Getting banklist___________________");
-    print(_banks);
     _bankOptions =
         list.where((e) => e.country == country).map((e) => e.bank).toList();
-    print(_bankOptions.toString());
 
-    // if()
-    // _cardItem.setBank = _bankOptions[0] ?? '';
     return _bankOptions;
   }
 
@@ -74,9 +69,6 @@ class _FormScreenState extends State<FormScreen> {
             future: _getCountryList(context),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print(
-                  "_____________________SnapShot data______________________",
-                );
                 print(snapshot.data);
                 return AnnotatedRegion<SystemUiOverlayStyle>(
                   value: SystemUiOverlayStyle.light,
@@ -124,9 +116,6 @@ class _FormScreenState extends State<FormScreen> {
                                   } else {
                                     bankCode = "IBAN";
                                   }
-                                  print(
-                                    "______________Country  Changed to $v ____________",
-                                  );
                                 });
                               },
                             ),
@@ -207,7 +196,7 @@ class _FormScreenState extends State<FormScreen> {
                                       _buildGpaybox(
                                         getter: () => _cardItem.getPhonePe,
                                         setter: (v) => _cardItem.setPhonePe = v,
-                                        name: "PhonePe",
+                                        name: "PhonePe   ",
                                       ),
                                     ],
                                   )
@@ -217,13 +206,6 @@ class _FormScreenState extends State<FormScreen> {
                               formKey: _formKey,
                               cardItem: _cardItem,
                             ),
-                            // FlatButton(
-                            //   onPressed: () {
-                            //     Navigator.of(context).pushNamed('/card_screen');
-                            //   },
-                            //   child: Text("Click"),
-                            // ),
-                            // AdWidget(),
                           ],
                         ),
                       ),
@@ -248,31 +230,38 @@ class _FormScreenState extends State<FormScreen> {
 // Build Gpay checkbox
   Widget _buildGpaybox(
       {Function getter, Function setter, final String name = "Google Pay"}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      height: 20.0,
-      child: Row(
-        children: <Widget>[
-          Theme(
-            data: ThemeData(
-              unselectedWidgetColor: Colors.grey,
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Theme(
+                data: ThemeData(
+                  unselectedWidgetColor: Colors.grey,
+                ),
+                child: Checkbox(
+                  value: getter() ?? false,
+                  checkColor: Colors.green,
+                  activeColor: Colors.white,
+                  onChanged: (value) {
+                    setState(() {
+                      setter(value);
+                    });
+                  },
+                ),
+              ),
             ),
-            child: Checkbox(
-              value: getter() ?? false,
-              checkColor: Colors.green,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  setter(value);
-                });
-              },
+            Expanded(
+              child: FittedBox(
+                child: Text(
+                  name,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
-          ),
-          Text(
-            name,
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
