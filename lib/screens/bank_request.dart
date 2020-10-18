@@ -48,13 +48,14 @@ class _BankRequestFormState extends State<BankRequestForm> {
           return AlertDialog(
             titlePadding: EdgeInsets.all(8),
             title: Container(
-                padding: EdgeInsets.all(10),
-                height: 40,
-                child: Center(
-                    child: Text(
+              padding: EdgeInsets.all(10),
+              child: Center(
+                child: Text(
                   msg,
                   style: TextStyle(color: Colors.green),
-                ))),
+                ),
+              ),
+            ),
             actions: [
               FlatButton(
                   onPressed: () => Navigator.of(context).pop(),
@@ -102,6 +103,7 @@ class _BankRequestFormState extends State<BankRequestForm> {
           await DatabaseService().addBankRequest(bankRequest).whenComplete(() {
             _showDialog(context, "Request submitted successfully !");
             _stopLoading();
+            _formKey.currentState.reset();
           });
         } catch (e) {
           _stopLoading();
@@ -179,6 +181,7 @@ class _BankRequestFormState extends State<BankRequestForm> {
                                 },
                                 showFlagMain: true,
                                 // hideSearch: true,
+                                initialSelection: 'IN',
                                 favorite: ['IN', 'US'],
                                 // countryFilter: ['US', 'IN'],
                                 showOnlyCountryWhenClosed: true,
@@ -262,67 +265,3 @@ class _BankRequestFormState extends State<BankRequestForm> {
     );
   }
 }
-
-//Dropdown button selecting country
-// buildDropdown(
-//   displayText: 'Choose Your Country',
-//   icon: (Icons.public),
-//   list: _countries,
-//   getter: () {
-//     print("Getterreeey");
-//     print(getCountry);
-//     return getCountry;
-//   },
-//   setter: (v) => setCountry = v,
-// ),
-
-// Container buildDropdown({
-//   IconData icon,
-//   String displayText,
-//   List list,
-//   Function getter,
-//   Function setter,
-// }) {
-//   return Container(
-//     padding: EdgeInsets.symmetric(horizontal: 10),
-//     margin: EdgeInsets.symmetric(vertical: 5),
-//     alignment: Alignment.topCenter,
-//     decoration: kBoxDecorationStyle,
-//     child: Row(
-//       mainAxisAlignment: MainAxisAlignment.end,
-//       children: [
-//         Container(
-//           margin: EdgeInsets.symmetric(horizontal: 10),
-//           child: Icon(
-//             icon,
-//             color: Colors.grey,
-//           ),
-//         ),
-//         Expanded(
-//           child: DropdownButton(
-//             underline: Text(""),
-//             items: list
-//                 .map(
-//                   (value) => DropdownMenuItem(
-//                     child: Text(
-//                       value,
-//                       style: TextStyle(color: Colors.black87),
-//                     ),
-//                     value: value,
-//                   ),
-//                 )
-//                 .toList(),
-//             onChanged: (selectedValue) {
-//               setState(() {
-//                 setter(selectedValue);
-//               });
-//             },
-//             value: getter(),
-//             isExpanded: false,
-//             hint: Text(displayText, style: kHintTextStyle),
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }

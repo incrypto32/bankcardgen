@@ -68,7 +68,9 @@ class _CreateButtonState extends State<CreateButton> {
               ),
               FlatButton(
                 onPressed: () async {
+                  print("_____________________1_____________________");
                   if (await Permission.storage.request().isGranted) {
+                    print("_____________________2_____________________");
                     if (widget._cardItem.country != "India") {
                       widget._cardItem.gPay = false;
                       widget._cardItem.phonePe = false;

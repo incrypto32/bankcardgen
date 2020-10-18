@@ -159,24 +159,15 @@ class ImgFromTempelate {
       fontSize = 55;
       map.forEach((key, value) {
         print("$key : $value");
-        if (!(key == 'Gpay' ||
-            key == "PhonePe" ||
-            key == 'Bank' ||
-            key == 'Type')) {
-          if (!(value.toString().replaceAll(new RegExp(r"\s+"), '') == '' ||
-              value == null)) {
-            if (key == 'A/c No') {
-              text += '\n$key : $value';
-            } else if (['Name', 'IFSC', 'IBAN', 'Branch'].contains(key)) {
-              text2 += '\n$key : $value';
-            } else if (key != 'Phone') {
-              text3 += '\n$key : $value';
-            } else if (key == 'Phone' &&
-                (map['Gpay'] == false || map['Gpay'] == null)) {
-              text3 += '\n$key : $value';
-            } else if (key != 'Phone') {
-              text3 += '\n$key : $value';
-            }
+
+        if (!(value.toString().replaceAll(new RegExp(r"\s+"), '') == '' ||
+            value == null)) {
+          if (key == 'A/c No') {
+            text += '\n$key : $value';
+          } else if (['Name', 'IFSC', 'IBAN', 'Branch'].contains(key)) {
+            text2 += '\n$key : $value';
+          } else {
+            text3 += '\n$key : $value';
           }
         }
       });
@@ -230,6 +221,8 @@ class ImgFromTempelate {
     // Load Gpay logo
     final gpayImg = await loadImageAsset('assets/images/gpay.png');
 
+    print("________________4________________________");
+
     if (tempelateLoadMethod == TempelateLoadMethod.assets) {
       img = await loadImageAsset(
         'assets/images/banktamlets/' + details['Bank'] + '.png',
@@ -247,7 +240,7 @@ class ImgFromTempelate {
         details['Bank'] + '.png',
       );
     }
-
+    print("________________5________________________");
     // The picture recorder which records the canvas
     final ui.PictureRecorder recorder = ui.PictureRecorder();
 
@@ -260,7 +253,7 @@ class ImgFromTempelate {
       ),
     );
     final stroke = Paint();
-
+    print("________________6________________________");
     // Draw the tamlet to canvas
     img == null
         ? throw ('Tempelate image is null')
@@ -268,6 +261,17 @@ class ImgFromTempelate {
 
     // Start printig text on to canvas
     if (details != null) {
+      Map<String, dynamic> map = {};
+      map.addAll(details);
+      map.remove("Gpay");
+      map.remove("PhonePe");
+      map.remove("Type");
+      map.remove("Bank");
+      print("________________7________________________");
+      if ((details["Gpay"] ?? false) || (details["PhonePe"] ?? false)) {
+        map.remove("Phone");
+      }
+      print("________________8________________________");
       var pH = printPara(
         canvas: canvas,
         offset: Offset(
@@ -276,9 +280,11 @@ class ImgFromTempelate {
         ),
         fromMap: true,
         widthConstraint: 830,
-        map: details,
+        map: map,
       );
       print('PrintPara complete');
+      print(details);
+      print("${details["Gpay"] || details["PhonePe"]}");
 
       // Printing the Gpay number box
       stroke.color = Colors.white;
@@ -294,6 +300,7 @@ class ImgFromTempelate {
           img: gpayImg,
         );
       }
+      print("________________9________________________");
 
       printPara(
         canvas: canvas,
@@ -303,6 +310,7 @@ class ImgFromTempelate {
         fontSize: 35,
         text: details['Type'] ?? '',
       );
+      print("________________10________________________");
     } else {
       throw ("Error : details map is null");
     }
@@ -330,6 +338,10 @@ class ImgFromTempelate {
   // generate BankCard
   static Future<ByteData> generateBankCard(Map<String, dynamic> details) async {
     var img;
+    print("________________}{}________________________");
+    print(details);
+    details["Gpay"] == null ? details["Gpay"] = false : print("");
+    details["PhonePe"] == null ? details["PhonePe"] = false : print("");
     if (details != null) {
       img = await _bankCardWorker(
         details,

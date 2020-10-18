@@ -104,6 +104,7 @@ class DatabaseService {
     print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
     var ads = await metadata.doc('metadata').get();
     if (!ads.data()["ads"] ?? false) {
+      print("PRESHNAM IVIDE");
       print("no add");
       return null;
     }
