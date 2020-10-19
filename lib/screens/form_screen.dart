@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:bcard/models/ad.dart';
 import 'package:bcard/services/banks.dart';
 import 'package:bcard/models/card_item.dart';
+import 'package:bcard/services/database_service.dart';
 
 import 'package:bcard/widgets/create_button.dart';
 import 'package:bcard/widgets/my_dropdown.dart';
@@ -20,6 +22,11 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final _formKey = GlobalKey<FormState>();
   CardItem _cardItem = CardItem();
   List<Bank> _banks;
@@ -62,6 +69,42 @@ class _FormScreenState extends State<FormScreen> {
   String bankCode = "IFSC";
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () {
+      showDialog(
+          context: context,
+          child: AlertDialog(
+            content: FutureBuilder<Ad>(
+              future: DatabaseService.getRandomAd(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: Icon(
+                            Icons.close,
+                          ),
+                        ),
+                      ),
+                      Image.network(snapshot.data.assetUrl),
+                    ],
+                  );
+                } else if (snapshot.connectionState == ConnectionState.done) {
+                  Navigator.of(context).pop();
+                }
+
+                return Container(
+                  color: Colors.transparent,
+                );
+              },
+            ),
+          ));
+    });
     return Scaffold(
       backgroundColor: Colors.indigo,
       body: Builder(builder: (context) {

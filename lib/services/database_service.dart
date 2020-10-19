@@ -129,6 +129,7 @@ class DatabaseService {
   // Gets a random ad from doc path
   static Future<Ad> getRandomAd() async {
     try {
+      print("getRandomAd called");
       var randomAdsDoc = await randomAds.get();
       if (randomAdsDoc.docs.length == 0) {
         return null;
@@ -136,8 +137,11 @@ class DatabaseService {
       int n = rand(randomAdsDoc.docs.length - 1) - 1;
 
       var doc = randomAdsDoc.docs[n].data();
+      print("1");
+      print(doc["asset"]);
       return Ad(assetUrl: doc["asset"], link: doc["link"], name: doc["name"]);
     } catch (e) {
+      print("2");
       return null;
     }
   }
